@@ -1,0 +1,14 @@
+program test_1 
+vars 
+    int a, b, c, d; 
+
+main()
+{
+    a = 1;
+    b = 2;
+    c = a + b;
+    input(d);
+
+    print("Your result: ", c + d);
+
+}

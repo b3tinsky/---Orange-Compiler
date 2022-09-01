@@ -1,0 +1,10 @@
+[user]
+    name = Beto Rendon
+    email = betorendonruiz@gmail.com
+    signingkey = betorendonruiz@gmail.com
+
+[commit]
+    gpgsign = true
+
+[tag]
+    gpgSign = true

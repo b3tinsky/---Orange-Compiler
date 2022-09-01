@@ -5,9 +5,9 @@ The Orange Compiler™ is a simple compiler used alongside the Orange Language�
 Checkpoints are given by our professor, although they can change during the semester and they are more like 'symbolic' checkpoints to help us complete the project. These checkpoints represent the core components of the compiler. It is strongly recommended to follow the order of the checkpoints since they follow the class syllabus and the compiler is built in a secuential manner (cannot skip to a further component without finishing previous ones).
 
 ### ✅ Checkpoint \#0
-- Project proposal
+- ~~Project proposal~~
 - ~~Token list~~
-- Syntax diagrams
+- ~~Syntax diagrams~~
 
 ### ⚠️ Checkpoint \#1: Lexical and Syntactical Analysis
 
@@ -51,3 +51,10 @@ Made list with tokens.
 
 ### 📆 August 29 🕓 19:03
 Finished checkpoint #0 (proposal, token list and syntax diagrams). Things can still be changed or added, depending on teacher's feedback (more special functions, more structured types, etc).
+
+### 📆 August 30 🕓 20:22
+Designing and documenting test for the Orange Compiler. 
+
+### 📆 September 01 🕓 15:29
+Minor changes to syntax diagrams and proposal document. Added first input files to testing folder.
+
