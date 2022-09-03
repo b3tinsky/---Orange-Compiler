@@ -9,9 +9,9 @@ Checkpoints are given by our professor, although they can change during the seme
 - ~~Token list~~
 - ~~Syntax diagrams~~
 
-### ⚠️ Checkpoint \#1: Lexical and Syntactical Analysis
+### ✅ Checkpoint \#1: Lexical and Syntactical Analysis
 
-### ❌ Checkpoint \#2: Basic variable semantics
+### ⚠️ Checkpoint \#2: Basic variable semantics
 - Procedure directory
 - Variable table
 
@@ -57,4 +57,7 @@ Designing and documenting test for the Orange Compiler.
 
 ### 📆 September 01 🕓 15:29
 Minor changes to syntax diagrams and proposal document. Added first input files to testing folder.
+
+### 📆 September 02 🕓 23:16
+Finished first version of parser. Instead of staying with PLY, I gave SLY a go. I felt that it has a little bit better syntax, and in the worst case scenario, I don't think its that complicated to change it to PLY again. I finished the parser based on the LittleDuck homework, and my proposal's syntax diagrams. As I was making the parser, I noticed several areas where problems my arise (reduction conflicts, redundance, etc.), but this version only serves as a backup while I keep working on fixing said issues. Also, I still don't know why Git/Github is not signing my commits.
 
