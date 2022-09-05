@@ -1,12 +1,17 @@
 program test_1 
 vars 
-    int a, ñ, c, d; 
+    int a, c, d;
+
+
+
+
+
 
 main()
 {
     a = 1;
     b = 2;
-    c = a + b;
+    c = ñ + b;
     input(d);
 
     print("Your result: ", c + d);

@@ -19,7 +19,8 @@ def orange_juice(test_name, test_data):
     result = parser.parse(lexer.tokenize(test_data))
     print('-'*21)
     print('Intended Status: ✅ |')
-    print(f'Reported Status: {parser.status} |')
+    print(f'Lexical Status:  {lexer.ERROR_STATUS} |')
+    print(f'Syntax  Status:  {parser.status} |')
     print('▲'*30, test_name ,'▲'*30)
     print()
 

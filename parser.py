@@ -5,6 +5,8 @@ from lex import OrangeLexer
 
 class OrangeParser(Parser):
     # Initiate without an error
+    debugfile = 'parser.out'
+    start = 'program'
     status = '✅'
     tokens = OrangeLexer.tokens
 
@@ -36,7 +38,7 @@ class OrangeParser(Parser):
         return p
 
         # Single or multiple block content
-    @_('statute', 'statute blockcontent', 'empty')
+    @_('statute blockcontent', 'empty')
     def blockcontent(self, p):
         return p
     
@@ -281,8 +283,8 @@ class OrangeParser(Parser):
 
     def error(self, p):
         # print("Whoa. You are seriously hosed.")
-        self.syntax_error = '❌'
-
+        self.status = '❌'
+        # print(f'Syntax error: [{p.type} -> {p.value}] before line {p.lineno} position {p.index}')
         if not p:
             print("End of File!")
             return
@@ -290,9 +292,25 @@ class OrangeParser(Parser):
         # Read ahead looking for a closing '}'
         while True:
             tok = next(self.tokens, None)
+            
             if not tok or tok.type == 'RCURLY':
+                print(f'❌ SYNTAX ERROR: Missing [Closing brace -> {tok.value}] before line {p.lineno} position {p.index}')
                 break
+            
+            elif not tok or tok.type == 'SEMICOLON':
+                print(f'❌ SYNTAX ERROR: Missing [{tok.type} -> {tok.value}] before line {p.lineno} position {p.index}')
+                break
+
+            else:
+        # print(f'Syntax error: [{p.type} -> {p.value}] before line {p.lineno} position {p.index}')
+                break
+
+            # self.errok()
+            # self.restart()
         self.restart()
+        # return tok
+
+    # Define error rules for every grammar rule
 
     # TODO: Define special functions
     # <specialfuncs>

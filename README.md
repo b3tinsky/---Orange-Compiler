@@ -61,3 +61,12 @@ Minor changes to syntax diagrams and proposal document. Added first input files 
 ### 📆 September 02 🕓 23:16
 Finished first version of parser. Instead of staying with PLY, I gave SLY a go. I felt that it has a little bit better syntax, and in the worst case scenario, I don't think its that complicated to change it to PLY again. I finished the parser based on the LittleDuck homework, and my proposal's syntax diagrams. As I was making the parser, I noticed several areas where problems my arise (reduction conflicts, redundance, etc.), but this version only serves as a backup while I keep working on fixing said issues. Also, I still don't know why Git/Github is not signing my commits.
 
+### 📆 September 05 🕓 17:10
+Solved a reduce/reduce conflict with the block contents. I have a slight suspicion that the same issue might happen again with other rules, but the fix is very simple.
+For the block contents I had the rules:
+
+blockcontents -> statute | statute blockcontents | empty
+
+And all I did was remove the 'statute' rule. It fixes the conflict because now if there is only one statute in the block, it can exit through the empty rule, instead of having to decide.
+
+I think this will happen again because I have a vague memory of doing something similar in other rules, but I believe those problems will become easily visible if I keep making more tests to poke at the grammar rules.

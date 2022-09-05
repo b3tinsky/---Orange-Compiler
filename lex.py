@@ -46,8 +46,9 @@ class OrangeLexer(Lexer):
         CTEINT,
         CTEFLOAT,
         CTESTRING,
+        ERROR_STATUS,
     }
-    
+
     # Reserved Words
     PROGRAM = 'program'
     VARS = 'vars'
@@ -66,7 +67,7 @@ class OrangeLexer(Lexer):
     ELSE = 'else'
     INT = 'int'
     FLOAT = 'float'
-    ID = 'id'
+    ERROR_STATUS = '✅'
 
 
     # Regular expression rules for tokens
@@ -109,10 +110,12 @@ class OrangeLexer(Lexer):
     def CTEFLOAT(self,t):
         t.value = float(t.value)
         return t
+
     @_(r'\-?\d+')
     def CTEINT(self,t):
         t.value = int(t.value)
         return t
+
     @_(r'\".*\"')
     def CTESTRING(self,t):
         t.value = str(t.value[1:-1]) # Returns string without quotation marks
@@ -125,9 +128,10 @@ class OrangeLexer(Lexer):
 
     # Error handling rule
     def error(self, t):
-        print("Illegal character '%s'" % t.value[0])
+        print("❌ Illegal character '%s'" % t.value[0])
+        self.ERROR_STATUS = '❌'
         self.index += 1
-
+        # return t
 
     # # Test the data
     # def test(self, data):
