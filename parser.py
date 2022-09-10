@@ -2,19 +2,32 @@
 
 from sly import Parser
 from lex import OrangeLexer
+# DOC: Explain why I need a deep copy instead of using the same VariableTable object
+    # I need a copy because every context switch "whipes" the table, but the address remains
+    # With a copy an entirely new table is stored for its current context/scope/directory 
+from copy import deepcopy as COPY
+from Components.funcdir import OrangeFuncDir
+from Components.vartable import OrangeVarTable
 
 class OrangeParser(Parser):
-    # Initiate without an error
-    debugfile = 'parser.out'
-    start = 'program'
-    status = '✅'
     tokens = OrangeLexer.tokens
+    # debugfile = 'parser.out'    # Parser debugging file
+    start = 'program'           # Start parsing from < program > rule
+
+    def __init__(self):
+        self.status = '✅'               # Initiate status without an error
+        self.OFD = OrangeFuncDir()       # Orange Function Directory
+        self.OVT = OrangeVarTable()      # Orange Variable Table
+
+        self.currentContext = None
 
     ### GRAMMAR ###
     
     # Program declaration
-    @_('PROGRAM ID declare')
+    @_('PROGRAM ID changecontext declare')
     def program(self, p):
+        self.OFD.addfunc(p[1], 'prog', COPY(self.OVT))
+        self.currentContext = 'global'
         return p
 
     # Declaration blocks (global variables & functions)
@@ -23,8 +36,9 @@ class OrangeParser(Parser):
         return p
     
     # Main program block
-    @_('MAIN LPAREN RPAREN block')
+    @_('MAIN changecontext LPAREN RPAREN block')
     def main_block(self, p):
+        self.OFD.addfunc(p[0], 'main', COPY(self.OVT))
         return p
 
     # Normal block
@@ -54,6 +68,10 @@ class OrangeParser(Parser):
         # int variable ;
     @_('type decvar SEMICOLON')
     def decvar_line(self, p):
+        # print(self.OFD.printdata())
+        # print('P[0]: ', p[0], '\n' ,'P[1]: ', p[1])
+        self.OVT.addvartokenstream(p, self.OFD.context)
+        print('🍊: ', self.OFD.context)
         return p
     
     # Multiple variable declaration line
@@ -61,6 +79,10 @@ class OrangeParser(Parser):
         # float x, y, z ;
     @_('type decvar SEMICOLON decvar_line')
     def decvar_line(self, p):
+        # print(self.OFD.printdata())
+        # print('Q[0]: ', p[0], '\n' ,'Q[1]: ', p[1])
+        print('🍊: ', self.OFD.context)
+        self.OVT.addvartokenstream(p, self.OFD.context)
         return p
     
     # Individual variable
@@ -106,16 +128,18 @@ class OrangeParser(Parser):
         # void fullname(firstname, lastname) {
         #   print("Fullname: ", firstname, " ", lastname)
         # }
-    @_('VOID ID LPAREN params RPAREN block')
+    @_('VOID ID changecontext LPAREN params RPAREN block')
     def voidfunc(self, p):
+        self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
         return p
 
     # Function with a return value
         # int sum(a, b) {
         #   return a + b
         # }
-    @_('type ID LPAREN params RPAREN returnblock')
+    @_('type ID changecontext LPAREN params RPAREN returnblock')
     def typefunc(self, p):
+        self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
         return p
 
     # Parameter declaration
@@ -273,10 +297,24 @@ class OrangeParser(Parser):
         return p
         
     # Statute definition
-    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'forloop', 'var', 'call')
+    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'forloop', 'decvars', 'call')
     def statute(self, p):
         return p
+    
+    ### HELPER RULES ###
+    # Changes context BEFORE entering the new block
+        # Usually the context changes AFTER the rule is finished, but this doesn't work for variable tables  
+    @_('')
+    def changecontext(self, p):
+        self.OVT.cleartable()
+        if (p[-2] == 'program'):
+            self.OFD.changeContext('global')
+        else:
+            self.OFD.changeContext(p[-1])
         
+
+
+
     @_('')
     def empty(self, p):
         pass
@@ -284,30 +322,29 @@ class OrangeParser(Parser):
     def error(self, p):
         # print("Whoa. You are seriously hosed.")
         self.status = '❌'
-        # print(f'Syntax error: [{p.type} -> {p.value}] before line {p.lineno} position {p.index}')
+        print(f'Syntax error: [{p.type} -> {p.value}] before or at line {p.lineno} position {p.index}')
         if not p:
             print("End of File!")
             return
-
         # Read ahead looking for a closing '}'
-        while True:
-            tok = next(self.tokens, None)
+        # while True:
+        #     tok = next(self.tokens, None)
             
-            if not tok or tok.type == 'RCURLY':
-                print(f'❌ SYNTAX ERROR: Missing [Closing brace -> {tok.value}] before line {p.lineno} position {p.index}')
-                break
+        #     if not tok or tok.type == 'RCURLY':
+        #         print(f'❌ SYNTAX ERROR: Missing [Closing brace -> {tok.value}] before line {p.lineno} position {p.index}')
+        #         break
             
-            elif not tok or tok.type == 'SEMICOLON':
-                print(f'❌ SYNTAX ERROR: Missing [{tok.type} -> {tok.value}] before line {p.lineno} position {p.index}')
-                break
+        #     elif not tok or tok.type == 'SEMICOLON':
+        #         print(f'❌ SYNTAX ERROR: Missing [{tok.type} -> {tok.value}] before line {p.lineno} position {p.index}')
+        #         break
 
-            else:
-        # print(f'Syntax error: [{p.type} -> {p.value}] before line {p.lineno} position {p.index}')
-                break
+        #     else:
+        #         print(f'Syntax error: [{p.type} -> {p.value}] before line {p.lineno} position {p.index}')
+        #         break
 
             # self.errok()
             # self.restart()
-        self.restart()
+        # self.restart()
         # return tok
 
     # Define error rules for every grammar rule

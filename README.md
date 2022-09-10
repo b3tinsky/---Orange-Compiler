@@ -11,11 +11,11 @@ Checkpoints are given by our professor, although they can change during the seme
 
 ### ✅ Checkpoint \#1: Lexical and Syntactical Analysis
 
-### ⚠️ Checkpoint \#2: Basic variable semantics
-- Procedure directory
-- Variable table
+### ✅ Checkpoint \#2: Basic variable semantics
+- ~~Procedure directory~~
+- ~~Variable table~~
 
-### ❌ Checkpoint \#3: Expression semantics
+### ⚠️ Checkpoint \#3: Expression semantics
 - Semantic cube
 - Code generation for arithmetic expressions and secuential statutes
     - Assignment
@@ -70,3 +70,20 @@ blockcontents -> statute | statute blockcontents | empty
 And all I did was remove the 'statute' rule. It fixes the conflict because now if there is only one statute in the block, it can exit through the empty rule, instead of having to decide.
 
 I think this will happen again because I have a vague memory of doing something similar in other rules, but I believe those problems will become easily visible if I keep making more tests to poke at the grammar rules.
+
+### 📆 September 05 🕓 19:35
+Watched recorded class (September 20) where the teacher talks about semantics. This recording was needed to begin writing basic variable semantics and the development of a procedure directory and a variable table.
+
+### 📆 September 06 🕓 16:48
+Watched recorded class (September 23) where the teacher talks about semantics and focuses more on development and refinement of the function directory/variable table. Started development of function directory and variable table components. 
+
+### 📆 September 09 🕓 23:38
+Main program now accepts arguments to run/test the scanner, the parser, or both. Finished an implementation for function directory and variable table. When the parser enters a new function, I added a rule BEFORE the current rule ends where the current context is switched. This means that for a rule like < MAIN LPAREN RPAREN block > I added the rule < MAIN changecontext LPAREN RPAREN block > so that the context changes for everything inside the main block and not everything after it. The implementation works by creating an object for the function directory and an object for the variable table. When the parser passes through a new context, the variable table is cleared. All the variables declared in said context are added to the variable table, and then the whole variable table is added to the current function/context in the function directory. I also added some tags to identify important parts in the project. I still to make sure everything is working correctly with the function directory and the variable tables, but for now its good progress. In later commits, I want to add more testing input files. I also want to implement a testing framework (pytest or unittest) or maybe develop my own testing, but that will depend on which I find more convenient. I should also refine my testing document (add more testing points, design tests, document more, etc.).
+ 
+# Tags
+TODO:    Tasks to be done
+HACK:    Neat ideas to solve problems or cool ideas
+FIXME:   It works, but not always (could break or not tested)
+BUG:     It doesn't work
+WARNING: Could potentially have problems
+DOC:     Documentation pending for this section

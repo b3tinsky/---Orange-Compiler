@@ -1,0 +1,66 @@
+{
+    // TODO TREE
+    "todo-tree.general.tags": [
+        "BUG",
+        "HACK",
+        "FIXME",
+        "WARNING",
+        "TODO",
+        "DOC",
+        "XXX",
+        "[ ]",
+        "[x]"
+    ],
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "type": "text",
+            "foreground": "white",
+            "background": "#8b3bdb",
+            "iconColour": "#8b3bdb",
+            "icon": "list-unordered",
+            "gutterIcon": true
+        },
+        "WARNING": {
+            "type": "text",
+            "icon": "alert",
+            "foreground": "black",
+            "iconColour": "#f0b800",
+            "background": "#f0b800",
+            "gutterIcon": true
+        },
+        "BUG": {
+            "type": "text",
+            "icon": "bug",
+            "foreground": "white",
+            "iconColour": "#ba0000",
+            "background": "#ba0000",
+            "gutterIcon": true
+        },
+        "FIXME": {
+            "type": "text",
+            "icon": "tools",
+            "foreground": "black",
+            "iconColour": "#ff8400",
+            "background": "#ff8400",
+            "gutterIcon": true
+        },
+        "HACK": {
+            "type": "text",
+            "icon": "terminal",
+            "foreground": "black",
+            "iconColour": "#00d438",
+            "background": "#00d438",
+            "gutterIcon": true
+        },
+        "DOC": {
+            "type": "text",
+            "icon": "briefcase",
+            "foreground": "white",
+            "iconColour": "#3b51bf",
+            "background": "#3b51bf",
+            "gutterIcon": true
+        }
+    }
+    // TODO TREE
+
+}

@@ -79,8 +79,8 @@ Rule 75    empty -> <empty>
 
 Unused terminals:
 
-    COLON
     ERROR_STATUS
+    COLON
 
 Terminals, with rules where they appear:
 

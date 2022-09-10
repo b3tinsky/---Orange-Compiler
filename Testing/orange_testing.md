@@ -9,6 +9,7 @@ The inputs in this folder are made to test the Orange Compiler, it's features an
     - Declare a variable
     - Declare multiple variables with commas
     - No variable type mixing
+- Function names can't be the same as variable names and viceversa
 
 ## Tests
 These input files must be designed with tests in mind before the compiler is finished. Each input file must state in itself what its testing as a comment in the Orange Language as well.
