@@ -81,7 +81,11 @@ class OrangeVarTable():
             t2: 5
     '''
     def printdata(self):
+        # PRINT YAML - Human readable
         print(yaml.dump(self.table, default_flow_style=False))
+        
+        # PRINT DICT - To copy and paste for tests
+        # print(self.table)
 
 def test():
     OVT = OrangeVarTable()

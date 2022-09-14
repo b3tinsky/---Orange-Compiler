@@ -45,7 +45,9 @@ class OrangeParser(Parser):
     # Main program block
     @_('MAIN changecontext LPAREN RPAREN block')
     def main_block(self, p):
-        self.OFD.addfunc(p[0], 'main', COPY(self.OVT))
+        # HACK: Instead of copying the entire table object, only copy the dictionary
+        # self.OFD.addfunc(p[0], 'main', COPY(self.OVT))
+        self.OFD.addfunc(p[0], 'main', self.OVT.table)
         return p
 
     # Normal block
@@ -131,7 +133,9 @@ class OrangeParser(Parser):
         # }
     @_('VOID ID changecontext LPAREN params RPAREN block')
     def voidfunc(self, p):
-        self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
+        # HACK: Instead of copying the entire table object, only copy the dictionary
+        # self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
+        self.OFD.addfunc(p[1], p[0], self.OVT.table)
         return p
 
     # Function with a return value
@@ -140,7 +144,9 @@ class OrangeParser(Parser):
         # }
     @_('type ID changecontext LPAREN params RPAREN returnblock')
     def typefunc(self, p):
-        self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
+        # HACK: Instead of copying the entire table object, only copy the dictionary
+        # self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
+        self.OFD.addfunc(p[1], p[0], self.OVT.table)
         return p
 
     # Parameter declaration
@@ -317,7 +323,9 @@ class OrangeParser(Parser):
     @_('')
     def saveglobalvars(self, p):
         # p[-2] is the name of the program
-        self.OFD.addfunc(p[-2], 'prog', COPY(self.OVT))
+        # HACK: Instead of copying the entire table object, only copy the dictionary
+        # self.OFD.addfunc(p[-2], 'prog', COPY(self.OVT))
+        self.OFD.addfunc(p[-2], 'prog', self.OVT.table)
         return p
     
 

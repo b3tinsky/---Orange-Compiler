@@ -44,7 +44,11 @@ class OrangeFuncDir():
             t2: 5
     '''
     def printdata(self):
+        # PRINT YAML - Human readable
         print(yaml.dump(self.dir, default_flow_style=False))
+        
+        # PRINT DICT - To copy and paste for tests
+        # print(self.dir)
 
 # def test():
 #     # Before adding vartable
