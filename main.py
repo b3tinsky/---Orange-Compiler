@@ -7,8 +7,8 @@ from Components.vartable import OrangeVarTable
 
 # Normal imports
 from pathlib import Path
-from lex import OrangeLexer
-from parser import OrangeParser
+from Components.scanner import OrangeLexer
+from Components.parser import OrangeParser
 import os
 import sys
 
@@ -80,3 +80,4 @@ for input_file in input_dir:
     data = file.read()
     file.close()
     orange_juice(input_file, data)
+    break

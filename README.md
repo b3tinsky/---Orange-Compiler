@@ -80,10 +80,21 @@ Watched recorded class (September 23) where the teacher talks about semantics an
 ### 📆 September 09 🕓 23:38
 Main program now accepts arguments to run/test the scanner, the parser, or both. Finished an implementation for function directory and variable table. When the parser enters a new function, I added a rule BEFORE the current rule ends where the current context is switched. This means that for a rule like < MAIN LPAREN RPAREN block > I added the rule < MAIN changecontext LPAREN RPAREN block > so that the context changes for everything inside the main block and not everything after it. The implementation works by creating an object for the function directory and an object for the variable table. When the parser passes through a new context, the variable table is cleared. All the variables declared in said context are added to the variable table, and then the whole variable table is added to the current function/context in the function directory. I also added some tags to identify important parts in the project. I still to make sure everything is working correctly with the function directory and the variable tables, but for now its good progress. In later commits, I want to add more testing input files. I also want to implement a testing framework (pytest or unittest) or maybe develop my own testing, but that will depend on which I find more convenient. I should also refine my testing document (add more testing points, design tests, document more, etc.).
  
+### 📆 September 13 🕓 20:34
+Deleted token COLON because I noticed I didn't actually use it in any rule. I added it because I've used it in other programming languages, so I assumed I would use in my own, but after careful inspection, I noticed that by the way some statutes are organized, the COLON is never used. Struggled with Python's local module importing, so I decided to create a GENERAL testing file with multiple classes that represent each input file and have it at the root folder so that I don't have problems with imports. At this point I will add more tests before I continue with more complex topics like scope and memory allocation. I also renamed and restructured the files and folders. Also, the introduction of INPUT 0, this input file will be constantly changed, so it will not have tests written for it. Input 0 is for development and to see real time changes. 
+
 # Tags
-TODO:    Tasks to be done
-HACK:    Neat ideas to solve problems or cool ideas
-FIXME:   It works, but not always (could break or not tested)
-BUG:     It doesn't work
-WARNING: Could potentially have problems
-DOC:     Documentation pending for this section
+__TODO__:    Tasks to be done
+
+__HACK__:    Neat ideas to solve problems or cool ideas
+
+__FIXME__:   It works, but not always (could break or not tested)
+
+__BUG__:     It doesn't work
+
+__WARNING__: Could potentially have problems
+
+__DOC__:     Documentation pending for this section
+
+# Reference
+[Pytest Documentation](https://docs.pytest.org)

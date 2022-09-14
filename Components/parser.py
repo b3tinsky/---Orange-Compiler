@@ -1,7 +1,7 @@
 # ▲▼
 
 from sly import Parser
-from lex import OrangeLexer
+from Components.scanner import OrangeLexer
 # DOC: Explain why I need a deep copy instead of using the same VariableTable object
     # I need a copy because every context switch "whipes" the table, but the address remains
     # With a copy an entirely new table is stored for its current context/scope/directory 
@@ -11,7 +11,7 @@ from Components.vartable import OrangeVarTable
 
 class OrangeParser(Parser):
     tokens = OrangeLexer.tokens
-    # debugfile = 'parser.out'    # Parser debugging file
+    debugfile = 'parser.out'    # Parser debugging file
     start = 'program'           # Start parsing from < program > rule
 
     def __init__(self):
@@ -19,22 +19,29 @@ class OrangeParser(Parser):
         self.OFD = OrangeFuncDir()       # Orange Function Directory
         self.OVT = OrangeVarTable()      # Orange Variable Table
 
-        self.currentContext = None
 
     ### GRAMMAR ###
     
     # Program declaration
-    @_('PROGRAM ID changecontext declare')
+    @_('PROGRAM ID declare')
     def program(self, p):
-        self.OFD.addfunc(p[1], 'prog', COPY(self.OVT))
-        self.currentContext = 'global'
         return p
 
     # Declaration blocks (global variables & functions)
-    @_('decvars decfuncs main_block')
+    @_('decvars saveglobalvars decfuncs main_block')
+    def declare(self, p):
+
+        return p
+    @_('decvars saveglobalvars main_block')
     def declare(self, p):
         return p
-    
+    @_('decfuncs main_block')
+    def declare(self, p):
+        return p
+    @_('main_block')
+    def declare(self, p):
+        return p
+
     # Main program block
     @_('MAIN changecontext LPAREN RPAREN block')
     def main_block(self, p):
@@ -60,7 +67,7 @@ class OrangeParser(Parser):
 
     # (Optional)
     # Variable declaration block
-    @_('VARS decvar_line', 'empty')
+    @_('VARS decvar_line')
     def decvars(self, p):
         return p
 
@@ -68,10 +75,7 @@ class OrangeParser(Parser):
         # int variable ;
     @_('type decvar SEMICOLON')
     def decvar_line(self, p):
-        # print(self.OFD.printdata())
-        # print('P[0]: ', p[0], '\n' ,'P[1]: ', p[1])
         self.OVT.addvartokenstream(p, self.OFD.context)
-        print('🍊: ', self.OFD.context)
         return p
     
     # Multiple variable declaration line
@@ -79,9 +83,6 @@ class OrangeParser(Parser):
         # float x, y, z ;
     @_('type decvar SEMICOLON decvar_line')
     def decvar_line(self, p):
-        # print(self.OFD.printdata())
-        # print('Q[0]: ', p[0], '\n' ,'Q[1]: ', p[1])
-        print('🍊: ', self.OFD.context)
         self.OVT.addvartokenstream(p, self.OFD.context)
         return p
     
@@ -115,7 +116,7 @@ class OrangeParser(Parser):
 
     # (Optional)
     # Function declaration block
-    @_('func decfuncs', 'empty')
+    @_('func decfuncs', 'func')
     def decfuncs(self, p):
         return p
 
@@ -311,8 +312,14 @@ class OrangeParser(Parser):
             self.OFD.changeContext('global')
         else:
             self.OFD.changeContext(p[-1])
-        
 
+    # Saves global variables before the variable table is cleared with the correct 'global' context    
+    @_('')
+    def saveglobalvars(self, p):
+        # p[-2] is the name of the program
+        self.OFD.addfunc(p[-2], 'prog', COPY(self.OVT))
+        return p
+    
 
 
     @_('')

@@ -6,6 +6,8 @@ class OrangeVarTable():
         self.table = {}
 
     def checkvar(self, var):
+        # TODO: Check for global variables too
+
         # Variable already exists in current context
         if var in self.table:
             return True
@@ -18,7 +20,7 @@ class OrangeVarTable():
         if self.checkvar(id):
             print(f'🚫 Variable < {id} > already exists in current context')
         else:
-            print(f'✅ Variable < {id} > successfully added')
+            # print(f'✅ Variable < {id} > successfully added')
             self.table[id] = {'name': id, 'type': type, 'scope': scope}
 
     '''
@@ -35,11 +37,11 @@ class OrangeVarTable():
     def addvartokenstream(self, tokenstream, scope):
         # Variable type
         varType = tokenstream[0][1]
+
         # Variable names
         flattenedTokenStream = self.flattentokenstream(tokenstream[1])
 
-        print('Token stream TYPE: ', varType)
-        print('Token stream IDs: ')
+        # Add each variable name with the established type for the line and current scope/context
         for i in flattenedTokenStream:
             self.addvar(i, varType, scope)
             

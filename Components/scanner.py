@@ -1,6 +1,9 @@
 from sly import Lexer
 
 class OrangeLexer(Lexer):
+    def __init__(self):
+        self.ERROR_STATUS = '✅'
+
     # Set of token names
     tokens = {
         PROGRAM,
@@ -22,7 +25,6 @@ class OrangeLexer(Lexer):
         FLOAT,
         ID,
         SEMICOLON,
-        COLON,
         COMMA,
         LPAREN,
         RPAREN,
@@ -46,7 +48,6 @@ class OrangeLexer(Lexer):
         CTEINT,
         CTEFLOAT,
         CTESTRING,
-        ERROR_STATUS,
     }
 
     # Reserved Words
@@ -67,12 +68,9 @@ class OrangeLexer(Lexer):
     ELSE = 'else'
     INT = 'int'
     FLOAT = 'float'
-    ERROR_STATUS = '✅'
-
 
     # Regular expression rules for tokens
     SEMICOLON = r'\;'
-    COLON = r'\:'
     COMMA = r'\,'
     LPAREN = r'\('
     RPAREN = r'\)'

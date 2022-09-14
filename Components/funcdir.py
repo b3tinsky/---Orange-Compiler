@@ -6,7 +6,9 @@ class OrangeFuncDir():
 
     def __init__(self):
         self.dir = {}
-        self.context = None
+        
+        # DOC: Start with a global context. As functions and main() are declared, the context changes
+        self.context = 'global'
 
     def checkfunc(self, func):
         # Function already exists
