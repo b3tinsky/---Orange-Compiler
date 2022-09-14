@@ -1,6 +1,6 @@
-program test_1
+program test_02
 vars 
-    int a, c, d;
+    int a, !, d;
     int i;
     float x, y, z;
 

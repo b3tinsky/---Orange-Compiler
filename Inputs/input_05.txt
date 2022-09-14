@@ -1,0 +1,14 @@
+program test_05
+
+func void sum(){
+    vars
+        int sum_a, sum_b;
+        int result;
+    print("Result: ", result);
+}
+
+main()
+{
+    vars
+        int test;
+}

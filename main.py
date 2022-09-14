@@ -19,7 +19,7 @@ argument_list = sys.argv[1:]
 arguments_short = ['lp']
 arguments_long = ['lex', 'parser']
 
-testing_dir_path = str(Path.cwd() / Path('Testing/Inputs'))
+testing_dir_path = str(Path.cwd() / Path('Inputs'))
 input_dir = os.listdir(testing_dir_path)
 
 def orange_juice(test_name, test_data):
@@ -74,10 +74,17 @@ def orange_juice(test_name, test_data):
     print('▲'*30, test_name ,'▲'*30)
     print()
 
-for input_file in input_dir:
-    file_path = testing_dir_path + '/' + input_file
-    file = open(file_path, 'r')
-    data = file.read()
-    file.close()
-    orange_juice(input_file, data)
-    break
+# RUN ALL INPUTS
+# for input_file in input_dir:
+#     file_path = testing_dir_path + '/' + input_file
+#     file = open(file_path, 'r')
+#     data = file.read()
+#     file.close()
+#     orange_juice(input_file, data)
+
+# RUN DEVELOPMENT INPUT
+file_path = testing_dir_path + '/input_0.txt'
+file = open(file_path, 'r')
+data = file.read()
+file.close()
+orange_juice('input_0.txt', data)

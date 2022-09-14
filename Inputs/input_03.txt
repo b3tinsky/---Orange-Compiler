@@ -1,0 +1,17 @@
+program test_03
+
+main()
+{
+    vars
+        int x;
+        int y, z;
+
+    x = 1;
+    y = 2;
+    z = x + y;
+
+    print("Your result: ", z + 11);
+
+}
+
+ 

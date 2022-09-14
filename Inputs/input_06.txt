@@ -1,6 +1,6 @@
-program test_02
+program test_06
 vars 
-    int a, !, d;
+    int a, c, d;
     int i;
     float x, y, z;
 
@@ -10,8 +10,6 @@ func void sum(){
         int result;
     print("sum");
 }
-
-
 
 main()
 {
@@ -24,7 +22,4 @@ main()
     input(d);
 
     print("Your result: ", c + d);
-
 }
-
- 

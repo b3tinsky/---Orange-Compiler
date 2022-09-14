@@ -1,14 +1,20 @@
-program test_1 
+program test_4
 vars 
-    int a, b, 0, d;
+    int a, c, d;
+    int i;
+    float x, y, z;
 
 main()
 {
+    vars
+        int test;
+
     a = 1;
     b = 2;
     c = a + b;
     input(d);
 
     print("Your result: ", c + d);
-
 }
+
+ 

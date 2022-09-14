@@ -41,4 +41,36 @@ Input 00 is a "temporary" input file I used during development, and the main pur
 ## Tests
 These input files must be designed with tests in mind before the compiler is finished. Each input file must state in itself what its testing as a comment in the Orange Language as well.
 
-### Input_1
+### Input_01
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '❌'
+In the global variable declaration block, one of the variables has the name '0'. This should be ok for the scanner, but not the parser, since a 0 is a valid token (CTEINT), but during a declaration, an ID was expected.
+
+### Input_02
+__Expected LEX status__:    '❌'
+__Expected SYNTAX status__: '❌'
+In the global variable declaration, an illegal character is given ('!'). This should not be accepted by the scanner, and by consequence the parser should also have an error status.
+
+### Input_03
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+- Program WITHOUT global variable declaration block
+- Program WITHOUT function declaration block
+
+### Input_04
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+- Program WITH global variable declaration block
+- Program WITHOUT function declaration block
+
+### Input_05
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+- Program WITHOUT global variable declaration block
+- Program WITH function declaration block
+
+### Input_06
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+- Program WITH global variable declaration block
+- Program WITH function declaration block
