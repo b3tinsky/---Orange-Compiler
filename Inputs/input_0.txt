@@ -1,23 +1,9 @@
-program test_02
+program test_1 
 vars 
-    int a, !, d;
-    int i;
-    float x, y, z;
-
-func void sum(){
-    vars
-        int sum_a, sum_b;
-        int result;
-    print("sum");
-}
-
-
+    int a, b, 0, d;
 
 main()
 {
-    vars
-        int test;
-
     a = 1;
     b = 2;
     c = a + b;
@@ -26,5 +12,3 @@ main()
     print("Your result: ", c + d);
 
 }
-
- 

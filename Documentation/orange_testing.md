@@ -22,9 +22,9 @@ Input 00 is a "temporary" input file I used during development, and the main pur
 
 ## Features to test
 - Global Declaration Block
-    - [] Variable block [] Function Block
-    - [x] Variable block [] Function Block
-    - [] Variable block [x] Function Block
+    - [ ] Variable block [ ] Function Block
+    - [x] Variable block [ ] Function Block
+    - [ ] Variable block [x] Function Block
     - [x] Variable block [x] Function Block
 - Lowercase and uppercase usage
 - Creating a program without \<program\> reserved word
@@ -74,3 +74,9 @@ __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
 - Program WITH global variable declaration block
 - Program WITH function declaration block
+
+### Input_07
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '❌'
+__Expected SEM status__: '❌'
+Two functions have the same name, which is not allowed in the Orange Language. This feature is valid in other languages, since the user can declare functions with the same name, but different amount of parameters. That is beyond the scope of this language, hence why only unique function names are allowed.

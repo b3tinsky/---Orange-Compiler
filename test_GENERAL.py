@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from Components.scanner import OrangeLexer
 from Components.parser import OrangeParser
-
+from Components.status import OrangeStatus
 
 def initializeCompiler(test_file):
     testing_dir_path = str(Path.cwd() / Path('Inputs'))
@@ -12,40 +12,41 @@ def initializeCompiler(test_file):
     file = open(file_path, 'r')
     data = file.read()
     file.close()
-    lexer = OrangeLexer()
-    parser = OrangeParser()
+    status = OrangeStatus()
+    lexer = OrangeLexer(status)
+    parser = OrangeParser(status)
     parser.parse(lexer.tokenize(data))
-    return lexer, parser
+    return status, lexer, parser
 
 class TestInput01:
     # Initialize a different compiler with the needed file
-    lexer, parser = initializeCompiler('input_01.txt')
+    status, lexer, parser = initializeCompiler('input_01.txt')
 
     def test_LEX(self):
-        assert self.lexer.ERROR_STATUS == '✅'
+        assert self.status.lexStatus == '✅'
 
     def test_SYNTAX(self):
-        assert self.parser.status == '❌'
+        assert self.status.syntaxStatus == '❌'
 
 class TestInput02:
     # Initialize a different compiler with the needed file
-    lexer, parser = initializeCompiler('input_02.txt')
+    status, lexer, parser = initializeCompiler('input_02.txt')
 
     def test_LEX(self):
-        assert self.lexer.ERROR_STATUS == '❌'
+        assert self.status.lexStatus == '❌'
 
     def test_SYNTAX(self):
-        assert self.parser.status == '❌'
+        assert self.status.syntaxStatus == '❌'
     
 class TestInput03:
     # Initialize a different compiler with the needed file
-    lexer, parser = initializeCompiler('input_03.txt')
+    status, lexer, parser = initializeCompiler('input_03.txt')
 
     def test_LEX(self):
-        assert self.lexer.ERROR_STATUS == '✅'
+        assert self.status.lexStatus == '✅'
 
     def test_SYNTAX(self):
-        assert self.parser.status == '✅'
+        assert self.status.syntaxStatus == '✅'
     
     def test_VARDECLARATION(self):
         dir = {
@@ -75,13 +76,13 @@ class TestInput03:
 
 class TestInput04:
     # Initialize a different compiler with the needed file
-    lexer, parser = initializeCompiler('input_04.txt')
+    status, lexer, parser = initializeCompiler('input_04.txt')
 
     def test_LEX(self):
-        assert self.lexer.ERROR_STATUS == '✅'
+        assert self.status.lexStatus == '✅'
 
     def test_SYNTAX(self):
-        assert self.parser.status == '✅'
+        assert self.status.syntaxStatus == '✅'
     
     def test_VARDECLARATION(self):
         dir = {
@@ -143,13 +144,13 @@ class TestInput04:
 
 class TestInput05:
     # Initialize a different compiler with the needed file
-    lexer, parser = initializeCompiler('input_05.txt')
+    status, lexer, parser = initializeCompiler('input_05.txt')
 
     def test_LEX(self):
-        assert self.lexer.ERROR_STATUS == '✅'
+        assert self.status.lexStatus == '✅'
 
     def test_SYNTAX(self):
-        assert self.parser.status == '✅'
+        assert self.status.syntaxStatus == '✅'
     
     def test_VARDECLARATION(self):
         dir = {
@@ -191,13 +192,13 @@ class TestInput05:
 
 class TestInput06:
     # Initialize a different compiler with the needed file
-    lexer, parser = initializeCompiler('input_06.txt')
+    status, lexer, parser = initializeCompiler('input_06.txt')
 
     def test_LEX(self):
-        assert self.lexer.ERROR_STATUS == '✅'
+        assert self.status.lexStatus == '✅'
 
     def test_SYNTAX(self):
-        assert self.parser.status == '✅'
+        assert self.status.syntaxStatus == '✅'
     
     def test_VARDECLARATION(self):
         dir = {
@@ -278,17 +279,20 @@ class TestInput06:
 
         assert self.parser.OFD.dir == dir
 
-# class TestInput07:
-#     # Initialize a different compiler with the needed file
-#     lexer, parser = initializeCompiler('input_07.txt')
+class TestInput07:
+    # Initialize a different compiler with the needed file
+    status, lexer, parser = initializeCompiler('input_07.txt')
 
 
-#     def test_LEX(self):
-#         assert self.lexer.ERROR_STATUS == '✅'
+    def test_LEX(self):
+        assert self.status.lexStatus == '✅'
 
-#     def test_SYNTAX(self):
-#         assert self.parser.status == '✅'
+    def test_SYNTAX(self):
+        assert self.status.syntaxStatus == '✅'
     
+    def test_SEMANTICS(self):
+        assert self.status.semanticStatus == '❌'
+
 #     def test_VARDECLARATION(self):
 #         dir = {}
 

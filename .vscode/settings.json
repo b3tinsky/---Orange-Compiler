@@ -70,5 +70,9 @@
         "."
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    "editor.fontFamily": "'Fira Code', 'monospace', monospace",
+    "editor.fontSize": 16,
+    "editor.lineHeight": 22,
+    "editor.fontLigatures": true,
 }

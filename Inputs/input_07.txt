@@ -1,0 +1,30 @@
+program test_07
+vars 
+    int a, b, c;
+
+func void sum(){
+    vars
+        int sum_a, sum_b;
+        int result;
+    print("sum");
+}
+
+func int sum(){
+    vars int a, b;
+    a = 2;
+    b = 3;
+    return a + b;
+}
+
+main()
+{
+    vars
+        int test;
+
+    a = 1;
+    b = 2;
+    c = a + b;
+    input(d);
+
+    print("Your result: ", c + d);
+}

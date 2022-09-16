@@ -83,6 +83,20 @@ Main program now accepts arguments to run/test the scanner, the parser, or both.
 ### 📆 September 13 🕓 20:34
 Deleted token COLON because I noticed I didn't actually use it in any rule. I added it because I've used it in other programming languages, so I assumed I would use in my own, but after careful inspection, I noticed that by the way some statutes are organized, the COLON is never used. Struggled with Python's local module importing, so I decided to create a GENERAL testing file with multiple classes that represent each input file and have it at the root folder so that I don't have problems with imports. At this point I will add more tests before I continue with more complex topics like scope and memory allocation. I also renamed and restructured the files and folders. Also, the introduction of INPUT 0, this input file will be constantly changed, so it will not have tests written for it. Input 0 is for development and to see real time changes. 
 
+### 📆 September 14 🕓 20:23
+Before I jump into creating the semantic cube and other semantic functions, I want to test that the parser is working (or at least most of it) so I don't run into bigger problems later. I noticed that in a < RETURN_BLOCK >, if the user writes something like: 
+
+return a + b;
+
+It loops forever, but if the user writes:
+
+return (a + b);
+
+It works fine. I fixed it by returning an < exp > instead of a < factor >. This could later bring problems, but I really doubt it. Just in case im stating it in this commit.
+
+### 📆 September 15 🕓 20:10
+Changed the way in which errors are detected. Instead of a having a property in the scanner and parser, I created a new object that tracks the global status (by this I mean that for each input the status resets). This works well for testing and for running it in main, since every time a new input is provided, a new status checker is given as well. Also, this new object allows me to track errors in a more specific way, since now semantic errors can be provided specifically from different points of the compiler, and this will be very useful when making new tests because I can test if the semantic error came from a variable declaration, type mismatch, etc.
+
 # Tags
 __TODO__:    Tasks to be done
 

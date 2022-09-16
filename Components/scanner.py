@@ -1,8 +1,9 @@
 from sly import Lexer
+from Components.status import OrangeStatus
 
 class OrangeLexer(Lexer):
-    def __init__(self):
-        self.ERROR_STATUS = '✅'
+    def __init__(self, status):
+        self.StatusChecker = status
 
     # Set of token names
     tokens = {
@@ -127,7 +128,7 @@ class OrangeLexer(Lexer):
     # Error handling rule
     def error(self, t):
         print("❌ Illegal character '%s'" % t.value[0])
-        self.ERROR_STATUS = '❌'
+        self.StatusChecker.lexError()
         self.index += 1
         # return t
 

@@ -8,16 +8,17 @@ from Components.scanner import OrangeLexer
 from copy import deepcopy as COPY
 from Components.funcdir import OrangeFuncDir
 from Components.vartable import OrangeVarTable
+# from Components.status import OrangeStatus
 
 class OrangeParser(Parser):
     tokens = OrangeLexer.tokens
     debugfile = 'parser.out'    # Parser debugging file
     start = 'program'           # Start parsing from < program > rule
 
-    def __init__(self):
-        self.status = '✅'               # Initiate status without an error
-        self.OFD = OrangeFuncDir()       # Orange Function Directory
-        self.OVT = OrangeVarTable()      # Orange Variable Table
+    def __init__(self, status):
+        self.StatusChecker = status   # Initiate status checker
+        self.OFD = OrangeFuncDir(self.StatusChecker)    # Orange Function Directory
+        self.OVT = OrangeVarTable(self.StatusChecker)   # Orange Variable Table
 
 
     ### GRAMMAR ###
@@ -55,8 +56,10 @@ class OrangeParser(Parser):
     def block(self, p):
         return p
     
+    # WARNING: Changed RETURN factor to RETURN exp
+        # Did this so I could return things like a + b instead of (a + b)
     # Block with a value return
-    @_('LCURLY blockcontent RETURN factor SEMICOLON RCURLY')
+    @_('LCURLY blockcontent RETURN exp SEMICOLON RCURLY')
     def returnblock(self, p):
         return p
 
@@ -336,7 +339,7 @@ class OrangeParser(Parser):
 
     def error(self, p):
         # print("Whoa. You are seriously hosed.")
-        self.status = '❌'
+        self.StatusChecker.syntaxError()
         print(f'Syntax error: [{p.type} -> {p.value}] before or at line {p.lineno} position {p.index}')
         if not p:
             print("End of File!")

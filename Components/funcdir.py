@@ -1,14 +1,15 @@
-import json
 import yaml
-# from vartable import OrangeVarTable
+from Components.status import OrangeStatus
 
 class OrangeFuncDir():
 
-    def __init__(self):
+    def __init__(self, status):
+        self.StatusChecker = status
         self.dir = {}
         
         # DOC: Start with a global context. As functions and main() are declared, the context changes
         self.context = 'global'
+
 
     def checkfunc(self, func):
         # Function already exists
@@ -22,6 +23,8 @@ class OrangeFuncDir():
     def addfunc(self, id, type, table):
         if self.checkfunc(id):
             print(f'🚫 Function < {id} > already exists')
+            self.StatusChecker.semanticError()
+
         else:
             print(f'✅ Function < {id} > successfully added')
             self.dir[id] = {'name': id, 'type': type, 'table': table}

@@ -2,7 +2,8 @@ from lib2to3.pgen2 import token
 import yaml
 
 class OrangeVarTable():
-    def __init__(self):
+    def __init__(self, status):
+        self.StatusChecker = status
         self.table = {}
 
     def checkvar(self, var):

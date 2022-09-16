@@ -8,7 +8,7 @@ Rule 4     declare -> decvars saveglobalvars main_block
 Rule 5     declare -> decvars saveglobalvars decfuncs main_block
 Rule 6     main_block -> MAIN changecontext LPAREN RPAREN block
 Rule 7     block -> LCURLY blockcontent RCURLY
-Rule 8     returnblock -> LCURLY blockcontent RETURN factor SEMICOLON RCURLY
+Rule 8     returnblock -> LCURLY blockcontent RETURN exp SEMICOLON RCURLY
 Rule 9     blockcontent -> empty
 Rule 10    blockcontent -> statute blockcontent
 Rule 11    decvars -> VARS decvar_line
@@ -142,9 +142,9 @@ decvar               : 12 13 14 57
 decvar_line          : 11 12
 decvars              : 4 5 70
 empty                : 9 25 29
-exp                  : 16 16 17 30 31 35 35 36 43 44
+exp                  : 8 16 16 17 30 31 35 35 36 43 44
 expression           : 32 33 34 53 53 53 54 54 55 56 63 64
-factor               : 8 46 47 48
+factor               : 46 47 48
 forloop              : 71
 func                 : 19 20
 main_block           : 2 3 4 5
@@ -1892,7 +1892,7 @@ state 111
 state 112
 
     (24) typefunc -> type ID changecontext LPAREN params RPAREN . returnblock
-    (8) returnblock -> . LCURLY blockcontent RETURN factor SEMICOLON RCURLY
+    (8) returnblock -> . LCURLY blockcontent RETURN exp SEMICOLON RCURLY
     LCURLY          shift and go to state 130
 
     returnblock                    shift and go to state 129
@@ -2117,7 +2117,7 @@ state 129
 
 state 130
 
-    (8) returnblock -> LCURLY . blockcontent RETURN factor SEMICOLON RCURLY
+    (8) returnblock -> LCURLY . blockcontent RETURN exp SEMICOLON RCURLY
     (9) blockcontent -> . empty
     (10) blockcontent -> . statute blockcontent
     (79) empty -> .
@@ -2344,7 +2344,7 @@ state 142
 
 state 143
 
-    (8) returnblock -> LCURLY blockcontent . RETURN factor SEMICOLON RCURLY
+    (8) returnblock -> LCURLY blockcontent . RETURN exp SEMICOLON RCURLY
     RETURN          shift and go to state 151
 
 
@@ -2455,7 +2455,13 @@ state 150
 
 state 151
 
-    (8) returnblock -> LCURLY blockcontent RETURN . factor SEMICOLON RCURLY
+    (8) returnblock -> LCURLY blockcontent RETURN . exp SEMICOLON RCURLY
+    (43) exp -> . term MINUS exp
+    (44) exp -> . term PLUS exp
+    (45) exp -> . term
+    (46) term -> . factor DIVIDE term
+    (47) term -> . factor TIMES term
+    (48) term -> . factor
     (49) factor -> . LPAREN super_exp RPAREN
     (50) factor -> . varcte
     (51) factor -> . call
@@ -2471,7 +2477,9 @@ state 151
     CTEINT          shift and go to state 52
     ID              shift and go to state 43
 
-    factor                         shift and go to state 154
+    exp                            shift and go to state 154
+    term                           shift and go to state 45
+    factor                         shift and go to state 46
     varcte                         shift and go to state 48
     call                           shift and go to state 49
     var                            shift and go to state 50
@@ -2494,7 +2502,7 @@ state 153
 
 state 154
 
-    (8) returnblock -> LCURLY blockcontent RETURN factor . SEMICOLON RCURLY
+    (8) returnblock -> LCURLY blockcontent RETURN exp . SEMICOLON RCURLY
     SEMICOLON       shift and go to state 158
 
 
@@ -2556,7 +2564,7 @@ state 157
 
 state 158
 
-    (8) returnblock -> LCURLY blockcontent RETURN factor SEMICOLON . RCURLY
+    (8) returnblock -> LCURLY blockcontent RETURN exp SEMICOLON . RCURLY
     RCURLY          shift and go to state 161
 
 
@@ -2582,9 +2590,9 @@ state 160
 
 state 161
 
-    (8) returnblock -> LCURLY blockcontent RETURN factor SEMICOLON RCURLY .
-    FUNC            reduce using rule 8 (returnblock -> LCURLY blockcontent RETURN factor SEMICOLON RCURLY .)
-    MAIN            reduce using rule 8 (returnblock -> LCURLY blockcontent RETURN factor SEMICOLON RCURLY .)
+    (8) returnblock -> LCURLY blockcontent RETURN exp SEMICOLON RCURLY .
+    FUNC            reduce using rule 8 (returnblock -> LCURLY blockcontent RETURN exp SEMICOLON RCURLY .)
+    MAIN            reduce using rule 8 (returnblock -> LCURLY blockcontent RETURN exp SEMICOLON RCURLY .)
 
 
 state 162
