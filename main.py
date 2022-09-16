@@ -51,7 +51,6 @@ def orange_juice(test_name, test_data):
 
     parser.OFD.printdata()
     print('-'*21)
-    # print('Intended Status: ✅ |')
     print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
     print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')
     print(f'Semantic  Status:  {StatusChecker.semanticStatus} |')
@@ -74,16 +73,16 @@ input_dir = os.listdir(testing_dir_path)
 
 
 # RUN ALL INPUTS
-for input_file in input_dir:
-    file_path = testing_dir_path + '/' + input_file
-    file = open(file_path, 'r')
-    data = file.read()
-    file.close()
-    orange_juice(input_file, data)
+# for input_file in input_dir:
+#     file_path = testing_dir_path + '/' + input_file
+#     file = open(file_path, 'r')
+#     data = file.read()
+#     file.close()
+#     orange_juice(input_file, data)
 
 # RUN DEVELOPMENT INPUT
-# file_path = testing_dir_path + '/input_0.txt'
-# file = open(file_path, 'r')
-# data = file.read()
-# file.close()
-# orange_juice('input_0.txt', data)
+file_path = testing_dir_path + '/input_0.txt'
+file = open(file_path, 'r')
+data = file.read()
+file.close()
+orange_juice('input_0.txt', data)

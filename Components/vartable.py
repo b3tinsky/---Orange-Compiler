@@ -6,22 +6,39 @@ class OrangeVarTable():
         self.StatusChecker = status
         self.table = {}
 
-    def checkvar(self, var):
-        # TODO: Check for global variables too
-
+    def checkvar(self, var, currentFuncDir):
+        # print('🍓 TABLE: ', self.table)        
+        
         # Variable already exists in current context
         if var in self.table:
+            print(f'🚫 Variable < {var} > already exists in current context')
             return True
         
+        # Variable already exists in global scope
+        elif currentFuncDir:
+            # print('🍓 currentFuncDir: ', currentFuncDir)        
+            # print('🥝 currentFuncDir TABLE: ', currentFuncDir['table'])
+
+            if var in currentFuncDir['table']:
+                print(f'🚫 Variable < {var} > already exists in global context')
+                return True
+            
+            else:
+                return False
+
         # Variable doesn't exist in current context
         else:
             return False
+        
+        
 
-    def addvar(self, id, type, scope):
-        if self.checkvar(id):
-            print(f'🚫 Variable < {id} > already exists in current context')
+    def addvar(self, id, type, scope, currentFuncDir):
+        if self.checkvar(id, currentFuncDir):
+            self.StatusChecker.semanticError()
+            
+
         else:
-            # print(f'✅ Variable < {id} > successfully added')
+            print(f'✅ Variable < {id} > successfully added')
             self.table[id] = {'name': id, 'type': type, 'scope': scope}
 
     '''
@@ -35,7 +52,8 @@ class OrangeVarTable():
     And tokenstream[1] represents all the IDs declared in that stream:
         ('decvar', ('var', 'x'), ',', ('decvar', ('var', 'y'), ',', ('decvar', ('var', 'z'))))
     '''
-    def addvartokenstream(self, tokenstream, scope):
+    def addvartokenstream(self, tokenstream, scope, currentFuncDir):
+        print('🍇: ', currentFuncDir)
         # Variable type
         varType = tokenstream[0][1]
 
@@ -44,7 +62,7 @@ class OrangeVarTable():
 
         # Add each variable name with the established type for the line and current scope/context
         for i in flattenedTokenStream:
-            self.addvar(i, varType, scope)
+            self.addvar(i, varType, scope, currentFuncDir)
             
 
     '''

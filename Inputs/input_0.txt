@@ -1,9 +1,12 @@
 program test_1 
 vars 
-    int a, b, 0, d;
+    int a, b, c, d;
+
 
 main()
 {
+    vars
+        int a, y, z;
     a = 1;
     b = 2;
     c = a + b;

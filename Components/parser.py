@@ -19,14 +19,28 @@ class OrangeParser(Parser):
         self.StatusChecker = status   # Initiate status checker
         self.OFD = OrangeFuncDir(self.StatusChecker)    # Orange Function Directory
         self.OVT = OrangeVarTable(self.StatusChecker)   # Orange Variable Table
-
+        self.programName = ''
 
     ### GRAMMAR ###
     
     # Program declaration
-    @_('PROGRAM ID declare')
+    @_('PROGRAM ID saveprogramname declare')
+    # @_('PROGRAM ID declare')
     def program(self, p):
+        # Save program name to check for global variables later
+        # self.programName = p[1]
+
         return p
+    
+    # DOC: Save the program name ASAP to identify repeated variable & function names
+    @_('')
+    def saveprogramname(self, p):
+        # Save program name to check for global variables later
+        self.programName = p[-1]
+        # Return the ID again so that global declare block can have a name
+            # If not returned, the declare block takes p[-1], which would be 
+            # whatever we return here (or not)
+        return p[-1]
 
     # Declaration blocks (global variables & functions)
     @_('decvars saveglobalvars decfuncs main_block')
@@ -80,7 +94,7 @@ class OrangeParser(Parser):
         # int variable ;
     @_('type decvar SEMICOLON')
     def decvar_line(self, p):
-        self.OVT.addvartokenstream(p, self.OFD.context)
+        self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
     
     # Multiple variable declaration line
@@ -88,7 +102,7 @@ class OrangeParser(Parser):
         # float x, y, z ;
     @_('type decvar SEMICOLON decvar_line')
     def decvar_line(self, p):
-        self.OVT.addvartokenstream(p, self.OFD.context)
+        self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
     
     # Individual variable

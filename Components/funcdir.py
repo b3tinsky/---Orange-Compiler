@@ -52,29 +52,3 @@ class OrangeFuncDir():
         
         # PRINT DICT - To copy and paste for tests
         # print(self.dir)
-
-# def test():
-#     # Before adding vartable
-#     OFD = OrangeFuncDir()
-#     OFD.addfunc('orange', 'prog', None)
-#     print(OFD.dir)  
-#     print(OFD.dir['orange']['name'])
-#     OFD.printdata()
-
-    # After adding vartable
-    # OVT = OrangeVarTable()
-    # OVT.addvar('i', 'int')
-    # OVT.addvar('j', 'int')
-    # OVT.addvar('k', 'int')
-    # OVT.addvar('k', 'int')
-
-    # OFD.dir['orange']['table'] = OVT
-    # OFD.printdata()
-    # print(OFD.dir['orange']['table'].printdata())
-
-# def main():
-#     test()
-
-
-# if __name__ == '__main__':
-#     main()
