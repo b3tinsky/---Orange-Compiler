@@ -77,6 +77,30 @@ __Expected SYNTAX status__: '✅'
 
 ### Input_07
 __Expected LEX status__:    '✅'
-__Expected SYNTAX status__: '❌'
+__Expected SYNTAX status__: '✅'
 __Expected SEM status__: '❌'
 Two functions have the same name, which is not allowed in the Orange Language. This feature is valid in other languages, since the user can declare functions with the same name, but different amount of parameters. That is beyond the scope of this language, hence why only unique function names are allowed.
+
+### Input_08
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Local variable names CAN be repeated in the global scope.
+
+### Input_09
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '❌'
+Local variable names CAN NOT be repeated in the same scope.
+
+### Input_10
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Variables can have the same name as their scope and other function names as long as they're not reserved words (for example a variable can't be called 'main').
+
+### Input_11
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '❌'
+__Expected SEM status__: '✅'
+Variables CANT be identified as a reserved word. For example: vars int main; 

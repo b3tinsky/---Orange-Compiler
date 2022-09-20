@@ -1,5 +1,5 @@
 import yaml
-from Components.status import OrangeStatus
+from Components.status import semanticError
 
 class OrangeFuncDir():
 
@@ -22,8 +22,8 @@ class OrangeFuncDir():
 
     def addfunc(self, id, type, table):
         if self.checkfunc(id):
-            print(f'🚫 Function < {id} > already exists')
-            self.StatusChecker.semanticError()
+            # self.StatusChecker.semanticError()
+            raise semanticError(f'🚫 Function < {id} > already exists')
 
         else:
             print(f'✅ Function < {id} > successfully added')
@@ -51,4 +51,4 @@ class OrangeFuncDir():
         print(yaml.dump(self.dir, default_flow_style=False))
         
         # PRINT DICT - To copy and paste for tests
-        # print(self.dir)
+        print(self.dir)

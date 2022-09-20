@@ -1,7 +1,7 @@
 program test_11
 vars 
     int a, b, c;
-    int while;
+    int main;
 
 main()
 {

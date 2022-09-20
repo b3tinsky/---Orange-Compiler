@@ -1,9 +1,10 @@
 import os
 import sys
+import pytest
 from pathlib import Path
 from Components.scanner import OrangeLexer
 from Components.parser import OrangeParser
-from Components.status import OrangeStatus
+from Components.status import OrangeStatus, lexicalError, syntacticalError, semanticError
 
 def initializeCompiler(test_file):
     testing_dir_path = str(Path.cwd() / Path('Inputs'))
@@ -19,35 +20,22 @@ def initializeCompiler(test_file):
     return status, lexer, parser
 
 class TestInput01:
-    # Initialize a different compiler with the needed file
-    status, lexer, parser = initializeCompiler('input_01.txt')
-
-    def test_LEX(self):
-        assert self.status.lexStatus == '✅'
-
-    def test_SYNTAX(self):
-        assert self.status.syntaxStatus == '❌'
+    def test_exception_raised(self):
+        with pytest.raises(syntacticalError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_01.txt')
 
 class TestInput02:
-    # Initialize a different compiler with the needed file
-    status, lexer, parser = initializeCompiler('input_02.txt')
+    def test_exception_raised(self):
+        with pytest.raises(lexicalError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_02.txt')
 
-    def test_LEX(self):
-        assert self.status.lexStatus == '❌'
-
-    def test_SYNTAX(self):
-        assert self.status.syntaxStatus == '❌'
-    
+# DOC: In the testing document, add the expected directory
 class TestInput03:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_03.txt')
 
-    def test_LEX(self):
-        assert self.status.lexStatus == '✅'
-
-    def test_SYNTAX(self):
-        assert self.status.syntaxStatus == '✅'
-    
     def test_VARDECLARATION(self):
         dir = {
             'main': {
@@ -70,20 +58,20 @@ class TestInput03:
                         'scope': 'main'
                         }
                     }
+                },
+            'test_03': {
+                'name': 'test_03', 
+                'type': 'prog', 
+                'table': {}
                 }
             }
         assert self.parser.OFD.dir == dir
 
+# DOC: In the testing document, add the expected directory
 class TestInput04:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_04.txt')
 
-    def test_LEX(self):
-        assert self.status.lexStatus == '✅'
-
-    def test_SYNTAX(self):
-        assert self.status.syntaxStatus == '✅'
-    
     def test_VARDECLARATION(self):
         dir = {
             'test_4': {
@@ -142,16 +130,11 @@ class TestInput04:
 
         assert self.parser.OFD.dir == dir
 
+# DOC: In the testing document, add the expected directory
 class TestInput05:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_05.txt')
 
-    def test_LEX(self):
-        assert self.status.lexStatus == '✅'
-
-    def test_SYNTAX(self):
-        assert self.status.syntaxStatus == '✅'
-    
     def test_VARDECLARATION(self):
         dir = {
             'sum': {
@@ -185,21 +168,21 @@ class TestInput05:
                         'scope': 'main'
                         }
                     }
+                },
+            'test_05': {
+                'name': 'test_05', 
+                'type': 'prog', 
+                'table': {}
                 }
             }
 
         assert self.parser.OFD.dir == dir
 
+# DOC: In the testing document, add the expected directory
 class TestInput06:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_06.txt')
 
-    def test_LEX(self):
-        assert self.status.lexStatus == '✅'
-
-    def test_SYNTAX(self):
-        assert self.status.syntaxStatus == '✅'
-    
     def test_VARDECLARATION(self):
         dir = {
             'test_06': {
@@ -274,26 +257,227 @@ class TestInput06:
                         'scope': 'main'
                         }
                     }
+                },
+            'test_06': {
+                'name': 'test_06', 
+                'type': 'prog', 
+                'table': {
+                    'x': {
+                        'name': 'x', 
+                        'type': 'float', 
+                        'scope': 'global'
+                    }, 
+                    'y': {
+                        'name': 'y', 
+                        'type': 'float', 
+                        'scope': 'global'
+                    }, 
+                    'z': {
+                        'name': 'z', 
+                        'type': 'float', 
+                        'scope': 'global'
+                    }, 
+                    'i': {
+                        'name': 'i', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }, 
+                    'a': {
+                        'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }, 
+                    'd': {
+                        'name': 'd', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }
                 }
             }
-
+        }
         assert self.parser.OFD.dir == dir
 
+# DOC: In the testing document, add the expected directory
 class TestInput07:
+    def test_exception_raised(self):
+        with pytest.raises(semanticError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_07.txt')
+
+# DOC: In the testing document, add the expected directory
+class TestInput08:
     # Initialize a different compiler with the needed file
-    status, lexer, parser = initializeCompiler('input_07.txt')
+    status, lexer, parser = initializeCompiler('input_08.txt')
 
+    def test_VARDECLARATION(self):
+        dir = {
+            'test_08': {
+                'name': 'test_08', 
+                'type': 'prog', 
+                'table': {
+                    'a': {
+                        'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }
+                }
+            }, 
+            'sum': {
+                'name': 'sum', 
+                'type': 'int', 
+                'table': {
+                    'a': {
+                        'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'sum'
+                    }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'int', 
+                        'scope': 'sum'
+                    }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'sum'
+                    }
+                }
+            }, 
+            'main': {
+                'name': 'main', 
+                'type': 'main', 
+                'table': {
+                    'a': {
+                        'name': 'a', 
+                        'type': 'float', 
+                        'scope': 'main'
+                    }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'float', 
+                        'scope': 'main'
+                    }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'float', 
+                        'scope': 'main'
+                    }
+                }
+            }
+        }
+        assert self.parser.OFD.dir == dir
 
-    def test_LEX(self):
-        assert self.status.lexStatus == '✅'
+class TestInput09:
+    def test_exception_raised(self):
+        with pytest.raises(semanticError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_09.txt')
 
-    def test_SYNTAX(self):
-        assert self.status.syntaxStatus == '✅'
-    
-    def test_SEMANTICS(self):
-        assert self.status.semanticStatus == '❌'
+# DOC: In the testing document, add the expected directory
+class TestInput10:
+    # Initialize a different compiler with the needed file
+    status, lexer, parser = initializeCompiler('input_10.txt')
 
-#     def test_VARDECLARATION(self):
-#         dir = {}
+    def test_VARDECLARATION(self):
+        dir = {
+            'test_10': {
+                'name': 'test_10', 
+                'type': 'prog', 
+                'table': {
+                    'test_10': {
+                        'name': 'test_10', 
+                        'type': 'int', 'scope': 
+                        'global'
+                        }, 
+                    'a': {
+                        'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }
+                }
+            }, 
+            'sum': {
+                'name': 'sum', 
+                'type': 'int', 
+                'table': {
+                    'sum': {
+                        'name': 'sum', 
+                        'type': 'int', 
+                        'scope': 'sum'
+                    }, 
+                    'a': {
+                        'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'sum'
+                    }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'int', 
+                        'scope': 'sum'
+                        }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'sum'
+                    }
+                }
+            }, 
+            'main': {
+                'name': 'main', 
+                'type': 'main', 
+                'table': {
+                    'test_10': {
+                        'name': 'test_10', 
+                        'type': 'int', 
+                        'scope': 'main'
+                    }, 
+                    'a': {
+                        'name': 'a', 
+                        'type': 'float', 
+                        'scope': 'main'
+                    }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'float', 
+                        'scope': 'main'
+                    }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'float', 
+                        'scope': 'main'
+                    }
+                }
+            }
+        }
+        assert self.parser.OFD.dir == dir
 
-#         assert self.parser.OFD.dir == dir
+class TestInput11:
+    def test_exception_raised(self):
+        with pytest.raises(syntacticalError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_11.txt')

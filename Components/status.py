@@ -4,11 +4,11 @@ class OrangeStatus():
         self.syntaxStatus   = '✅'
         self.semanticStatus = '✅'
 
-    def lexError(self):
-        self.lexStatus = '❌'
-    
-    def syntaxError(self):
-        self.syntaxStatus = '❌'
-    
-    def semanticError(self):
-        self.semanticStatus = '❌'
+class lexicalError(Exception):
+    pass
+
+class syntacticalError(Exception):
+    pass
+
+class semanticError(Exception):
+    pass

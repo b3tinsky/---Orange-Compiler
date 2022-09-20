@@ -1,5 +1,5 @@
-from lib2to3.pgen2 import token
 import yaml
+from Components.status import semanticError
 
 class OrangeVarTable():
     def __init__(self, status):
@@ -7,24 +7,19 @@ class OrangeVarTable():
         self.table = {}
 
     def checkvar(self, var, currentFuncDir):
-        # print('🍓 TABLE: ', self.table)        
         
         # Variable already exists in current context
         if var in self.table:
-            print(f'🚫 Variable < {var} > already exists in current context')
             return True
         
         # Variable already exists in global scope
-        elif currentFuncDir:
-            # print('🍓 currentFuncDir: ', currentFuncDir)        
-            # print('🥝 currentFuncDir TABLE: ', currentFuncDir['table'])
-
-            if var in currentFuncDir['table']:
-                print(f'🚫 Variable < {var} > already exists in global context')
-                return True
+        # elif currentFuncDir:
+        #     if var in currentFuncDir['table']:
+        #         print(f'🚫 Variable < {var} > already exists in global context')
+        #         return True
             
-            else:
-                return False
+        #     else:
+        #         return False
 
         # Variable doesn't exist in current context
         else:
@@ -34,8 +29,7 @@ class OrangeVarTable():
 
     def addvar(self, id, type, scope, currentFuncDir):
         if self.checkvar(id, currentFuncDir):
-            self.StatusChecker.semanticError()
-            
+            raise semanticError(f'🚫 Variable < {id} > already exists in current context')
 
         else:
             print(f'✅ Variable < {id} > successfully added')
@@ -53,7 +47,7 @@ class OrangeVarTable():
         ('decvar', ('var', 'x'), ',', ('decvar', ('var', 'y'), ',', ('decvar', ('var', 'z'))))
     '''
     def addvartokenstream(self, tokenstream, scope, currentFuncDir):
-        print('🍇: ', currentFuncDir)
+        # print('🍇: ', currentFuncDir)
         # Variable type
         varType = tokenstream[0][1]
 
@@ -105,20 +99,3 @@ class OrangeVarTable():
         
         # PRINT DICT - To copy and paste for tests
         # print(self.table)
-
-def test():
-    OVT = OrangeVarTable()
-    OVT.addvar('i', 'int')
-    OVT.addvar('j', 'int')
-    OVT.addvar('k', 'int')
-    OVT.addvar('k', 'int')
-    print(OVT.table)
-    print(OVT.table['i']['name'])
-    OVT.printdata()
-
-# def main():
-#     test()
-
-
-# if __name__ == '__main__':
-#     main()

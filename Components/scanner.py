@@ -1,9 +1,29 @@
 from sly import Lexer
-from Components.status import OrangeStatus
+from Components.status import lexicalError
 
 class OrangeLexer(Lexer):
     def __init__(self, status):
         self.StatusChecker = status
+
+    reserved = (
+    'PROGRAM',
+    'VARS',
+    'MAIN',
+    'FUNC',
+    'RETURN',
+    'VOID',
+    'FROM',
+    'TO',
+    'BY',
+    'DO',
+    'WHILE',
+    'INPUT',
+    'PRINT',
+    'IF',
+    'ELSE',
+    'INT',
+    'FLOAT'
+    )
 
     # Set of token names
     tokens = {
@@ -100,9 +120,6 @@ class OrangeLexer(Lexer):
     # Rule definitions
     @_(r'[a-zA-Z_][a-zA-Z_0-9]*')
     def ID(self, t):
-        # t.type = self.reserved.get(t.value,'ID')
-        # if t.value in self.keywords:
-        #     t.type = self.keywords.get(t.value,'ID')    # Check for reserved words
         return t
 
     @_(r'\-?\d*\.\d+')
@@ -127,22 +144,5 @@ class OrangeLexer(Lexer):
 
     # Error handling rule
     def error(self, t):
-        print("❌ Illegal character '%s'" % t.value[0])
-        self.StatusChecker.lexError()
         self.index += 1
-        # return t
-
-    # # Test the data
-    # def test(self, data):
-    #     self.lexer.input(data)
-    #     while True:
-    #         tok = self.lexer.token()
-    #         if not tok:
-    #             break
-    #         # print(tok.type, tok.value, tok.lineno)
-    #         print(tok)
-    
-    # # Build the lexer
-    # def build(self, **kwargs):
-    #     self.lexer = lex(module=self, **kwargs)
-    #     return self.lexer
+        raise lexicalError("❌ Illegal character '%s'" % t.value[0])

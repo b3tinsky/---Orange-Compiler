@@ -1,0 +1,26 @@
+program test_09
+vars 
+    int a, b, c;
+    float x, y, c;
+
+func int sum(){
+    vars 
+        int a, b, c;
+        float a, y, z;
+
+    a = 2;
+    b = 3;
+    return a + b;
+}
+
+main()
+{
+    vars
+        float a, b, c;
+        float x, b, z;
+    a = 1;
+    b = 2;
+    c = a + b;
+
+    print("Your result: ", c);
+}

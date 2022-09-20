@@ -8,15 +8,17 @@ from Components.scanner import OrangeLexer
 from copy import deepcopy as COPY
 from Components.funcdir import OrangeFuncDir
 from Components.vartable import OrangeVarTable
-# from Components.status import OrangeStatus
+from Components.status import lexicalError, syntacticalError
 
 class OrangeParser(Parser):
     tokens = OrangeLexer.tokens
     debugfile = 'parser.out'    # Parser debugging file
     start = 'program'           # Start parsing from < program > rule
-
+    reserved = OrangeLexer.reserved
+    
     def __init__(self, status):
         self.StatusChecker = status   # Initiate status checker
+        # self.reserved = 'MAIN'
         self.OFD = OrangeFuncDir(self.StatusChecker)    # Orange Function Directory
         self.OVT = OrangeVarTable(self.StatusChecker)   # Orange Variable Table
         self.programName = ''
@@ -27,33 +29,11 @@ class OrangeParser(Parser):
     @_('PROGRAM ID saveprogramname declare')
     # @_('PROGRAM ID declare')
     def program(self, p):
-        # Save program name to check for global variables later
-        # self.programName = p[1]
 
         return p
-    
-    # DOC: Save the program name ASAP to identify repeated variable & function names
-    @_('')
-    def saveprogramname(self, p):
-        # Save program name to check for global variables later
-        self.programName = p[-1]
-        # Return the ID again so that global declare block can have a name
-            # If not returned, the declare block takes p[-1], which would be 
-            # whatever we return here (or not)
-        return p[-1]
 
     # Declaration blocks (global variables & functions)
     @_('decvars saveglobalvars decfuncs main_block')
-    def declare(self, p):
-
-        return p
-    @_('decvars saveglobalvars main_block')
-    def declare(self, p):
-        return p
-    @_('decfuncs main_block')
-    def declare(self, p):
-        return p
-    @_('main_block')
     def declare(self, p):
         return p
 
@@ -66,14 +46,14 @@ class OrangeParser(Parser):
         return p
 
     # Normal block
-    @_('LCURLY blockcontent RCURLY')
+    @_('LCURLY decvars blockcontent RCURLY')
     def block(self, p):
         return p
     
     # WARNING: Changed RETURN factor to RETURN exp
         # Did this so I could return things like a + b instead of (a + b)
     # Block with a value return
-    @_('LCURLY blockcontent RETURN exp SEMICOLON RCURLY')
+    @_('LCURLY decvars blockcontent RETURN exp SEMICOLON RCURLY')
     def returnblock(self, p):
         return p
 
@@ -86,7 +66,7 @@ class OrangeParser(Parser):
 
     # (Optional)
     # Variable declaration block
-    @_('VARS decvar_line')
+    @_('VARS decvar_line', 'empty')
     def decvars(self, p):
         return p
 
@@ -123,19 +103,19 @@ class OrangeParser(Parser):
         return p
     
     # Array variable
-    @_('ID LBRACKET exp RBRACKET')
+    @_('ID LBRACKET CTEINT RBRACKET')
     def var(self, p):
         return p
     
     # Matrix variable
-    @_('ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET')
+    @_('ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET')
     def var(self, p):
         return p
 
 
     # (Optional)
     # Function declaration block
-    @_('func decfuncs', 'func')
+    @_('func decfuncs', 'empty')
     def decfuncs(self, p):
         return p
 
@@ -163,7 +143,10 @@ class OrangeParser(Parser):
     def typefunc(self, p):
         # HACK: Instead of copying the entire table object, only copy the dictionary
         # self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
-        self.OFD.addfunc(p[1], p[0], self.OVT.table)
+        
+        # In second argument add p[0] -> whatever < type > returns
+            # Add p[0][1] to get the second element -> < type > returns tuples like ('type', 'int')
+        self.OFD.addfunc(p[1], p[0][1], self.OVT.table)
         return p
 
     # Parameter declaration
@@ -321,7 +304,7 @@ class OrangeParser(Parser):
         return p
         
     # Statute definition
-    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'forloop', 'decvars', 'call')
+    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'forloop', 'call')
     def statute(self, p):
         return p
     
@@ -345,7 +328,15 @@ class OrangeParser(Parser):
         self.OFD.addfunc(p[-2], 'prog', self.OVT.table)
         return p
     
-
+    # DOC: Save the program name ASAP to identify repeated variable & function names
+    @_('')
+    def saveprogramname(self, p):
+        # Save program name to check for global variables later
+        self.programName = p[-1]
+        # Return the ID again so that global declare block can have a name
+            # If not returned, the declare block takes p[-1], which would be 
+            # whatever we return here (or not)
+        return p[-1]
 
     @_('')
     def empty(self, p):
@@ -353,11 +344,12 @@ class OrangeParser(Parser):
 
     def error(self, p):
         # print("Whoa. You are seriously hosed.")
-        self.StatusChecker.syntaxError()
-        print(f'Syntax error: [{p.type} -> {p.value}] before or at line {p.lineno} position {p.index}')
+        
         if not p:
-            print("End of File!")
-            return
+            raise syntacticalError("❌ End of File!")
+            # return
+
+        raise syntacticalError(f'❌ Syntax error: [{p.type} -> {p.value}] before or at line {p.lineno} position {p.index}')
         # Read ahead looking for a closing '}'
         # while True:
         #     tok = next(self.tokens, None)
@@ -379,7 +371,13 @@ class OrangeParser(Parser):
         # self.restart()
         # return tok
 
-    # Define error rules for every grammar rule
+    # TODO: Define error rules
+    # Reserved words cannot be used as variable IDs
+        # The * is because SLY need the values UNPACKED instead of the tuple/list/dict
+    @_(*reserved)
+    def var(self, p):
+        raise syntacticalError('❌ Variables cannot be identified as a reserved word')
+    
 
     # TODO: Define special functions
     # <specialfuncs>

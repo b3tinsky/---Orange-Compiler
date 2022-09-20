@@ -126,18 +126,93 @@ Changed the way in which errors are detected. Instead of a having a property in 
 ### 📆 September 16 🕓 00:34
 VarTable now checks for global variables before declaration. This was made possible by passing the current FuncDir to the addVar() method in the VarTable class, which also passes it to the checkVar() method in the same class. This ensures that before adding a new variable, it looks for the variable name in the current context, but also in the global scope.
 
-# Tags
-__TODO__:    Tasks to be done
+---
 
-__HACK__:    Neat ideas to solve problems or cool ideas
+### 📆 September 20 🕓 17:23
 
-__FIXME__:   It works, but not always (could break or not tested)
+__Refactored testing__
 
-__BUG__:     It doesn't work
+The old system was comparing emojis that report status. There is a STATUS object that keeps track of the program's status. When an error is expected in any part of the code (maybe in the parser, lexer, etc.), the property had to be manually changed to indicate later that an error occured (the property changed indicated the type of error that happened).
 
-__WARNING__: Could potentially have problems
+``` 
+# OrangeStatus() Object
 
-__DOC__:     Documentation pending for this section
+self.lexStatus      = '✅'
+self.syntaxStatus   = '✅'
+self.semanticStatus = '✅'
+```
+
+And the tests looked like:
+```
+# test_GENERAL.py
+
+def test_LEX(self):
+    assert self.status.lexStatus == '✅'
+
+def test_SYNTAX(self):
+    assert self.status.syntaxStatus == '✅'
+
+def test_SEMANTICS(self):
+    assert self.status.semanticStatus == '❌'
+```
+
+The new system is creating custom error clases based on __Exception__:
+``` 
+# status.py
+
+class lexicalError(Exception):
+    pass
+
+class syntacticalError(Exception):
+    pass
+
+class semanticError(Exception):
+    pass
+```
+Python allows to make these custom errors empty and pass a message when the error is raised, giving more flexibility when reporting why the error happened
+``` 
+# scanner.py
+
+# Error handling rule
+def error(self, t):
+    self.index += 1
+    raise lexicalError("❌ Illegal character '%s'" % t.value[0])
+
+```
+And now in the testing file, we only have to expect an exception type:
+``` 
+# test_GENERAL.py
+
+class TestInput02:
+    def test_exception_raised(self):
+        with pytest.raises(lexicalError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_02.txt')
+```
+
+__Parser Bugs__
+- Reorganized grammars to make the file feel cleaner.
+- Refactored variable declarations. Instead of four rules considering if there are global variables/functions, now there is only one which includes global variable declaration and functions regardless, but now global variable declaration and function declaration include an empty rule in case they are not called.
+- Every block now has a variable declaration at the beginning. This allows for easier structure and variable scopes.
+- Now statutes don't have variable declarations. This prevents local variable nesting (like in for i -> for j -> for k)
+- First error rule defined. A specific rule was created to detect when a variable wants to identify as a reserved word. It goes fo < var >, and the token pattern it looks for is an unpacked tuple with all the reserved words in scanner.py. Other specific errors will be made in this way.
+
+__Scanner__
+- Added a tuple with reserved words
+
+__Variable Table__
+
+I rolled back to previous variable checking, since I realized I don't need to check for global variables when DECLARING. So I left a bit of the code as a comment because I will need it when the variable called in the local scope doesn't exist, but it does in the global scope.
+
+__Orange Testing.md__
+- Tests added
+
+__Inputs__
+- Added input_08.txt
+- Added input_09.txt
+- Added input_10.txt
+- Added input_11.txt
+
 
 # Reference
 
@@ -148,7 +223,6 @@ __DOC__:     Documentation pending for this section
 
 [VS Code Settings Sync](https://code.visualstudio.com/docs/editor/settings-sync)
 
----
 
 ## Blogs
 [Beginner's Book - Python Constructors:  Default & Parameterized](https://beginnersbook.com/2018/03/python-constructors-default-and-parameterized/)
@@ -161,7 +235,10 @@ __DOC__:     Documentation pending for this section
 
 [GeeksForGeeks - Ternary Operator in Python](https://www.geeksforgeeks.org/ternary-operator-in-python/)
 
----
+[W3Schools - Python Raise an Exception](https://www.w3schools.com/python/gloss_python_raise.asp)
+
+[Note.nkmk.me - Python unpack values](https://note.nkmk.me/en/python-argument-expand/)
+
 
 ## StackOverflow
 [Method arguments in Python](https://stackoverflow.com/questions/5169257/method-arguments-in-python)
@@ -171,3 +248,17 @@ __DOC__:     Documentation pending for this section
 [How do I flatten deeply nested tuples?](https://stackoverflow.com/questions/55496318/how-do-i-flatten-deeply-nested-tuples)
 
 [Import a file from a subdirectory](https://stackoverflow.com/questions/1260792/import-a-file-from-a-subdirectory)
+
+
+# Tags
+__TODO__:    Tasks to be done
+
+__HACK__:    Neat ideas to solve problems or cool ideas
+
+__FIXME__:   It works, but not always (could break or not tested)
+
+__BUG__:     It doesn't work
+
+__WARNING__: Could potentially have problems
+
+__DOC__:     Documentation pending for this section
