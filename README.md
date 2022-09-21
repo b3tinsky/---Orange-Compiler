@@ -202,7 +202,7 @@ __Scanner__
 
 __Variable Table__
 
-I rolled back to previous variable checking, since I realized I don't need to check for global variables when DECLARING. So I left a bit of the code as a comment because I will need it when the variable called in the local scope doesn't exist, but it does in the global scope.
+- I rolled back to previous variable checking, since I realized I don't need to check for global variables when DECLARING. So I left a bit of the code as a comment because I will need it when the variable called in the local scope doesn't exist, but it does in the global scope.
 
 __Orange Testing.md__
 - Tests added
@@ -212,6 +212,11 @@ __Inputs__
 - Added input_09.txt
 - Added input_10.txt
 - Added input_11.txt
+
+### 📆 September 21 🕓 10:14
+- Watched the recording of class 4 (Sep27). In this class the teacher talked more about semantics, precedence in arithmetic operations, type matching and the "semantic cube".
+- Watched the recording of class 5 (Sep30). In this class the teacher talked about syntax flow, polish vectors, quadruples and intermediate code generation.
+- Created first version of semantic cube
 
 
 # Reference
