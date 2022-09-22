@@ -16,7 +16,7 @@ Checkpoints are given by our professor, although they can change during the seme
 - ~~Variable table~~
 
 ### ⚠️ Checkpoint \#3: Expression semantics
-- Semantic cube
+- ~~Semantic cube~~
 - Code generation for arithmetic expressions and secuential statutes
     - Assignment
     - Read
@@ -213,11 +213,20 @@ __Inputs__
 - Added input_10.txt
 - Added input_11.txt
 
+---
+
 ### 📆 September 21 🕓 10:14
 - Watched the recording of class 4 (Sep27). In this class the teacher talked more about semantics, precedence in arithmetic operations, type matching and the "semantic cube".
 - Watched the recording of class 5 (Sep30). In this class the teacher talked about syntax flow, polish vectors, quadruples and intermediate code generation.
 - Created first version of semantic cube
 
+---
+
+### 📆 September 21 🕓 22:29
+- Watched the recording of class 6 (Oct04). In this class the teacher talked more about quadruple generation.
+- Refactored variable declaration rules in the parser and fixed some bugs.
+- Started quadruple generator class
+- Started some functions in the function directory that will aid the quadruple generator 
 
 # Reference
 
@@ -253,6 +262,8 @@ __Inputs__
 [How do I flatten deeply nested tuples?](https://stackoverflow.com/questions/55496318/how-do-i-flatten-deeply-nested-tuples)
 
 [Import a file from a subdirectory](https://stackoverflow.com/questions/1260792/import-a-file-from-a-subdirectory)
+
+[How to compare type of an object](https://stackoverflow.com/questions/707674/how-to-compare-type-of-an-object-in-python)
 
 
 # Tags

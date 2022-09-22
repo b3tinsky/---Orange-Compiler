@@ -1,10 +1,18 @@
-program test_11
+program test_08
 vars 
     int a, b, c;
-    int while;
+
+func int sum(){
+    vars int a, b, c;
+    a = 2;
+    b = 3;
+    return a + b;
+}
 
 main()
 {
+    vars
+        float a, b, c;
     a = 1;
     b = 2;
     c = a + b;

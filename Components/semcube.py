@@ -1,4 +1,4 @@
-class SemCube():
+class OrangeCube():
     def __init__(self) -> None:
         self.cube = {
             'int' : {

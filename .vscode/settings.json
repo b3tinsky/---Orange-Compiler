@@ -2,16 +2,16 @@
     "todo-tree.general.tags": [
         "BUG",
         "HACK",
+        "LOOK",
         "FIXME",
         "WARNING",
         "TODO",
         "DOC",
         "XXX",
-        "[ ]",
-        "[x]"
+        // "[ ]",
+        // "[x]"
     ],
     "todo-tree.highlights.customHighlight": {
-        // TODO
         "TODO": {
             "type": "text",
             "foreground": "white",
@@ -20,7 +20,6 @@
             "icon": "list-unordered",
             "gutterIcon": true
         },
-        // WARNING
         "WARNING": {
             "type": "text",
             "icon": "alert",
@@ -29,7 +28,6 @@
             "background": "#f0b800",
             "gutterIcon": true
         },
-        // BUG
         "BUG": {
             "type": "text",
             "icon": "bug",
@@ -38,7 +36,6 @@
             "background": "#ba0000",
             "gutterIcon": true
         },
-        // FIXME
         "FIXME": {
             "type": "text",
             "icon": "tools",
@@ -47,7 +44,6 @@
             "background": "#ff8400",
             "gutterIcon": true
         },
-        // HACK
         "HACK": {
             "type": "text",
             "icon": "terminal",
@@ -56,7 +52,14 @@
             "background": "#00d438",
             "gutterIcon": true
         },
-        // DOC
+        "LOOK": {
+            "type": "text",
+            "icon": "eye",
+            "foreground": "white",
+            "iconColour": "white",
+            "background": "black",
+            "gutterIcon": true
+        },
         "DOC": {
             "type": "text",
             "icon": "briefcase",

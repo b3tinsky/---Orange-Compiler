@@ -5,10 +5,12 @@ from Components.scanner import OrangeLexer
 # DOC: Explain why I need a deep copy instead of using the same VariableTable object
     # I need a copy because every context switch "whipes" the table, but the address remains
     # With a copy an entirely new table is stored for its current context/scope/directory 
-from copy import deepcopy as COPY
+# from copy import deepcopy as COPY
 from Components.funcdir import OrangeFuncDir
 from Components.vartable import OrangeVarTable
-from Components.status import lexicalError, syntacticalError
+from Components.status import syntacticalError
+from Components.semcube import OrangeCube
+from Components.quadmachine import OrangeQuadMachine
 
 class OrangeParser(Parser):
     tokens = OrangeLexer.tokens
@@ -18,9 +20,10 @@ class OrangeParser(Parser):
     
     def __init__(self, status):
         self.StatusChecker = status   # Initiate status checker
-        # self.reserved = 'MAIN'
         self.OFD = OrangeFuncDir(self.StatusChecker)    # Orange Function Directory
         self.OVT = OrangeVarTable(self.StatusChecker)   # Orange Variable Table
+        self.SC = OrangeCube()                          # Orange Semantic Cube
+        self.QM = OrangeQuadMachine()                   # Orange Quadruple Machine
         self.programName = ''
 
     ### GRAMMAR ###
@@ -33,16 +36,14 @@ class OrangeParser(Parser):
         return p
 
     # Declaration blocks (global variables & functions)
-    @_('decvars saveglobalvars decfuncs main_block')
+    # @_('decvars saveglobalvars decfuncs main_block')
+    @_('decvars decfuncs main_block')
     def declare(self, p):
         return p
 
     # Main program block
     @_('MAIN changecontext LPAREN RPAREN block')
     def main_block(self, p):
-        # HACK: Instead of copying the entire table object, only copy the dictionary
-        # self.OFD.addfunc(p[0], 'main', COPY(self.OVT))
-        self.OFD.addfunc(p[0], 'main', self.OVT.table)
         return p
 
     # Normal block
@@ -66,10 +67,32 @@ class OrangeParser(Parser):
 
     # (Optional)
     # Variable declaration block
-    @_('VARS decvar_line', 'empty')
+    @_('VARS decvar_line')
     def decvars(self, p):
+        if self.OFD.context == 'global':
+            self.OFD.addfunc(self.programName, 'prog', self.OVT.table)
+
+        elif self.OFD.context == 'main':
+            self.OFD.addfunc('main', 'main', self.OVT.table)
+        else:
+            # If its a typed function it returns a tuple like ('type', 'int')
+            if isinstance(p[-9], tuple):
+                functionType = p[-9][1]
+            
+            # Otherwise it only returns a 'VOID' string
+            else:
+                functionType = p[-9]
+
+            self.OFD.addfunc(self.OFD.context, functionType, self.OVT.table)
         return p
 
+    @_('empty')
+    def decvars(self, p):
+        if (self.OFD.context == 'global'):
+            self.OFD.addfunc(self.programName, 'prog', {})
+        return p
+
+    # FIXME: Declaring variables don't require checking for global vars
     # Individual variable declaration line
         # int variable ;
     @_('type decvar SEMICOLON')
@@ -77,6 +100,7 @@ class OrangeParser(Parser):
         self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
     
+    # FIXME: Declaring variables don't require checking for global vars
     # Multiple variable declaration line
         # int variable ;
         # float x, y, z ;
@@ -130,9 +154,6 @@ class OrangeParser(Parser):
         # }
     @_('VOID ID changecontext LPAREN params RPAREN block')
     def voidfunc(self, p):
-        # HACK: Instead of copying the entire table object, only copy the dictionary
-        # self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
-        self.OFD.addfunc(p[1], p[0], self.OVT.table)
         return p
 
     # Function with a return value
@@ -141,12 +162,8 @@ class OrangeParser(Parser):
         # }
     @_('type ID changecontext LPAREN params RPAREN returnblock')
     def typefunc(self, p):
-        # HACK: Instead of copying the entire table object, only copy the dictionary
-        # self.OFD.addfunc(p[1], p[0], COPY(self.OVT))
-        
         # In second argument add p[0] -> whatever < type > returns
-            # Add p[0][1] to get the second element -> < type > returns tuples like ('type', 'int')
-        self.OFD.addfunc(p[1], p[0][1], self.OVT.table)
+        # Add p[0][1] to get the second element -> < type > returns tuples like ('type', 'int')
         return p
 
     # Parameter declaration
@@ -235,6 +252,15 @@ class OrangeParser(Parser):
         # Call variable
     @_('var')
     def factor(self, p):
+        # p[0]    -> ('var', 'tmp_1')
+        # p[0][1] -> 'tmp_1'
+        
+        # id = p[0][1]
+        # HACK: Add the checkVar to genQuad, so only one function gets called
+        # TODO: Check variable in current context and global scope
+        # self.OFD.checkVar(id)
+        # TODO: Add quadruple
+
         return p
         
         # Call function
@@ -318,15 +344,6 @@ class OrangeParser(Parser):
             self.OFD.changeContext('global')
         else:
             self.OFD.changeContext(p[-1])
-
-    # Saves global variables before the variable table is cleared with the correct 'global' context    
-    @_('')
-    def saveglobalvars(self, p):
-        # p[-2] is the name of the program
-        # HACK: Instead of copying the entire table object, only copy the dictionary
-        # self.OFD.addfunc(p[-2], 'prog', COPY(self.OVT))
-        self.OFD.addfunc(p[-2], 'prog', self.OVT.table)
-        return p
     
     # DOC: Save the program name ASAP to identify repeated variable & function names
     @_('')
