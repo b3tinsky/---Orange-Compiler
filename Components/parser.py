@@ -90,6 +90,11 @@ class OrangeParser(Parser):
     def decvars(self, p):
         if (self.OFD.context == 'global'):
             self.OFD.addfunc(self.programName, 'prog', {})
+        elif (self.OFD.context == 'main'):
+            self.OFD.addfunc('main', 'main', {})
+        else:
+            functionType = p[-8][1]
+            self.OFD.addfunc(self.OFD.context, functionType, {})
         return p
 
     # FIXME: Declaring variables don't require checking for global vars
@@ -254,11 +259,10 @@ class OrangeParser(Parser):
     def factor(self, p):
         # p[0]    -> ('var', 'tmp_1')
         # p[0][1] -> 'tmp_1'
+        id = p[0][1]
         
-        # id = p[0][1]
         # HACK: Add the checkVar to genQuad, so only one function gets called
-        # TODO: Check variable in current context and global scope
-        # self.OFD.checkVar(id)
+        self.OFD.checkVar(id)
         # TODO: Add quadruple
 
         return p
@@ -349,7 +353,9 @@ class OrangeParser(Parser):
     @_('')
     def saveprogramname(self, p):
         # Save program name to check for global variables later
-        self.programName = p[-1]
+        Pname = p[-1]
+        self.programName = Pname
+        self.OFD.programName = Pname
         # Return the ID again so that global declare block can have a name
             # If not returned, the declare block takes p[-1], which would be 
             # whatever we return here (or not)

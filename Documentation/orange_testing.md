@@ -60,6 +60,7 @@ __Expected SYNTAX status__: '✅'
 ### Input_04
 __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
+__Expected SEMANTIC status__: '✅'
 - Program WITH global variable declaration block
 - Program WITHOUT function declaration block
 
@@ -104,3 +105,33 @@ __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '❌'
 __Expected SEM status__: '✅'
 Variables CANT be identified as a reserved word. For example: vars int main; 
+
+### Input_12
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Functions using undeclared local vars, but global vars exist
+
+### Input_13
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '❌'
+Functions using undeclared local vars, but global vars dont exist
+
+### Input_14
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Main using undeclared local vars, but global vars exist
+
+### Input_15
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '❌'
+Main using undeclared local vars, but global vars dont exist
+
+### Input_16
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '❌'
+Main using local vars, but requested var exists in function

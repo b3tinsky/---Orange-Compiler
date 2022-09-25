@@ -226,7 +226,18 @@ __Inputs__
 - Watched the recording of class 6 (Oct04). In this class the teacher talked more about quadruple generation.
 - Refactored variable declaration rules in the parser and fixed some bugs.
 - Started quadruple generator class
-- Started some functions in the function directory that will aid the quadruple generator 
+- Started some functions in the function directory that will aid the quadruple generatorw 
+
+---
+### 📆 September 24 🕓 22:19
+- Variables are now looked up in the current scope and the global scope when trying to be used. There are still some details to fix/add, like instead of leaving it as a function checkVar() for the OrangeFunctionDirectory, the checking function will be added to the quadruple generator. This would mean that when generating a quadruple for the variable found, the QuadMachine will look for said variable in the FunctionDirectory.
+- Input 12 added
+- Input 13 added
+- Input 14 added
+- Input 15 added
+- Input 16 added
+- Some tests (4 & 6) needed small corrections. The way they were written only tested for syntax and lex, so now that we actually care about undeclared variables, they didn't work. They still test the same thing they were intended to test, but I had to add a variable declaration to make the Orange Code work.
+- If main, global or any function doesn't have variable declaration, they will still be added to the function directory with an empty table (for consistency and ease of search).
 
 # Reference
 

@@ -1,7 +1,9 @@
-program test_16
+program test_14
+vars 
+    int x, y, z;
 
 func int sum(){
-    vars int a, b, x, y, z;
+    vars int a, b;
     a = 2;
     b = 3;
     return a + b;

@@ -1,6 +1,6 @@
 program test_4
 vars 
-    int a, c, d;
+    int a, b, c, d;
     int i;
     float x, y, z;
 

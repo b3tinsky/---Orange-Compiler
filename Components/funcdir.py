@@ -10,6 +10,9 @@ class OrangeFuncDir():
         
         # DOC: Start with a global context. As functions and main() are declared, the context changes
         self.context = 'global'
+        
+        # Helps looking for global variables
+        self.programName = ''
 
     # DOC: Use PEP standard for this docstring
     '''
@@ -48,15 +51,22 @@ class OrangeFuncDir():
     '''
     Checks if a variable exists. This prevents the usage of undeclared variables.
     '''
-    def checkVar(self, id):
-        for scope in self.dir:
-            # print(scope)
-            # print('🍓: ', self.dir)
-            pass
-            # if id in scope.table:
-            #     print('Si esta funcionando')
-            # else:
-            #     print('No se ni como llegue aqui')
+    def checkVar(self, var_id):
+        # Look for var in the current scope
+        if var_id in self.dir[self.context]['table']:
+            # TODO: Return name and type from local context
+            # TODO: Return memory address
+            print(f'✅ Local to {self.context}')
+        
+        # Look for var in the global scope
+        elif var_id in self.dir[self.programName]['table']:
+            # TODO: Return name and type from global context
+            # TODO: Return memory address
+            print(f'✅ Global from {self.programName}')
+        
+        # Raise semantic error for trying to use undeclared variables
+        else:
+            raise semanticError(f'❌ Undeclared variable < {var_id} > in scope < {self.context} >')
 
 
     '''
@@ -77,4 +87,4 @@ class OrangeFuncDir():
         print(yaml.dump(self.dir, default_flow_style=False))
         
         # PRINT DICT - To copy and paste for tests
-        # print(self.dir)
+        print(self.dir)

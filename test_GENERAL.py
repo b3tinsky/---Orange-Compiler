@@ -78,41 +78,46 @@ class TestInput04:
                 'name': 'test_4', 
                 'type': 'prog', 
                 'table': {
-                        'x': {
-                            'name': 'x', 
-                            'type': 'float', 
-                            'scope': 'global'
-                            }, 
-                        'y': {
-                            'name': 'y', 
-                            'type': 'float', 
-                            'scope': 'global'
-                            }, 
-                        'z': {
-                            'name': 'z', 
-                            'type': 'float', 
-                            'scope': 'global'
-                            }, 
-                        'i': {
-                            'name': 'i', 
-                            'type': 'int', 
-                            'scope': 'global'
-                            }, 
-                        'a': {
-                            'name': 'a', 
-                            'type': 'int', 
-                            'scope': 'global'
-                            }, 
-                        'c': {
-                            'name': 'c', 
-                            'type': 'int', 
-                            'scope': 'global'
-                            }, 
-                        'd': {
-                            'name': 'd', 
-                            'type': 'int', 
-                            'scope': 'global'
-                            }
+                    'x': {
+                        'name': 'x', 
+                        'type': 'float', 
+                        'scope': 'global'
+                        }, 
+                    'y': {
+                        'name': 'y', 
+                        'type': 'float', 
+                        'scope': 'global'
+                        }, 
+                    'z': {
+                        'name': 'z', 
+                        'type': 'float', 
+                        'scope': 'global'
+                        }, 
+                    'i': {
+                        'name': 'i', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'a': {
+                        'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'd': {
+                        'name': 'd', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }
                     }
                 }, 
             'main': {
@@ -284,6 +289,11 @@ class TestInput06:
                     }, 
                     'a': {
                         'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'global'
+                    }, 
+                    'b': {
+                        'name': 'b', 
                         'type': 'int', 
                         'scope': 'global'
                     }, 
@@ -481,3 +491,130 @@ class TestInput11:
         with pytest.raises(syntacticalError):
             # Initialize a different compiler with the needed file
             status, lexer, parser = initializeCompiler('input_11.txt')
+
+class TestInput12:
+    # Initialize a different compiler with the needed file
+    status, lexer, parser = initializeCompiler('input_12.txt')
+
+    def test_VARDECLARATION(self):
+        dir = {
+            'test_12': {
+                'name': 'test_12', 
+                'type': 'prog', 
+                'table': {
+                    'a': {
+                        'name': 'a', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'b': {
+                        'name': 'b', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'c': {
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }
+                    }
+                }, 
+                'sum': {
+                    'name': 'sum', 
+                    'type': 'int', 
+                    'table': {}
+                }, 
+                'main': {
+                    'name': 'main', 
+                    'type': 'main', 
+                    'table': {
+                        'x': {
+                            'name': 'x', 
+                            'type': 'int', 
+                            'scope': 'main'
+                            }, 
+                        'y': {
+                            'name': 'y', 
+                            'type': 'int', 
+                            'scope': 'main'
+                            }, 
+                        'z': {
+                            'name': 'z', 
+                            'type': 'int', 
+                            'scope': 'main'
+                            }
+                        }
+                    }
+                }
+
+        assert self.parser.OFD.dir == dir
+
+class TestInput13:
+    def test_exception_raised(self):
+        with pytest.raises(semanticError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_13.txt')
+
+class TestInput14:
+    # Initialize a different compiler with the needed file
+    status, lexer, parser = initializeCompiler('input_14.txt')
+
+    def test_VARDECLARATION(self):
+        dir = {
+            'test_14': {
+                'name': 'test_14', 
+                'type': 'prog', 
+                'table': {
+                    'x': {
+                        'name': 'x', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'y': {
+                        'name': 'y', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }, 
+                    'z': {
+                        'name': 'z', 
+                        'type': 'int', 
+                        'scope': 'global'
+                        }
+                    }
+                }, 
+                'sum': {
+                    'name': 'sum', 
+                    'type': 'int', 
+                    'table': {
+                        'a': {
+                            'name': 'a', 
+                            'type': 'int', 
+                            'scope': 'sum'
+                            }, 
+                        'b': {
+                            'name': 'b', 
+                            'type': 'int', 
+                            'scope': 'sum'
+                            }
+                        }
+                    }, 
+                'main': {
+                    'name': 'main', 
+                    'type': 'main', 
+                    'table': {}
+                    }
+                }
+
+        assert self.parser.OFD.dir == dir
+
+class TestInput15:
+    def test_exception_raised(self):
+        with pytest.raises(semanticError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_15.txt')
+
+class TestInput16:
+    def test_exception_raised(self):
+        with pytest.raises(semanticError):
+            # Initialize a different compiler with the needed file
+            status, lexer, parser = initializeCompiler('input_16.txt')
