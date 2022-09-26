@@ -54,15 +54,23 @@ class OrangeFuncDir():
     def checkVar(self, var_id):
         # Look for var in the current scope
         if var_id in self.dir[self.context]['table']:
-            # TODO: Return name and type from local context
             # TODO: Return memory address
-            print(f'✅ Local to {self.context}')
+            # print(f'✅ Local < {var_id} > to < {self.context} >')
+
+            varName = self.dir[self.context]['table'][var_id]['name']
+            varType = self.dir[self.context]['table'][var_id]['type']
+            return varName, varType
         
         # Look for var in the global scope
         elif var_id in self.dir[self.programName]['table']:
-            # TODO: Return name and type from global context
             # TODO: Return memory address
-            print(f'✅ Global from {self.programName}')
+            # print(f'✅ Global < {var_id} > from < {self.programName} >')
+            # print('NAME: ', self.dir[self.programName]['table'][var_id]['name'])
+            # print('TYPE: ', self.dir[self.programName]['table'][var_id]['type'])
+            
+            varName = self.dir[self.programName]['table'][var_id]['name']
+            varType = self.dir[self.programName]['table'][var_id]['type']
+            return varName, varType
         
         # Raise semantic error for trying to use undeclared variables
         else:

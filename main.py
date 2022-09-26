@@ -50,6 +50,9 @@ def orange_juice(test_name, test_data):
         print(str(err))
 
     parser.OFD.printdata()
+    print('QUADRUPLES: ', parser.QM.quadruples)
+    print('OPERANDS: ', parser.QM.operands)
+    print('OPERATORS: ', parser.QM.operators)
     print('-'*21)
     print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
     print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')

@@ -23,7 +23,7 @@ class OrangeParser(Parser):
         self.OFD = OrangeFuncDir(self.StatusChecker)    # Orange Function Directory
         self.OVT = OrangeVarTable(self.StatusChecker)   # Orange Variable Table
         self.SC = OrangeCube()                          # Orange Semantic Cube
-        self.QM = OrangeQuadMachine()                   # Orange Quadruple Machine
+        self.QM = OrangeQuadMachine(self.OFD, self.SC)                   # Orange Quadruple Machine
         self.programName = ''
 
     ### GRAMMAR ###
@@ -88,6 +88,7 @@ class OrangeParser(Parser):
 
     @_('empty')
     def decvars(self, p):
+        # DOC: Explain why an empty dictionary must be added if no variables are declared
         if (self.OFD.context == 'global'):
             self.OFD.addfunc(self.programName, 'prog', {})
         elif (self.OFD.context == 'main'):
@@ -97,7 +98,6 @@ class OrangeParser(Parser):
             self.OFD.addfunc(self.OFD.context, functionType, {})
         return p
 
-    # FIXME: Declaring variables don't require checking for global vars
     # Individual variable declaration line
         # int variable ;
     @_('type decvar SEMICOLON')
@@ -105,7 +105,6 @@ class OrangeParser(Parser):
         self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
     
-    # FIXME: Declaring variables don't require checking for global vars
     # Multiple variable declaration line
         # int variable ;
         # float x, y, z ;
@@ -236,6 +235,10 @@ class OrangeParser(Parser):
         'term MINUS exp',
     )
     def exp(self, p):
+        # Add operator to Quadruple Machine operator stack
+        self.QM.addOperator(p[1])
+        self.QM.generateQuadruple()
+
         return p
     
     # Term
@@ -250,6 +253,10 @@ class OrangeParser(Parser):
         'factor DIVIDE term',
     )
     def term(self, p):
+        # Add operator to Quadruple Machine operator stack
+        self.QM.addOperator(p[1])
+        self.QM.generateQuadruple()
+
         return p
     
     
@@ -261,10 +268,9 @@ class OrangeParser(Parser):
         # p[0][1] -> 'tmp_1'
         id = p[0][1]
         
-        # HACK: Add the checkVar to genQuad, so only one function gets called
-        self.OFD.checkVar(id)
-        # TODO: Add quadruple
-
+        # Add var name and type to operand stack in the Quadruple Machine
+        self.QM.addOperand(id)
+    
         return p
         
         # Call function
@@ -272,9 +278,11 @@ class OrangeParser(Parser):
     def factor(self, p):
         return p
         
+    # FIXME: QM checks constants as if they were vars, resulting in 'Undeclared variable'
         # Constant variable
     @_('varcte')
     def factor(self, p):
+        # self.QM.addOperand(p[0])
         return p
         
         # Expression with parenthesis
@@ -323,10 +331,14 @@ class OrangeParser(Parser):
     def condition(self, p):
         return p
     
+    # LOOK: Returns constant vars with its type
     # Constant variable
-    @_('CTEINT', 'CTEFLOAT')
+    @_('CTEINT')
     def varcte(self, p):
-        return p
+        return (p[0], 'int')
+    @_('CTEFLOAT')
+    def varcte(self, p):
+        return (p[0], 'float')
     
     # Available types
     @_('INT', 'FLOAT')

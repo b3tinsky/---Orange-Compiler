@@ -1,15 +1,14 @@
 program test_16
+    vars 
+        int a, b, x, y, z;
+        float f;
+    
 
-func int sum(){
-    vars int a, b, x, y, z;
-    a = 2;
-    b = 3;
-    return a + b;
-}
 
 main()
 {
-    x = 1;
-    y = 2;
-    z = x + y;
+    a = 1;
+    b = 1;
+    f = 1.1;
+    x = a + f * b;
 }

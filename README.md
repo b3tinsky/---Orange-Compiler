@@ -229,6 +229,7 @@ __Inputs__
 - Started some functions in the function directory that will aid the quadruple generatorw 
 
 ---
+
 ### 📆 September 24 🕓 22:19
 - Variables are now looked up in the current scope and the global scope when trying to be used. There are still some details to fix/add, like instead of leaving it as a function checkVar() for the OrangeFunctionDirectory, the checking function will be added to the quadruple generator. This would mean that when generating a quadruple for the variable found, the QuadMachine will look for said variable in the FunctionDirectory.
 - Input 12 added
@@ -238,6 +239,14 @@ __Inputs__
 - Input 16 added
 - Some tests (4 & 6) needed small corrections. The way they were written only tested for syntax and lex, so now that we actually care about undeclared variables, they didn't work. They still test the same thing they were intended to test, but I had to add a variable declaration to make the Orange Code work.
 - If main, global or any function doesn't have variable declaration, they will still be added to the function directory with an empty table (for consistency and ease of search).
+
+---
+
+### 📆 September 25 🕓 21:37
+- Quadruple Machine now generates quadruples for arithmetic operations (+ * - /). It first uses the Orange Function Directory's checkVar function when adding operands. Then when an operator is added to the operator stack, it pops two operands and an operator and validates with the semantic cube if the operation is valid, and if not, a semantic error is raised. If its valid, a quadruple is generated and added to the quadruple array.
+- Temporary variables are stored with strings (T1, T2, ...). This should change when I learn about implementing memory.
+- No tests added in this run, since some core things to quadruple generation are yet to be added. This means that if I added the tests, I would have to refactor them later.
+- Constant variable handling is still pending. I added starter code, but I don't know if thats the way to do it. Maybe in a later class recording the teacher will explain how to do it.
 
 # Reference
 
