@@ -46,5 +46,5 @@ class OrangeQuadMachine():
     def printQuads(self):
         counter = 1
         for quad in self.quadruples:
-            print(f'{counter} | {quad[0]}\t  {quad[1]}\t{quad[2]}\t{quad[3]} |')
+            print(f'{counter}\t|  {quad[0]}\t  {quad[1]}\t{quad[2]}\t{quad[3]}\t|')
             counter+=1

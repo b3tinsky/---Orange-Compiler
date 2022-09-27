@@ -52,7 +52,7 @@ def orange_juice(test_name, test_data):
     # parser.OFD.printdata()
     print('OPERANDS: ', parser.QM.operands)
     print('OPERATORS: ', parser.QM.operators)
-    print('-'*28)
+    print('-'*41)
     parser.QM.printQuads()
     # print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
     # print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')

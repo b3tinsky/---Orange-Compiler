@@ -1,9 +1,8 @@
-program test_16
+program test_18
     vars 
         int a, b, c, d, e, f, g, h, i;
 
 main()
 {
     z = a * b / (c + d * f / g + h) - i > (a + b) * c - d;
-    
 }

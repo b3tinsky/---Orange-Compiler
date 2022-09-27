@@ -256,6 +256,12 @@ __Inputs__
 - Added input_17
 - Added a basic test for quadruple generation, to see if correct order, precedence, associativity and generation are achieved.
 
+---
+
+### 📆 September 27 🕓 17:19
+- Added input_18
+- Added another test similar to test_17 just to keep check of associativity, order of operations, parenthesis and quadruple generation, but with a different input 
+
 
 
 # Reference
