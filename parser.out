@@ -47,138 +47,162 @@ Rule 43    call -> ID LPAREN callvalues RPAREN
 Rule 44    callvalues -> empty
 Rule 45    callvalues -> exp COMMA callvalues
 Rule 46    callvalues -> exp
-Rule 47    super_exp -> expression OR super_exp
-Rule 48    super_exp -> expression AND super_exp
-Rule 49    super_exp -> expression
-Rule 50    expression -> exp relation exp
-Rule 51    expression -> exp
-Rule 52    relation -> NEQ
-Rule 53    relation -> EQ
-Rule 54    relation -> LTE
-Rule 55    relation -> GTE
-Rule 56    relation -> LT
-Rule 57    relation -> GT
-Rule 58    exp -> term MINUS exp
-Rule 59    exp -> term PLUS exp
-Rule 60    exp -> term
-Rule 61    term -> factor DIVIDE term
-Rule 62    term -> factor TIMES term
-Rule 63    term -> factor
-Rule 64    factor -> LPAREN super_exp RPAREN
-Rule 65    factor -> varcte
-Rule 66    factor -> call
-Rule 67    factor -> var
-Rule 68    forloop -> FROM var ASSIGN expression TO expression BY expression DO block
-Rule 69    forloop -> FROM var ASSIGN expression TO expression DO block
-Rule 70    whileloop -> WHILE LPAREN expression RPAREN block
-Rule 71    assignment -> ID ASSIGN expression SEMICOLON
-Rule 72    read -> INPUT LPAREN decvar RPAREN SEMICOLON
-Rule 73    write -> PRINT LPAREN writevalues RPAREN SEMICOLON
-Rule 74    writevalues -> CTESTRING COMMA writevalues
-Rule 75    writevalues -> super_exp COMMA writevalues
-Rule 76    writevalues -> CTESTRING
-Rule 77    writevalues -> super_exp
-Rule 78    condition -> IF LPAREN expression RPAREN block ELSE block
-Rule 79    condition -> IF LPAREN expression RPAREN block
-Rule 80    varcte -> CTEFLOAT
-Rule 81    varcte -> CTEINT
-Rule 82    type -> FLOAT
-Rule 83    type -> INT
-Rule 84    statute -> call
-Rule 85    statute -> forloop
-Rule 86    statute -> whileloop
-Rule 87    statute -> read
-Rule 88    statute -> write
-Rule 89    statute -> condition
-Rule 90    statute -> assignment
-Rule 91    changecontext -> <empty>
-Rule 92    saveprogramname -> <empty>
-Rule 93    empty -> <empty>
+Rule 47    super_exp_aux -> logic super_exp
+Rule 48    super_exp_aux -> empty
+Rule 49    super_exp -> expression super_exp_quadgen super_exp_aux
+Rule 50    logic -> OR
+Rule 51    logic -> AND
+Rule 52    super_exp_quadgen -> <empty>
+Rule 53    expression_aux -> relation expression
+Rule 54    expression_aux -> empty
+Rule 55    expression -> exp expression_quadgen expression_aux
+Rule 56    relation -> NEQ
+Rule 57    relation -> EQ
+Rule 58    relation -> LTE
+Rule 59    relation -> GTE
+Rule 60    relation -> LT
+Rule 61    relation -> GT
+Rule 62    expression_quadgen -> <empty>
+Rule 63    exp_aux -> exp_sign exp
+Rule 64    exp_aux -> empty
+Rule 65    exp -> term exp_quadgen exp_aux
+Rule 66    exp_sign -> MINUS
+Rule 67    exp_sign -> PLUS
+Rule 68    exp_quadgen -> <empty>
+Rule 69    term_aux -> term_sign term
+Rule 70    term_aux -> empty
+Rule 71    term -> factor term_quadgen term_aux
+Rule 72    term_sign -> DIVIDE
+Rule 73    term_sign -> TIMES
+Rule 74    term_quadgen -> <empty>
+Rule 75    factor -> LPAREN fakefloor super_exp RPAREN
+Rule 76    factor -> varcte
+Rule 77    factor -> call
+Rule 78    factor -> var
+Rule 79    fakefloor -> <empty>
+Rule 80    forloop -> FROM var ASSIGN expression TO expression BY expression DO block
+Rule 81    forloop -> FROM var ASSIGN expression TO expression DO block
+Rule 82    whileloop -> WHILE LPAREN expression RPAREN block
+Rule 83    assignment -> ID ASSIGN expression SEMICOLON
+Rule 84    read -> INPUT LPAREN decvar RPAREN SEMICOLON
+Rule 85    write -> PRINT LPAREN writevalues RPAREN SEMICOLON
+Rule 86    writevalues -> CTESTRING COMMA writevalues
+Rule 87    writevalues -> super_exp COMMA writevalues
+Rule 88    writevalues -> CTESTRING
+Rule 89    writevalues -> super_exp
+Rule 90    condition -> IF LPAREN expression RPAREN block ELSE block
+Rule 91    condition -> IF LPAREN expression RPAREN block
+Rule 92    varcte -> CTEFLOAT
+Rule 93    varcte -> CTEINT
+Rule 94    type -> FLOAT
+Rule 95    type -> INT
+Rule 96    statute -> call
+Rule 97    statute -> forloop
+Rule 98    statute -> whileloop
+Rule 99    statute -> read
+Rule 100   statute -> write
+Rule 101   statute -> condition
+Rule 102   statute -> assignment
+Rule 103   changecontext -> <empty>
+Rule 104   saveprogramname -> <empty>
+Rule 105   empty -> <empty>
 
 Terminals, with rules where they appear:
 
-AND                  : 48
-ASSIGN               : 68 69 71
-BY                   : 22 68
-COMMA                : 12 41 45 74 75
-CTEFLOAT             : 80
-CTEINT               : 31 31 32 81
-CTESTRING            : 74 76
-DIVIDE               : 61
-DO                   : 21 68 69
-ELSE                 : 16 78
-EQ                   : 53
-FLOAT                : 14 82
-FROM                 : 24 68 69
+AND                  : 51
+ASSIGN               : 80 81 83
+BY                   : 22 80
+COMMA                : 12 41 45 86 87
+CTEFLOAT             : 92
+CTEINT               : 31 31 32 93
+CTESTRING            : 86 88
+DIVIDE               : 72
+DO                   : 21 80 81
+ELSE                 : 16 90
+EQ                   : 57
+FLOAT                : 14 94
+FROM                 : 24 80 81
 FUNC                 : 27 36 37
-GT                   : 57
-GTE                  : 55
-ID                   : 1 31 32 33 38 39 41 42 43 71
-IF                   : 17 78 79
-INPUT                : 19 72
-INT                  : 15 83
+GT                   : 61
+GTE                  : 59
+ID                   : 1 31 32 33 38 39 41 42 43 83
+IF                   : 17 90 91
+INPUT                : 19 84
+INT                  : 15 95
 LBRACKET             : 31 31 32
 LCURLY               : 4 5
-LPAREN               : 3 38 39 43 64 70 72 73 78 79
-LT                   : 56
-LTE                  : 54
+LPAREN               : 3 38 39 43 75 82 84 85 90 91
+LT                   : 60
+LTE                  : 58
 MAIN                 : 3 28
-MINUS                : 58
-NEQ                  : 52
-OR                   : 47
-PLUS                 : 59
-PRINT                : 18 73
+MINUS                : 66
+NEQ                  : 56
+OR                   : 50
+PLUS                 : 67
+PRINT                : 18 85
 PROGRAM              : 1 30
 RBRACKET             : 31 31 32
 RCURLY               : 4 5
 RETURN               : 5 26
-RPAREN               : 3 38 39 43 64 70 72 73 78 79
-SEMICOLON            : 5 10 11 71 72 73
-TIMES                : 62
-TO                   : 23 68 69
+RPAREN               : 3 38 39 43 75 82 84 85 90 91
+SEMICOLON            : 5 10 11 83 84 85
+TIMES                : 73
+TO                   : 23 80 81
 VARS                 : 9 29
 VOID                 : 25 38
-WHILE                : 20 70
+WHILE                : 20 82
 error                : 
 
 Nonterminals, with rules where they appear:
 
-assignment           : 90
-block                : 3 38 68 69 70 78 78 79
+assignment           : 102
+block                : 3 38 80 81 82 90 90 91
 blockcontent         : 4 5 7
-call                 : 66 84
+call                 : 77 96
 callvalues           : 43 45
 changecontext        : 3 38 39
-condition            : 89
+condition            : 101
 decfuncs             : 2 35
 declare              : 1
-decvar               : 10 11 12 72
+decvar               : 10 11 12 84
 decvar_line          : 9 10
 decvars              : 2 4 5
-empty                : 6 8 34 40 44
-exp                  : 5 45 46 50 50 51 58 59
-expression           : 47 48 49 68 68 68 69 69 70 71 78 79
-factor               : 61 62 63
-forloop              : 85
+empty                : 6 8 34 40 44 48 54 64 70
+exp                  : 5 45 46 55 63
+exp_aux              : 65
+exp_quadgen          : 65
+exp_sign             : 63
+expression           : 49 53 80 80 80 81 81 82 83 90 91
+expression_aux       : 55
+expression_quadgen   : 55
+factor               : 71
+fakefloor            : 75
+forloop              : 97
 func                 : 35
+logic                : 47
 main_block           : 2
 params               : 38 39 41
 program              : 0
-read                 : 87
-relation             : 50
+read                 : 99
+relation             : 53
 returnblock          : 39
 saveprogramname      : 1
 statute              : 7
-super_exp            : 47 48 64 75 77
-term                 : 58 59 60 61 62
+super_exp            : 47 75 87 89
+super_exp_aux        : 49
+super_exp_quadgen    : 49
+term                 : 65 69
+term_aux             : 71
+term_quadgen         : 71
+term_sign            : 69
 type                 : 10 11 39 41 42
 typefunc             : 36
-var                  : 12 13 67 68 69
-varcte               : 65
+var                  : 12 13 78 80 81
+varcte               : 76
 voidfunc             : 37
-whileloop            : 86
-write                : 88
-writevalues          : 73 74 75
+whileloop            : 98
+write                : 100
+writevalues          : 85 86 87
 
 
 state 0
@@ -203,10 +227,10 @@ state 2
 state 3
 
     (1) program -> PROGRAM ID . saveprogramname declare
-    (92) saveprogramname -> .
-    VARS            reduce using rule 92 (saveprogramname -> .)
-    FUNC            reduce using rule 92 (saveprogramname -> .)
-    MAIN            reduce using rule 92 (saveprogramname -> .)
+    (104) saveprogramname -> .
+    VARS            reduce using rule 104 (saveprogramname -> .)
+    FUNC            reduce using rule 104 (saveprogramname -> .)
+    MAIN            reduce using rule 104 (saveprogramname -> .)
 
     saveprogramname                shift and go to state 4
 
@@ -216,10 +240,10 @@ state 4
     (2) declare -> . decvars decfuncs main_block
     (8) decvars -> . empty
     (9) decvars -> . VARS decvar_line
-    (93) empty -> .
+    (105) empty -> .
     VARS            shift and go to state 8
-    FUNC            reduce using rule 93 (empty -> .)
-    MAIN            reduce using rule 93 (empty -> .)
+    FUNC            reduce using rule 105 (empty -> .)
+    MAIN            reduce using rule 105 (empty -> .)
 
     declare                        shift and go to state 5
     decvars                        shift and go to state 6
@@ -236,10 +260,10 @@ state 6
     (2) declare -> decvars . decfuncs main_block
     (34) decfuncs -> . empty
     (35) decfuncs -> . func decfuncs
-    (93) empty -> .
+    (105) empty -> .
     (36) func -> . FUNC typefunc
     (37) func -> . FUNC voidfunc
-    MAIN            reduce using rule 93 (empty -> .)
+    MAIN            reduce using rule 105 (empty -> .)
     FUNC            shift and go to state 12
 
     decfuncs                       shift and go to state 9
@@ -266,8 +290,8 @@ state 8
     (9) decvars -> VARS . decvar_line
     (10) decvar_line -> . type decvar SEMICOLON decvar_line
     (11) decvar_line -> . type decvar SEMICOLON
-    (82) type -> . FLOAT
-    (83) type -> . INT
+    (94) type -> . FLOAT
+    (95) type -> . INT
     FLOAT           shift and go to state 15
     INT             shift and go to state 16
 
@@ -293,10 +317,10 @@ state 11
     (35) decfuncs -> func . decfuncs
     (34) decfuncs -> . empty
     (35) decfuncs -> . func decfuncs
-    (93) empty -> .
+    (105) empty -> .
     (36) func -> . FUNC typefunc
     (37) func -> . FUNC voidfunc
-    MAIN            reduce using rule 93 (empty -> .)
+    MAIN            reduce using rule 105 (empty -> .)
     FUNC            shift and go to state 12
 
     func                           shift and go to state 11
@@ -309,8 +333,8 @@ state 12
     (37) func -> FUNC . voidfunc
     (39) typefunc -> . type ID changecontext LPAREN params RPAREN returnblock
     (38) voidfunc -> . VOID ID changecontext LPAREN params RPAREN block
-    (82) type -> . FLOAT
-    (83) type -> . INT
+    (94) type -> . FLOAT
+    (95) type -> . INT
     VOID            shift and go to state 23
     FLOAT           shift and go to state 15
     INT             shift and go to state 16
@@ -384,48 +408,48 @@ state 14
 
 state 15
 
-    (82) type -> FLOAT .
-    FLOAT           reduce using rule 82 (type -> FLOAT .)
-    INT             reduce using rule 82 (type -> FLOAT .)
-    ELSE            reduce using rule 82 (type -> FLOAT .)
-    IF              reduce using rule 82 (type -> FLOAT .)
-    PRINT           reduce using rule 82 (type -> FLOAT .)
-    INPUT           reduce using rule 82 (type -> FLOAT .)
-    WHILE           reduce using rule 82 (type -> FLOAT .)
-    DO              reduce using rule 82 (type -> FLOAT .)
-    BY              reduce using rule 82 (type -> FLOAT .)
-    TO              reduce using rule 82 (type -> FLOAT .)
-    FROM            reduce using rule 82 (type -> FLOAT .)
-    VOID            reduce using rule 82 (type -> FLOAT .)
-    RETURN          reduce using rule 82 (type -> FLOAT .)
-    FUNC            reduce using rule 82 (type -> FLOAT .)
-    MAIN            reduce using rule 82 (type -> FLOAT .)
-    VARS            reduce using rule 82 (type -> FLOAT .)
-    PROGRAM         reduce using rule 82 (type -> FLOAT .)
-    ID              reduce using rule 82 (type -> FLOAT .)
+    (94) type -> FLOAT .
+    FLOAT           reduce using rule 94 (type -> FLOAT .)
+    INT             reduce using rule 94 (type -> FLOAT .)
+    ELSE            reduce using rule 94 (type -> FLOAT .)
+    IF              reduce using rule 94 (type -> FLOAT .)
+    PRINT           reduce using rule 94 (type -> FLOAT .)
+    INPUT           reduce using rule 94 (type -> FLOAT .)
+    WHILE           reduce using rule 94 (type -> FLOAT .)
+    DO              reduce using rule 94 (type -> FLOAT .)
+    BY              reduce using rule 94 (type -> FLOAT .)
+    TO              reduce using rule 94 (type -> FLOAT .)
+    FROM            reduce using rule 94 (type -> FLOAT .)
+    VOID            reduce using rule 94 (type -> FLOAT .)
+    RETURN          reduce using rule 94 (type -> FLOAT .)
+    FUNC            reduce using rule 94 (type -> FLOAT .)
+    MAIN            reduce using rule 94 (type -> FLOAT .)
+    VARS            reduce using rule 94 (type -> FLOAT .)
+    PROGRAM         reduce using rule 94 (type -> FLOAT .)
+    ID              reduce using rule 94 (type -> FLOAT .)
 
 
 state 16
 
-    (83) type -> INT .
-    FLOAT           reduce using rule 83 (type -> INT .)
-    INT             reduce using rule 83 (type -> INT .)
-    ELSE            reduce using rule 83 (type -> INT .)
-    IF              reduce using rule 83 (type -> INT .)
-    PRINT           reduce using rule 83 (type -> INT .)
-    INPUT           reduce using rule 83 (type -> INT .)
-    WHILE           reduce using rule 83 (type -> INT .)
-    DO              reduce using rule 83 (type -> INT .)
-    BY              reduce using rule 83 (type -> INT .)
-    TO              reduce using rule 83 (type -> INT .)
-    FROM            reduce using rule 83 (type -> INT .)
-    VOID            reduce using rule 83 (type -> INT .)
-    RETURN          reduce using rule 83 (type -> INT .)
-    FUNC            reduce using rule 83 (type -> INT .)
-    MAIN            reduce using rule 83 (type -> INT .)
-    VARS            reduce using rule 83 (type -> INT .)
-    PROGRAM         reduce using rule 83 (type -> INT .)
-    ID              reduce using rule 83 (type -> INT .)
+    (95) type -> INT .
+    FLOAT           reduce using rule 95 (type -> INT .)
+    INT             reduce using rule 95 (type -> INT .)
+    ELSE            reduce using rule 95 (type -> INT .)
+    IF              reduce using rule 95 (type -> INT .)
+    PRINT           reduce using rule 95 (type -> INT .)
+    INPUT           reduce using rule 95 (type -> INT .)
+    WHILE           reduce using rule 95 (type -> INT .)
+    DO              reduce using rule 95 (type -> INT .)
+    BY              reduce using rule 95 (type -> INT .)
+    TO              reduce using rule 95 (type -> INT .)
+    FROM            reduce using rule 95 (type -> INT .)
+    VOID            reduce using rule 95 (type -> INT .)
+    RETURN          reduce using rule 95 (type -> INT .)
+    FUNC            reduce using rule 95 (type -> INT .)
+    MAIN            reduce using rule 95 (type -> INT .)
+    VARS            reduce using rule 95 (type -> INT .)
+    PROGRAM         reduce using rule 95 (type -> INT .)
+    ID              reduce using rule 95 (type -> INT .)
 
 
 state 17
@@ -437,8 +461,8 @@ state 17
 state 18
 
     (3) main_block -> MAIN . changecontext LPAREN RPAREN block
-    (91) changecontext -> .
-    LPAREN          reduce using rule 91 (changecontext -> .)
+    (103) changecontext -> .
+    LPAREN          reduce using rule 103 (changecontext -> .)
 
     changecontext                  shift and go to state 44
 
@@ -919,16 +943,16 @@ state 44
 state 45
 
     (39) typefunc -> type ID . changecontext LPAREN params RPAREN returnblock
-    (91) changecontext -> .
-    LPAREN          reduce using rule 91 (changecontext -> .)
+    (103) changecontext -> .
+    LPAREN          reduce using rule 103 (changecontext -> .)
 
     changecontext                  shift and go to state 51
 
 state 46
 
     (38) voidfunc -> VOID ID . changecontext LPAREN params RPAREN block
-    (91) changecontext -> .
-    LPAREN          reduce using rule 91 (changecontext -> .)
+    (103) changecontext -> .
+    LPAREN          reduce using rule 103 (changecontext -> .)
 
     changecontext                  shift and go to state 52
 
@@ -938,8 +962,8 @@ state 47
     (11) decvar_line -> type decvar SEMICOLON .
     (10) decvar_line -> . type decvar SEMICOLON decvar_line
     (11) decvar_line -> . type decvar SEMICOLON
-    (82) type -> . FLOAT
-    (83) type -> . INT
+    (94) type -> . FLOAT
+    (95) type -> . INT
     FUNC            reduce using rule 11 (decvar_line -> type decvar SEMICOLON .)
     MAIN            reduce using rule 11 (decvar_line -> type decvar SEMICOLON .)
     ID              reduce using rule 11 (decvar_line -> type decvar SEMICOLON .)
@@ -1071,10 +1095,10 @@ state 57
     (40) params -> . empty
     (41) params -> . type ID COMMA params
     (42) params -> . type ID
-    (93) empty -> .
-    (82) type -> . FLOAT
-    (83) type -> . INT
-    RPAREN          reduce using rule 93 (empty -> .)
+    (105) empty -> .
+    (94) type -> . FLOAT
+    (95) type -> . INT
+    RPAREN          reduce using rule 105 (empty -> .)
     FLOAT           shift and go to state 15
     INT             shift and go to state 16
 
@@ -1088,10 +1112,10 @@ state 58
     (40) params -> . empty
     (41) params -> . type ID COMMA params
     (42) params -> . type ID
-    (93) empty -> .
-    (82) type -> . FLOAT
-    (83) type -> . INT
-    RPAREN          reduce using rule 93 (empty -> .)
+    (105) empty -> .
+    (94) type -> . FLOAT
+    (95) type -> . INT
+    RPAREN          reduce using rule 105 (empty -> .)
     FLOAT           shift and go to state 15
     INT             shift and go to state 16
 
@@ -1136,15 +1160,15 @@ state 61
     (4) block -> LCURLY . decvars blockcontent RCURLY
     (8) decvars -> . empty
     (9) decvars -> . VARS decvar_line
-    (93) empty -> .
+    (105) empty -> .
     VARS            shift and go to state 8
-    ID              reduce using rule 93 (empty -> .)
-    FROM            reduce using rule 93 (empty -> .)
-    WHILE           reduce using rule 93 (empty -> .)
-    INPUT           reduce using rule 93 (empty -> .)
-    PRINT           reduce using rule 93 (empty -> .)
-    IF              reduce using rule 93 (empty -> .)
-    RCURLY          reduce using rule 93 (empty -> .)
+    ID              reduce using rule 105 (empty -> .)
+    FROM            reduce using rule 105 (empty -> .)
+    WHILE           reduce using rule 105 (empty -> .)
+    INPUT           reduce using rule 105 (empty -> .)
+    PRINT           reduce using rule 105 (empty -> .)
+    IF              reduce using rule 105 (empty -> .)
+    RCURLY          reduce using rule 105 (empty -> .)
 
     decvars                        shift and go to state 67
     empty                          shift and go to state 7
@@ -1185,24 +1209,24 @@ state 67
     (4) block -> LCURLY decvars . blockcontent RCURLY
     (6) blockcontent -> . empty
     (7) blockcontent -> . statute blockcontent
-    (93) empty -> .
-    (84) statute -> . call
-    (85) statute -> . forloop
-    (86) statute -> . whileloop
-    (87) statute -> . read
-    (88) statute -> . write
-    (89) statute -> . condition
-    (90) statute -> . assignment
+    (105) empty -> .
+    (96) statute -> . call
+    (97) statute -> . forloop
+    (98) statute -> . whileloop
+    (99) statute -> . read
+    (100) statute -> . write
+    (101) statute -> . condition
+    (102) statute -> . assignment
     (43) call -> . ID LPAREN callvalues RPAREN
-    (68) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
-    (69) forloop -> . FROM var ASSIGN expression TO expression DO block
-    (70) whileloop -> . WHILE LPAREN expression RPAREN block
-    (72) read -> . INPUT LPAREN decvar RPAREN SEMICOLON
-    (73) write -> . PRINT LPAREN writevalues RPAREN SEMICOLON
-    (78) condition -> . IF LPAREN expression RPAREN block ELSE block
-    (79) condition -> . IF LPAREN expression RPAREN block
-    (71) assignment -> . ID ASSIGN expression SEMICOLON
-    RCURLY          reduce using rule 93 (empty -> .)
+    (80) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
+    (81) forloop -> . FROM var ASSIGN expression TO expression DO block
+    (82) whileloop -> . WHILE LPAREN expression RPAREN block
+    (84) read -> . INPUT LPAREN decvar RPAREN SEMICOLON
+    (85) write -> . PRINT LPAREN writevalues RPAREN SEMICOLON
+    (90) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (91) condition -> . IF LPAREN expression RPAREN block
+    (83) assignment -> . ID ASSIGN expression SEMICOLON
+    RCURLY          reduce using rule 105 (empty -> .)
     ID              shift and go to state 82
     FROM            shift and go to state 83
     WHILE           shift and go to state 84
@@ -1269,25 +1293,25 @@ state 74
     (7) blockcontent -> statute . blockcontent
     (6) blockcontent -> . empty
     (7) blockcontent -> . statute blockcontent
-    (93) empty -> .
-    (84) statute -> . call
-    (85) statute -> . forloop
-    (86) statute -> . whileloop
-    (87) statute -> . read
-    (88) statute -> . write
-    (89) statute -> . condition
-    (90) statute -> . assignment
+    (105) empty -> .
+    (96) statute -> . call
+    (97) statute -> . forloop
+    (98) statute -> . whileloop
+    (99) statute -> . read
+    (100) statute -> . write
+    (101) statute -> . condition
+    (102) statute -> . assignment
     (43) call -> . ID LPAREN callvalues RPAREN
-    (68) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
-    (69) forloop -> . FROM var ASSIGN expression TO expression DO block
-    (70) whileloop -> . WHILE LPAREN expression RPAREN block
-    (72) read -> . INPUT LPAREN decvar RPAREN SEMICOLON
-    (73) write -> . PRINT LPAREN writevalues RPAREN SEMICOLON
-    (78) condition -> . IF LPAREN expression RPAREN block ELSE block
-    (79) condition -> . IF LPAREN expression RPAREN block
-    (71) assignment -> . ID ASSIGN expression SEMICOLON
-    RCURLY          reduce using rule 93 (empty -> .)
-    RETURN          reduce using rule 93 (empty -> .)
+    (80) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
+    (81) forloop -> . FROM var ASSIGN expression TO expression DO block
+    (82) whileloop -> . WHILE LPAREN expression RPAREN block
+    (84) read -> . INPUT LPAREN decvar RPAREN SEMICOLON
+    (85) write -> . PRINT LPAREN writevalues RPAREN SEMICOLON
+    (90) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (91) condition -> . IF LPAREN expression RPAREN block
+    (83) assignment -> . ID ASSIGN expression SEMICOLON
+    RCURLY          reduce using rule 105 (empty -> .)
+    RETURN          reduce using rule 105 (empty -> .)
     ID              shift and go to state 82
     FROM            shift and go to state 83
     WHILE           shift and go to state 84
@@ -1308,107 +1332,107 @@ state 74
 
 state 75
 
-    (84) statute -> call .
-    ID              reduce using rule 84 (statute -> call .)
-    FROM            reduce using rule 84 (statute -> call .)
-    WHILE           reduce using rule 84 (statute -> call .)
-    INPUT           reduce using rule 84 (statute -> call .)
-    PRINT           reduce using rule 84 (statute -> call .)
-    IF              reduce using rule 84 (statute -> call .)
-    RCURLY          reduce using rule 84 (statute -> call .)
-    RETURN          reduce using rule 84 (statute -> call .)
+    (96) statute -> call .
+    ID              reduce using rule 96 (statute -> call .)
+    FROM            reduce using rule 96 (statute -> call .)
+    WHILE           reduce using rule 96 (statute -> call .)
+    INPUT           reduce using rule 96 (statute -> call .)
+    PRINT           reduce using rule 96 (statute -> call .)
+    IF              reduce using rule 96 (statute -> call .)
+    RCURLY          reduce using rule 96 (statute -> call .)
+    RETURN          reduce using rule 96 (statute -> call .)
 
 
 state 76
 
-    (85) statute -> forloop .
-    ID              reduce using rule 85 (statute -> forloop .)
-    FROM            reduce using rule 85 (statute -> forloop .)
-    WHILE           reduce using rule 85 (statute -> forloop .)
-    INPUT           reduce using rule 85 (statute -> forloop .)
-    PRINT           reduce using rule 85 (statute -> forloop .)
-    IF              reduce using rule 85 (statute -> forloop .)
-    RCURLY          reduce using rule 85 (statute -> forloop .)
-    RETURN          reduce using rule 85 (statute -> forloop .)
+    (97) statute -> forloop .
+    ID              reduce using rule 97 (statute -> forloop .)
+    FROM            reduce using rule 97 (statute -> forloop .)
+    WHILE           reduce using rule 97 (statute -> forloop .)
+    INPUT           reduce using rule 97 (statute -> forloop .)
+    PRINT           reduce using rule 97 (statute -> forloop .)
+    IF              reduce using rule 97 (statute -> forloop .)
+    RCURLY          reduce using rule 97 (statute -> forloop .)
+    RETURN          reduce using rule 97 (statute -> forloop .)
 
 
 state 77
 
-    (86) statute -> whileloop .
-    ID              reduce using rule 86 (statute -> whileloop .)
-    FROM            reduce using rule 86 (statute -> whileloop .)
-    WHILE           reduce using rule 86 (statute -> whileloop .)
-    INPUT           reduce using rule 86 (statute -> whileloop .)
-    PRINT           reduce using rule 86 (statute -> whileloop .)
-    IF              reduce using rule 86 (statute -> whileloop .)
-    RCURLY          reduce using rule 86 (statute -> whileloop .)
-    RETURN          reduce using rule 86 (statute -> whileloop .)
+    (98) statute -> whileloop .
+    ID              reduce using rule 98 (statute -> whileloop .)
+    FROM            reduce using rule 98 (statute -> whileloop .)
+    WHILE           reduce using rule 98 (statute -> whileloop .)
+    INPUT           reduce using rule 98 (statute -> whileloop .)
+    PRINT           reduce using rule 98 (statute -> whileloop .)
+    IF              reduce using rule 98 (statute -> whileloop .)
+    RCURLY          reduce using rule 98 (statute -> whileloop .)
+    RETURN          reduce using rule 98 (statute -> whileloop .)
 
 
 state 78
 
-    (87) statute -> read .
-    ID              reduce using rule 87 (statute -> read .)
-    FROM            reduce using rule 87 (statute -> read .)
-    WHILE           reduce using rule 87 (statute -> read .)
-    INPUT           reduce using rule 87 (statute -> read .)
-    PRINT           reduce using rule 87 (statute -> read .)
-    IF              reduce using rule 87 (statute -> read .)
-    RCURLY          reduce using rule 87 (statute -> read .)
-    RETURN          reduce using rule 87 (statute -> read .)
+    (99) statute -> read .
+    ID              reduce using rule 99 (statute -> read .)
+    FROM            reduce using rule 99 (statute -> read .)
+    WHILE           reduce using rule 99 (statute -> read .)
+    INPUT           reduce using rule 99 (statute -> read .)
+    PRINT           reduce using rule 99 (statute -> read .)
+    IF              reduce using rule 99 (statute -> read .)
+    RCURLY          reduce using rule 99 (statute -> read .)
+    RETURN          reduce using rule 99 (statute -> read .)
 
 
 state 79
 
-    (88) statute -> write .
-    ID              reduce using rule 88 (statute -> write .)
-    FROM            reduce using rule 88 (statute -> write .)
-    WHILE           reduce using rule 88 (statute -> write .)
-    INPUT           reduce using rule 88 (statute -> write .)
-    PRINT           reduce using rule 88 (statute -> write .)
-    IF              reduce using rule 88 (statute -> write .)
-    RCURLY          reduce using rule 88 (statute -> write .)
-    RETURN          reduce using rule 88 (statute -> write .)
+    (100) statute -> write .
+    ID              reduce using rule 100 (statute -> write .)
+    FROM            reduce using rule 100 (statute -> write .)
+    WHILE           reduce using rule 100 (statute -> write .)
+    INPUT           reduce using rule 100 (statute -> write .)
+    PRINT           reduce using rule 100 (statute -> write .)
+    IF              reduce using rule 100 (statute -> write .)
+    RCURLY          reduce using rule 100 (statute -> write .)
+    RETURN          reduce using rule 100 (statute -> write .)
 
 
 state 80
 
-    (89) statute -> condition .
-    ID              reduce using rule 89 (statute -> condition .)
-    FROM            reduce using rule 89 (statute -> condition .)
-    WHILE           reduce using rule 89 (statute -> condition .)
-    INPUT           reduce using rule 89 (statute -> condition .)
-    PRINT           reduce using rule 89 (statute -> condition .)
-    IF              reduce using rule 89 (statute -> condition .)
-    RCURLY          reduce using rule 89 (statute -> condition .)
-    RETURN          reduce using rule 89 (statute -> condition .)
+    (101) statute -> condition .
+    ID              reduce using rule 101 (statute -> condition .)
+    FROM            reduce using rule 101 (statute -> condition .)
+    WHILE           reduce using rule 101 (statute -> condition .)
+    INPUT           reduce using rule 101 (statute -> condition .)
+    PRINT           reduce using rule 101 (statute -> condition .)
+    IF              reduce using rule 101 (statute -> condition .)
+    RCURLY          reduce using rule 101 (statute -> condition .)
+    RETURN          reduce using rule 101 (statute -> condition .)
 
 
 state 81
 
-    (90) statute -> assignment .
-    ID              reduce using rule 90 (statute -> assignment .)
-    FROM            reduce using rule 90 (statute -> assignment .)
-    WHILE           reduce using rule 90 (statute -> assignment .)
-    INPUT           reduce using rule 90 (statute -> assignment .)
-    PRINT           reduce using rule 90 (statute -> assignment .)
-    IF              reduce using rule 90 (statute -> assignment .)
-    RCURLY          reduce using rule 90 (statute -> assignment .)
-    RETURN          reduce using rule 90 (statute -> assignment .)
+    (102) statute -> assignment .
+    ID              reduce using rule 102 (statute -> assignment .)
+    FROM            reduce using rule 102 (statute -> assignment .)
+    WHILE           reduce using rule 102 (statute -> assignment .)
+    INPUT           reduce using rule 102 (statute -> assignment .)
+    PRINT           reduce using rule 102 (statute -> assignment .)
+    IF              reduce using rule 102 (statute -> assignment .)
+    RCURLY          reduce using rule 102 (statute -> assignment .)
+    RETURN          reduce using rule 102 (statute -> assignment .)
 
 
 state 82
 
     (43) call -> ID . LPAREN callvalues RPAREN
-    (71) assignment -> ID . ASSIGN expression SEMICOLON
+    (83) assignment -> ID . ASSIGN expression SEMICOLON
     LPAREN          shift and go to state 95
     ASSIGN          shift and go to state 96
 
 
 state 83
 
-    (68) forloop -> FROM . var ASSIGN expression TO expression BY expression DO block
-    (69) forloop -> FROM . var ASSIGN expression TO expression DO block
+    (80) forloop -> FROM . var ASSIGN expression TO expression BY expression DO block
+    (81) forloop -> FROM . var ASSIGN expression TO expression DO block
     (14) var -> . FLOAT
     (15) var -> . INT
     (16) var -> . ELSE
@@ -1452,26 +1476,26 @@ state 83
 
 state 84
 
-    (70) whileloop -> WHILE . LPAREN expression RPAREN block
+    (82) whileloop -> WHILE . LPAREN expression RPAREN block
     LPAREN          shift and go to state 98
 
 
 state 85
 
-    (72) read -> INPUT . LPAREN decvar RPAREN SEMICOLON
+    (84) read -> INPUT . LPAREN decvar RPAREN SEMICOLON
     LPAREN          shift and go to state 99
 
 
 state 86
 
-    (73) write -> PRINT . LPAREN writevalues RPAREN SEMICOLON
+    (85) write -> PRINT . LPAREN writevalues RPAREN SEMICOLON
     LPAREN          shift and go to state 100
 
 
 state 87
 
-    (78) condition -> IF . LPAREN expression RPAREN block ELSE block
-    (79) condition -> IF . LPAREN expression RPAREN block
+    (90) condition -> IF . LPAREN expression RPAREN block ELSE block
+    (91) condition -> IF . LPAREN expression RPAREN block
     LPAREN          shift and go to state 101
 
 
@@ -1481,10 +1505,10 @@ state 88
     (40) params -> . empty
     (41) params -> . type ID COMMA params
     (42) params -> . type ID
-    (93) empty -> .
-    (82) type -> . FLOAT
-    (83) type -> . INT
-    RPAREN          reduce using rule 93 (empty -> .)
+    (105) empty -> .
+    (94) type -> . FLOAT
+    (95) type -> . INT
+    RPAREN          reduce using rule 105 (empty -> .)
     FLOAT           shift and go to state 15
     INT             shift and go to state 16
 
@@ -1504,15 +1528,15 @@ state 90
     (5) returnblock -> LCURLY . decvars blockcontent RETURN exp SEMICOLON RCURLY
     (8) decvars -> . empty
     (9) decvars -> . VARS decvar_line
-    (93) empty -> .
+    (105) empty -> .
     VARS            shift and go to state 8
-    ID              reduce using rule 93 (empty -> .)
-    FROM            reduce using rule 93 (empty -> .)
-    WHILE           reduce using rule 93 (empty -> .)
-    INPUT           reduce using rule 93 (empty -> .)
-    PRINT           reduce using rule 93 (empty -> .)
-    IF              reduce using rule 93 (empty -> .)
-    RETURN          reduce using rule 93 (empty -> .)
+    ID              reduce using rule 105 (empty -> .)
+    FROM            reduce using rule 105 (empty -> .)
+    WHILE           reduce using rule 105 (empty -> .)
+    INPUT           reduce using rule 105 (empty -> .)
+    PRINT           reduce using rule 105 (empty -> .)
+    IF              reduce using rule 105 (empty -> .)
+    RETURN          reduce using rule 105 (empty -> .)
 
     decvars                        shift and go to state 103
     empty                          shift and go to state 7
@@ -1578,19 +1602,15 @@ state 95
     (44) callvalues -> . empty
     (45) callvalues -> . exp COMMA callvalues
     (46) callvalues -> . exp
-    (93) empty -> .
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (105) empty -> .
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -1612,7 +1632,7 @@ state 95
     (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (32) var -> . ID LBRACKET CTEINT RBRACKET
     (33) var -> . ID
-    RPAREN          reduce using rule 93 (empty -> .)
+    RPAREN          reduce using rule 105 (empty -> .)
     LPAREN          shift and go to state 105
     CTEFLOAT        shift and go to state 114
     CTEINT          shift and go to state 115
@@ -1646,21 +1666,16 @@ state 95
 
 state 96
 
-    (71) assignment -> ID ASSIGN . expression SEMICOLON
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (83) assignment -> ID ASSIGN . expression SEMICOLON
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -1714,28 +1729,23 @@ state 96
 
 state 97
 
-    (68) forloop -> FROM var . ASSIGN expression TO expression BY expression DO block
-    (69) forloop -> FROM var . ASSIGN expression TO expression DO block
+    (80) forloop -> FROM var . ASSIGN expression TO expression BY expression DO block
+    (81) forloop -> FROM var . ASSIGN expression TO expression DO block
     ASSIGN          shift and go to state 118
 
 
 state 98
 
-    (70) whileloop -> WHILE LPAREN . expression RPAREN block
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (82) whileloop -> WHILE LPAREN . expression RPAREN block
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -1789,7 +1799,7 @@ state 98
 
 state 99
 
-    (72) read -> INPUT LPAREN . decvar RPAREN SEMICOLON
+    (84) read -> INPUT LPAREN . decvar RPAREN SEMICOLON
     (12) decvar -> . var COMMA decvar
     (13) decvar -> . var
     (14) var -> . FLOAT
@@ -1836,28 +1846,21 @@ state 99
 
 state 100
 
-    (73) write -> PRINT LPAREN . writevalues RPAREN SEMICOLON
-    (74) writevalues -> . CTESTRING COMMA writevalues
-    (75) writevalues -> . super_exp COMMA writevalues
-    (76) writevalues -> . CTESTRING
-    (77) writevalues -> . super_exp
-    (47) super_exp -> . expression OR super_exp
-    (48) super_exp -> . expression AND super_exp
-    (49) super_exp -> . expression
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (85) write -> PRINT LPAREN . writevalues RPAREN SEMICOLON
+    (86) writevalues -> . CTESTRING COMMA writevalues
+    (87) writevalues -> . super_exp COMMA writevalues
+    (88) writevalues -> . CTESTRING
+    (89) writevalues -> . super_exp
+    (49) super_exp -> . expression super_exp_quadgen super_exp_aux
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -1914,22 +1917,17 @@ state 100
 
 state 101
 
-    (78) condition -> IF LPAREN . expression RPAREN block ELSE block
-    (79) condition -> IF LPAREN . expression RPAREN block
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (90) condition -> IF LPAREN . expression RPAREN block ELSE block
+    (91) condition -> IF LPAREN . expression RPAREN block
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -1992,24 +1990,24 @@ state 103
     (5) returnblock -> LCURLY decvars . blockcontent RETURN exp SEMICOLON RCURLY
     (6) blockcontent -> . empty
     (7) blockcontent -> . statute blockcontent
-    (93) empty -> .
-    (84) statute -> . call
-    (85) statute -> . forloop
-    (86) statute -> . whileloop
-    (87) statute -> . read
-    (88) statute -> . write
-    (89) statute -> . condition
-    (90) statute -> . assignment
+    (105) empty -> .
+    (96) statute -> . call
+    (97) statute -> . forloop
+    (98) statute -> . whileloop
+    (99) statute -> . read
+    (100) statute -> . write
+    (101) statute -> . condition
+    (102) statute -> . assignment
     (43) call -> . ID LPAREN callvalues RPAREN
-    (68) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
-    (69) forloop -> . FROM var ASSIGN expression TO expression DO block
-    (70) whileloop -> . WHILE LPAREN expression RPAREN block
-    (72) read -> . INPUT LPAREN decvar RPAREN SEMICOLON
-    (73) write -> . PRINT LPAREN writevalues RPAREN SEMICOLON
-    (78) condition -> . IF LPAREN expression RPAREN block ELSE block
-    (79) condition -> . IF LPAREN expression RPAREN block
-    (71) assignment -> . ID ASSIGN expression SEMICOLON
-    RETURN          reduce using rule 93 (empty -> .)
+    (80) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
+    (81) forloop -> . FROM var ASSIGN expression TO expression DO block
+    (82) whileloop -> . WHILE LPAREN expression RPAREN block
+    (84) read -> . INPUT LPAREN decvar RPAREN SEMICOLON
+    (85) write -> . PRINT LPAREN writevalues RPAREN SEMICOLON
+    (90) condition -> . IF LPAREN expression RPAREN block ELSE block
+    (91) condition -> . IF LPAREN expression RPAREN block
+    (83) assignment -> . ID ASSIGN expression SEMICOLON
+    RETURN          reduce using rule 105 (empty -> .)
     ID              shift and go to state 82
     FROM            shift and go to state 83
     WHILE           shift and go to state 84
@@ -2058,75 +2056,31 @@ state 104
 
 state 105
 
-    (64) factor -> LPAREN . super_exp RPAREN
-    (47) super_exp -> . expression OR super_exp
-    (48) super_exp -> . expression AND super_exp
-    (49) super_exp -> . expression
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (75) factor -> LPAREN . fakefloor super_exp RPAREN
+    (79) fakefloor -> .
+    LPAREN          reduce using rule 79 (fakefloor -> .)
+    CTEFLOAT        reduce using rule 79 (fakefloor -> .)
+    CTEINT          reduce using rule 79 (fakefloor -> .)
+    ID              reduce using rule 79 (fakefloor -> .)
+    FLOAT           reduce using rule 79 (fakefloor -> .)
+    INT             reduce using rule 79 (fakefloor -> .)
+    ELSE            reduce using rule 79 (fakefloor -> .)
+    IF              reduce using rule 79 (fakefloor -> .)
+    PRINT           reduce using rule 79 (fakefloor -> .)
+    INPUT           reduce using rule 79 (fakefloor -> .)
+    WHILE           reduce using rule 79 (fakefloor -> .)
+    DO              reduce using rule 79 (fakefloor -> .)
+    BY              reduce using rule 79 (fakefloor -> .)
+    TO              reduce using rule 79 (fakefloor -> .)
+    FROM            reduce using rule 79 (fakefloor -> .)
+    VOID            reduce using rule 79 (fakefloor -> .)
+    RETURN          reduce using rule 79 (fakefloor -> .)
+    FUNC            reduce using rule 79 (fakefloor -> .)
+    MAIN            reduce using rule 79 (fakefloor -> .)
+    VARS            reduce using rule 79 (fakefloor -> .)
+    PROGRAM         reduce using rule 79 (fakefloor -> .)
 
-    super_exp                      shift and go to state 127
-    expression                     shift and go to state 124
-    exp                            shift and go to state 117
-    term                           shift and go to state 109
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
+    fakefloor                      shift and go to state 127
 
 state 106
 
@@ -2150,218 +2104,207 @@ state 108
 
 state 109
 
-    (58) exp -> term . MINUS exp
-    (59) exp -> term . PLUS exp
-    (60) exp -> term .
-    MINUS           shift and go to state 130
-    PLUS            shift and go to state 131
-    COMMA           reduce using rule 60 (exp -> term .)
-    RPAREN          reduce using rule 60 (exp -> term .)
-    NEQ             reduce using rule 60 (exp -> term .)
-    EQ              reduce using rule 60 (exp -> term .)
-    LTE             reduce using rule 60 (exp -> term .)
-    GTE             reduce using rule 60 (exp -> term .)
-    LT              reduce using rule 60 (exp -> term .)
-    GT              reduce using rule 60 (exp -> term .)
-    SEMICOLON       reduce using rule 60 (exp -> term .)
-    OR              reduce using rule 60 (exp -> term .)
-    AND             reduce using rule 60 (exp -> term .)
-    TO              reduce using rule 60 (exp -> term .)
-    BY              reduce using rule 60 (exp -> term .)
-    DO              reduce using rule 60 (exp -> term .)
+    (65) exp -> term . exp_quadgen exp_aux
+    (68) exp_quadgen -> .
+    MINUS           reduce using rule 68 (exp_quadgen -> .)
+    PLUS            reduce using rule 68 (exp_quadgen -> .)
+    COMMA           reduce using rule 68 (exp_quadgen -> .)
+    RPAREN          reduce using rule 68 (exp_quadgen -> .)
+    NEQ             reduce using rule 68 (exp_quadgen -> .)
+    EQ              reduce using rule 68 (exp_quadgen -> .)
+    LTE             reduce using rule 68 (exp_quadgen -> .)
+    GTE             reduce using rule 68 (exp_quadgen -> .)
+    LT              reduce using rule 68 (exp_quadgen -> .)
+    GT              reduce using rule 68 (exp_quadgen -> .)
+    SEMICOLON       reduce using rule 68 (exp_quadgen -> .)
+    OR              reduce using rule 68 (exp_quadgen -> .)
+    AND             reduce using rule 68 (exp_quadgen -> .)
+    TO              reduce using rule 68 (exp_quadgen -> .)
+    BY              reduce using rule 68 (exp_quadgen -> .)
+    DO              reduce using rule 68 (exp_quadgen -> .)
 
+    exp_quadgen                    shift and go to state 130
 
 state 110
 
-    (61) term -> factor . DIVIDE term
-    (62) term -> factor . TIMES term
-    (63) term -> factor .
-    DIVIDE          shift and go to state 132
-    TIMES           shift and go to state 133
-    MINUS           reduce using rule 63 (term -> factor .)
-    PLUS            reduce using rule 63 (term -> factor .)
-    COMMA           reduce using rule 63 (term -> factor .)
-    RPAREN          reduce using rule 63 (term -> factor .)
-    NEQ             reduce using rule 63 (term -> factor .)
-    EQ              reduce using rule 63 (term -> factor .)
-    LTE             reduce using rule 63 (term -> factor .)
-    GTE             reduce using rule 63 (term -> factor .)
-    LT              reduce using rule 63 (term -> factor .)
-    GT              reduce using rule 63 (term -> factor .)
-    SEMICOLON       reduce using rule 63 (term -> factor .)
-    OR              reduce using rule 63 (term -> factor .)
-    AND             reduce using rule 63 (term -> factor .)
-    TO              reduce using rule 63 (term -> factor .)
-    BY              reduce using rule 63 (term -> factor .)
-    DO              reduce using rule 63 (term -> factor .)
+    (71) term -> factor . term_quadgen term_aux
+    (74) term_quadgen -> .
+    DIVIDE          reduce using rule 74 (term_quadgen -> .)
+    TIMES           reduce using rule 74 (term_quadgen -> .)
+    MINUS           reduce using rule 74 (term_quadgen -> .)
+    PLUS            reduce using rule 74 (term_quadgen -> .)
+    COMMA           reduce using rule 74 (term_quadgen -> .)
+    RPAREN          reduce using rule 74 (term_quadgen -> .)
+    NEQ             reduce using rule 74 (term_quadgen -> .)
+    EQ              reduce using rule 74 (term_quadgen -> .)
+    LTE             reduce using rule 74 (term_quadgen -> .)
+    GTE             reduce using rule 74 (term_quadgen -> .)
+    LT              reduce using rule 74 (term_quadgen -> .)
+    GT              reduce using rule 74 (term_quadgen -> .)
+    SEMICOLON       reduce using rule 74 (term_quadgen -> .)
+    OR              reduce using rule 74 (term_quadgen -> .)
+    AND             reduce using rule 74 (term_quadgen -> .)
+    TO              reduce using rule 74 (term_quadgen -> .)
+    BY              reduce using rule 74 (term_quadgen -> .)
+    DO              reduce using rule 74 (term_quadgen -> .)
 
+    term_quadgen                   shift and go to state 131
 
 state 111
 
-    (65) factor -> varcte .
-    DIVIDE          reduce using rule 65 (factor -> varcte .)
-    TIMES           reduce using rule 65 (factor -> varcte .)
-    MINUS           reduce using rule 65 (factor -> varcte .)
-    PLUS            reduce using rule 65 (factor -> varcte .)
-    COMMA           reduce using rule 65 (factor -> varcte .)
-    RPAREN          reduce using rule 65 (factor -> varcte .)
-    NEQ             reduce using rule 65 (factor -> varcte .)
-    EQ              reduce using rule 65 (factor -> varcte .)
-    LTE             reduce using rule 65 (factor -> varcte .)
-    GTE             reduce using rule 65 (factor -> varcte .)
-    LT              reduce using rule 65 (factor -> varcte .)
-    GT              reduce using rule 65 (factor -> varcte .)
-    SEMICOLON       reduce using rule 65 (factor -> varcte .)
-    OR              reduce using rule 65 (factor -> varcte .)
-    AND             reduce using rule 65 (factor -> varcte .)
-    TO              reduce using rule 65 (factor -> varcte .)
-    BY              reduce using rule 65 (factor -> varcte .)
-    DO              reduce using rule 65 (factor -> varcte .)
+    (76) factor -> varcte .
+    DIVIDE          reduce using rule 76 (factor -> varcte .)
+    TIMES           reduce using rule 76 (factor -> varcte .)
+    MINUS           reduce using rule 76 (factor -> varcte .)
+    PLUS            reduce using rule 76 (factor -> varcte .)
+    COMMA           reduce using rule 76 (factor -> varcte .)
+    RPAREN          reduce using rule 76 (factor -> varcte .)
+    NEQ             reduce using rule 76 (factor -> varcte .)
+    EQ              reduce using rule 76 (factor -> varcte .)
+    LTE             reduce using rule 76 (factor -> varcte .)
+    GTE             reduce using rule 76 (factor -> varcte .)
+    LT              reduce using rule 76 (factor -> varcte .)
+    GT              reduce using rule 76 (factor -> varcte .)
+    SEMICOLON       reduce using rule 76 (factor -> varcte .)
+    OR              reduce using rule 76 (factor -> varcte .)
+    AND             reduce using rule 76 (factor -> varcte .)
+    TO              reduce using rule 76 (factor -> varcte .)
+    BY              reduce using rule 76 (factor -> varcte .)
+    DO              reduce using rule 76 (factor -> varcte .)
 
 
 state 112
 
-    (66) factor -> call .
-    DIVIDE          reduce using rule 66 (factor -> call .)
-    TIMES           reduce using rule 66 (factor -> call .)
-    MINUS           reduce using rule 66 (factor -> call .)
-    PLUS            reduce using rule 66 (factor -> call .)
-    COMMA           reduce using rule 66 (factor -> call .)
-    RPAREN          reduce using rule 66 (factor -> call .)
-    NEQ             reduce using rule 66 (factor -> call .)
-    EQ              reduce using rule 66 (factor -> call .)
-    LTE             reduce using rule 66 (factor -> call .)
-    GTE             reduce using rule 66 (factor -> call .)
-    LT              reduce using rule 66 (factor -> call .)
-    GT              reduce using rule 66 (factor -> call .)
-    SEMICOLON       reduce using rule 66 (factor -> call .)
-    OR              reduce using rule 66 (factor -> call .)
-    AND             reduce using rule 66 (factor -> call .)
-    TO              reduce using rule 66 (factor -> call .)
-    BY              reduce using rule 66 (factor -> call .)
-    DO              reduce using rule 66 (factor -> call .)
+    (77) factor -> call .
+    DIVIDE          reduce using rule 77 (factor -> call .)
+    TIMES           reduce using rule 77 (factor -> call .)
+    MINUS           reduce using rule 77 (factor -> call .)
+    PLUS            reduce using rule 77 (factor -> call .)
+    COMMA           reduce using rule 77 (factor -> call .)
+    RPAREN          reduce using rule 77 (factor -> call .)
+    NEQ             reduce using rule 77 (factor -> call .)
+    EQ              reduce using rule 77 (factor -> call .)
+    LTE             reduce using rule 77 (factor -> call .)
+    GTE             reduce using rule 77 (factor -> call .)
+    LT              reduce using rule 77 (factor -> call .)
+    GT              reduce using rule 77 (factor -> call .)
+    SEMICOLON       reduce using rule 77 (factor -> call .)
+    OR              reduce using rule 77 (factor -> call .)
+    AND             reduce using rule 77 (factor -> call .)
+    TO              reduce using rule 77 (factor -> call .)
+    BY              reduce using rule 77 (factor -> call .)
+    DO              reduce using rule 77 (factor -> call .)
 
 
 state 113
 
-    (67) factor -> var .
-    DIVIDE          reduce using rule 67 (factor -> var .)
-    TIMES           reduce using rule 67 (factor -> var .)
-    MINUS           reduce using rule 67 (factor -> var .)
-    PLUS            reduce using rule 67 (factor -> var .)
-    COMMA           reduce using rule 67 (factor -> var .)
-    RPAREN          reduce using rule 67 (factor -> var .)
-    NEQ             reduce using rule 67 (factor -> var .)
-    EQ              reduce using rule 67 (factor -> var .)
-    LTE             reduce using rule 67 (factor -> var .)
-    GTE             reduce using rule 67 (factor -> var .)
-    LT              reduce using rule 67 (factor -> var .)
-    GT              reduce using rule 67 (factor -> var .)
-    SEMICOLON       reduce using rule 67 (factor -> var .)
-    OR              reduce using rule 67 (factor -> var .)
-    AND             reduce using rule 67 (factor -> var .)
-    TO              reduce using rule 67 (factor -> var .)
-    BY              reduce using rule 67 (factor -> var .)
-    DO              reduce using rule 67 (factor -> var .)
+    (78) factor -> var .
+    DIVIDE          reduce using rule 78 (factor -> var .)
+    TIMES           reduce using rule 78 (factor -> var .)
+    MINUS           reduce using rule 78 (factor -> var .)
+    PLUS            reduce using rule 78 (factor -> var .)
+    COMMA           reduce using rule 78 (factor -> var .)
+    RPAREN          reduce using rule 78 (factor -> var .)
+    NEQ             reduce using rule 78 (factor -> var .)
+    EQ              reduce using rule 78 (factor -> var .)
+    LTE             reduce using rule 78 (factor -> var .)
+    GTE             reduce using rule 78 (factor -> var .)
+    LT              reduce using rule 78 (factor -> var .)
+    GT              reduce using rule 78 (factor -> var .)
+    SEMICOLON       reduce using rule 78 (factor -> var .)
+    OR              reduce using rule 78 (factor -> var .)
+    AND             reduce using rule 78 (factor -> var .)
+    TO              reduce using rule 78 (factor -> var .)
+    BY              reduce using rule 78 (factor -> var .)
+    DO              reduce using rule 78 (factor -> var .)
 
 
 state 114
 
-    (80) varcte -> CTEFLOAT .
-    DIVIDE          reduce using rule 80 (varcte -> CTEFLOAT .)
-    TIMES           reduce using rule 80 (varcte -> CTEFLOAT .)
-    MINUS           reduce using rule 80 (varcte -> CTEFLOAT .)
-    PLUS            reduce using rule 80 (varcte -> CTEFLOAT .)
-    COMMA           reduce using rule 80 (varcte -> CTEFLOAT .)
-    RPAREN          reduce using rule 80 (varcte -> CTEFLOAT .)
-    NEQ             reduce using rule 80 (varcte -> CTEFLOAT .)
-    EQ              reduce using rule 80 (varcte -> CTEFLOAT .)
-    LTE             reduce using rule 80 (varcte -> CTEFLOAT .)
-    GTE             reduce using rule 80 (varcte -> CTEFLOAT .)
-    LT              reduce using rule 80 (varcte -> CTEFLOAT .)
-    GT              reduce using rule 80 (varcte -> CTEFLOAT .)
-    SEMICOLON       reduce using rule 80 (varcte -> CTEFLOAT .)
-    OR              reduce using rule 80 (varcte -> CTEFLOAT .)
-    AND             reduce using rule 80 (varcte -> CTEFLOAT .)
-    TO              reduce using rule 80 (varcte -> CTEFLOAT .)
-    BY              reduce using rule 80 (varcte -> CTEFLOAT .)
-    DO              reduce using rule 80 (varcte -> CTEFLOAT .)
+    (92) varcte -> CTEFLOAT .
+    DIVIDE          reduce using rule 92 (varcte -> CTEFLOAT .)
+    TIMES           reduce using rule 92 (varcte -> CTEFLOAT .)
+    MINUS           reduce using rule 92 (varcte -> CTEFLOAT .)
+    PLUS            reduce using rule 92 (varcte -> CTEFLOAT .)
+    COMMA           reduce using rule 92 (varcte -> CTEFLOAT .)
+    RPAREN          reduce using rule 92 (varcte -> CTEFLOAT .)
+    NEQ             reduce using rule 92 (varcte -> CTEFLOAT .)
+    EQ              reduce using rule 92 (varcte -> CTEFLOAT .)
+    LTE             reduce using rule 92 (varcte -> CTEFLOAT .)
+    GTE             reduce using rule 92 (varcte -> CTEFLOAT .)
+    LT              reduce using rule 92 (varcte -> CTEFLOAT .)
+    GT              reduce using rule 92 (varcte -> CTEFLOAT .)
+    SEMICOLON       reduce using rule 92 (varcte -> CTEFLOAT .)
+    OR              reduce using rule 92 (varcte -> CTEFLOAT .)
+    AND             reduce using rule 92 (varcte -> CTEFLOAT .)
+    TO              reduce using rule 92 (varcte -> CTEFLOAT .)
+    BY              reduce using rule 92 (varcte -> CTEFLOAT .)
+    DO              reduce using rule 92 (varcte -> CTEFLOAT .)
 
 
 state 115
 
-    (81) varcte -> CTEINT .
-    DIVIDE          reduce using rule 81 (varcte -> CTEINT .)
-    TIMES           reduce using rule 81 (varcte -> CTEINT .)
-    MINUS           reduce using rule 81 (varcte -> CTEINT .)
-    PLUS            reduce using rule 81 (varcte -> CTEINT .)
-    COMMA           reduce using rule 81 (varcte -> CTEINT .)
-    RPAREN          reduce using rule 81 (varcte -> CTEINT .)
-    NEQ             reduce using rule 81 (varcte -> CTEINT .)
-    EQ              reduce using rule 81 (varcte -> CTEINT .)
-    LTE             reduce using rule 81 (varcte -> CTEINT .)
-    GTE             reduce using rule 81 (varcte -> CTEINT .)
-    LT              reduce using rule 81 (varcte -> CTEINT .)
-    GT              reduce using rule 81 (varcte -> CTEINT .)
-    SEMICOLON       reduce using rule 81 (varcte -> CTEINT .)
-    OR              reduce using rule 81 (varcte -> CTEINT .)
-    AND             reduce using rule 81 (varcte -> CTEINT .)
-    TO              reduce using rule 81 (varcte -> CTEINT .)
-    BY              reduce using rule 81 (varcte -> CTEINT .)
-    DO              reduce using rule 81 (varcte -> CTEINT .)
+    (93) varcte -> CTEINT .
+    DIVIDE          reduce using rule 93 (varcte -> CTEINT .)
+    TIMES           reduce using rule 93 (varcte -> CTEINT .)
+    MINUS           reduce using rule 93 (varcte -> CTEINT .)
+    PLUS            reduce using rule 93 (varcte -> CTEINT .)
+    COMMA           reduce using rule 93 (varcte -> CTEINT .)
+    RPAREN          reduce using rule 93 (varcte -> CTEINT .)
+    NEQ             reduce using rule 93 (varcte -> CTEINT .)
+    EQ              reduce using rule 93 (varcte -> CTEINT .)
+    LTE             reduce using rule 93 (varcte -> CTEINT .)
+    GTE             reduce using rule 93 (varcte -> CTEINT .)
+    LT              reduce using rule 93 (varcte -> CTEINT .)
+    GT              reduce using rule 93 (varcte -> CTEINT .)
+    SEMICOLON       reduce using rule 93 (varcte -> CTEINT .)
+    OR              reduce using rule 93 (varcte -> CTEINT .)
+    AND             reduce using rule 93 (varcte -> CTEINT .)
+    TO              reduce using rule 93 (varcte -> CTEINT .)
+    BY              reduce using rule 93 (varcte -> CTEINT .)
+    DO              reduce using rule 93 (varcte -> CTEINT .)
 
 
 state 116
 
-    (71) assignment -> ID ASSIGN expression . SEMICOLON
-    SEMICOLON       shift and go to state 134
+    (83) assignment -> ID ASSIGN expression . SEMICOLON
+    SEMICOLON       shift and go to state 132
 
 
 state 117
 
-    (50) expression -> exp . relation exp
-    (51) expression -> exp .
-    (52) relation -> . NEQ
-    (53) relation -> . EQ
-    (54) relation -> . LTE
-    (55) relation -> . GTE
-    (56) relation -> . LT
-    (57) relation -> . GT
-    SEMICOLON       reduce using rule 51 (expression -> exp .)
-    RPAREN          reduce using rule 51 (expression -> exp .)
-    OR              reduce using rule 51 (expression -> exp .)
-    AND             reduce using rule 51 (expression -> exp .)
-    COMMA           reduce using rule 51 (expression -> exp .)
-    TO              reduce using rule 51 (expression -> exp .)
-    BY              reduce using rule 51 (expression -> exp .)
-    DO              reduce using rule 51 (expression -> exp .)
-    NEQ             shift and go to state 136
-    EQ              shift and go to state 137
-    LTE             shift and go to state 138
-    GTE             shift and go to state 139
-    LT              shift and go to state 140
-    GT              shift and go to state 141
+    (55) expression -> exp . expression_quadgen expression_aux
+    (62) expression_quadgen -> .
+    NEQ             reduce using rule 62 (expression_quadgen -> .)
+    EQ              reduce using rule 62 (expression_quadgen -> .)
+    LTE             reduce using rule 62 (expression_quadgen -> .)
+    GTE             reduce using rule 62 (expression_quadgen -> .)
+    LT              reduce using rule 62 (expression_quadgen -> .)
+    GT              reduce using rule 62 (expression_quadgen -> .)
+    SEMICOLON       reduce using rule 62 (expression_quadgen -> .)
+    RPAREN          reduce using rule 62 (expression_quadgen -> .)
+    OR              reduce using rule 62 (expression_quadgen -> .)
+    AND             reduce using rule 62 (expression_quadgen -> .)
+    COMMA           reduce using rule 62 (expression_quadgen -> .)
+    TO              reduce using rule 62 (expression_quadgen -> .)
+    BY              reduce using rule 62 (expression_quadgen -> .)
+    DO              reduce using rule 62 (expression_quadgen -> .)
 
-    relation                       shift and go to state 135
+    expression_quadgen             shift and go to state 133
 
 state 118
 
-    (68) forloop -> FROM var ASSIGN . expression TO expression BY expression DO block
-    (69) forloop -> FROM var ASSIGN . expression TO expression DO block
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (80) forloop -> FROM var ASSIGN . expression TO expression BY expression DO block
+    (81) forloop -> FROM var ASSIGN . expression TO expression DO block
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -2406,7 +2349,7 @@ state 118
     PROGRAM         shift and go to state 42
 
     var                            shift and go to state 113
-    expression                     shift and go to state 142
+    expression                     shift and go to state 134
     exp                            shift and go to state 117
     term                           shift and go to state 109
     factor                         shift and go to state 110
@@ -2415,67 +2358,126 @@ state 118
 
 state 119
 
-    (70) whileloop -> WHILE LPAREN expression . RPAREN block
-    RPAREN          shift and go to state 143
+    (82) whileloop -> WHILE LPAREN expression . RPAREN block
+    RPAREN          shift and go to state 135
 
 
 state 120
 
-    (72) read -> INPUT LPAREN decvar . RPAREN SEMICOLON
-    RPAREN          shift and go to state 144
+    (84) read -> INPUT LPAREN decvar . RPAREN SEMICOLON
+    RPAREN          shift and go to state 136
 
 
 state 121
 
-    (73) write -> PRINT LPAREN writevalues . RPAREN SEMICOLON
-    RPAREN          shift and go to state 145
+    (85) write -> PRINT LPAREN writevalues . RPAREN SEMICOLON
+    RPAREN          shift and go to state 137
 
 
 state 122
 
-    (74) writevalues -> CTESTRING . COMMA writevalues
-    (76) writevalues -> CTESTRING .
-    COMMA           shift and go to state 146
-    RPAREN          reduce using rule 76 (writevalues -> CTESTRING .)
+    (86) writevalues -> CTESTRING . COMMA writevalues
+    (88) writevalues -> CTESTRING .
+    COMMA           shift and go to state 138
+    RPAREN          reduce using rule 88 (writevalues -> CTESTRING .)
 
 
 state 123
 
-    (75) writevalues -> super_exp . COMMA writevalues
-    (77) writevalues -> super_exp .
-    COMMA           shift and go to state 147
-    RPAREN          reduce using rule 77 (writevalues -> super_exp .)
+    (87) writevalues -> super_exp . COMMA writevalues
+    (89) writevalues -> super_exp .
+    COMMA           shift and go to state 139
+    RPAREN          reduce using rule 89 (writevalues -> super_exp .)
 
 
 state 124
 
-    (47) super_exp -> expression . OR super_exp
-    (48) super_exp -> expression . AND super_exp
-    (49) super_exp -> expression .
-    OR              shift and go to state 148
-    AND             shift and go to state 149
-    COMMA           reduce using rule 49 (super_exp -> expression .)
-    RPAREN          reduce using rule 49 (super_exp -> expression .)
+    (49) super_exp -> expression . super_exp_quadgen super_exp_aux
+    (52) super_exp_quadgen -> .
+    OR              reduce using rule 52 (super_exp_quadgen -> .)
+    AND             reduce using rule 52 (super_exp_quadgen -> .)
+    COMMA           reduce using rule 52 (super_exp_quadgen -> .)
+    RPAREN          reduce using rule 52 (super_exp_quadgen -> .)
 
+    super_exp_quadgen              shift and go to state 140
 
 state 125
 
-    (78) condition -> IF LPAREN expression . RPAREN block ELSE block
-    (79) condition -> IF LPAREN expression . RPAREN block
-    RPAREN          shift and go to state 150
+    (90) condition -> IF LPAREN expression . RPAREN block ELSE block
+    (91) condition -> IF LPAREN expression . RPAREN block
+    RPAREN          shift and go to state 141
 
 
 state 126
 
     (5) returnblock -> LCURLY decvars blockcontent . RETURN exp SEMICOLON RCURLY
-    RETURN          shift and go to state 151
+    RETURN          shift and go to state 142
 
 
 state 127
 
-    (64) factor -> LPAREN super_exp . RPAREN
-    RPAREN          shift and go to state 152
+    (75) factor -> LPAREN fakefloor . super_exp RPAREN
+    (49) super_exp -> . expression super_exp_quadgen super_exp_aux
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
+    (43) call -> . ID LPAREN callvalues RPAREN
+    (14) var -> . FLOAT
+    (15) var -> . INT
+    (16) var -> . ELSE
+    (17) var -> . IF
+    (18) var -> . PRINT
+    (19) var -> . INPUT
+    (20) var -> . WHILE
+    (21) var -> . DO
+    (22) var -> . BY
+    (23) var -> . TO
+    (24) var -> . FROM
+    (25) var -> . VOID
+    (26) var -> . RETURN
+    (27) var -> . FUNC
+    (28) var -> . MAIN
+    (29) var -> . VARS
+    (30) var -> . PROGRAM
+    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (32) var -> . ID LBRACKET CTEINT RBRACKET
+    (33) var -> . ID
+    LPAREN          shift and go to state 105
+    CTEFLOAT        shift and go to state 114
+    CTEINT          shift and go to state 115
+    ID              shift and go to state 104
+    FLOAT           shift and go to state 26
+    INT             shift and go to state 27
+    ELSE            shift and go to state 28
+    IF              shift and go to state 29
+    PRINT           shift and go to state 30
+    INPUT           shift and go to state 31
+    WHILE           shift and go to state 32
+    DO              shift and go to state 33
+    BY              shift and go to state 34
+    TO              shift and go to state 35
+    FROM            shift and go to state 36
+    VOID            shift and go to state 37
+    RETURN          shift and go to state 38
+    FUNC            shift and go to state 39
+    MAIN            shift and go to state 40
+    VARS            shift and go to state 41
+    PROGRAM         shift and go to state 42
 
+    super_exp                      shift and go to state 143
+    expression                     shift and go to state 124
+    exp                            shift and go to state 117
+    term                           shift and go to state 109
+    factor                         shift and go to state 110
+    varcte                         shift and go to state 111
+    call                           shift and go to state 112
+    var                            shift and go to state 113
 
 state 128
 
@@ -2514,19 +2516,15 @@ state 129
     (44) callvalues -> . empty
     (45) callvalues -> . exp COMMA callvalues
     (46) callvalues -> . exp
-    (93) empty -> .
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (105) empty -> .
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -2548,7 +2546,7 @@ state 129
     (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (32) var -> . ID LBRACKET CTEINT RBRACKET
     (33) var -> . ID
-    RPAREN          reduce using rule 93 (empty -> .)
+    RPAREN          reduce using rule 105 (empty -> .)
     LPAREN          shift and go to state 105
     CTEFLOAT        shift and go to state 114
     CTEINT          shift and go to state 115
@@ -2572,7 +2570,7 @@ state 129
     PROGRAM         shift and go to state 42
 
     exp                            shift and go to state 108
-    callvalues                     shift and go to state 153
+    callvalues                     shift and go to state 144
     empty                          shift and go to state 107
     term                           shift and go to state 109
     factor                         shift and go to state 110
@@ -2582,541 +2580,152 @@ state 129
 
 state 130
 
-    (58) exp -> term MINUS . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (65) exp -> term exp_quadgen . exp_aux
+    (63) exp_aux -> . exp_sign exp
+    (64) exp_aux -> . empty
+    (66) exp_sign -> . MINUS
+    (67) exp_sign -> . PLUS
+    (105) empty -> .
+    MINUS           shift and go to state 148
+    PLUS            shift and go to state 149
+    COMMA           reduce using rule 105 (empty -> .)
+    RPAREN          reduce using rule 105 (empty -> .)
+    NEQ             reduce using rule 105 (empty -> .)
+    EQ              reduce using rule 105 (empty -> .)
+    LTE             reduce using rule 105 (empty -> .)
+    GTE             reduce using rule 105 (empty -> .)
+    LT              reduce using rule 105 (empty -> .)
+    GT              reduce using rule 105 (empty -> .)
+    SEMICOLON       reduce using rule 105 (empty -> .)
+    OR              reduce using rule 105 (empty -> .)
+    AND             reduce using rule 105 (empty -> .)
+    TO              reduce using rule 105 (empty -> .)
+    BY              reduce using rule 105 (empty -> .)
+    DO              reduce using rule 105 (empty -> .)
 
-    term                           shift and go to state 109
-    exp                            shift and go to state 154
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
+    exp_aux                        shift and go to state 145
+    exp_sign                       shift and go to state 146
+    empty                          shift and go to state 147
 
 state 131
 
-    (59) exp -> term PLUS . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (71) term -> factor term_quadgen . term_aux
+    (69) term_aux -> . term_sign term
+    (70) term_aux -> . empty
+    (72) term_sign -> . DIVIDE
+    (73) term_sign -> . TIMES
+    (105) empty -> .
+    DIVIDE          shift and go to state 153
+    TIMES           shift and go to state 154
+    MINUS           reduce using rule 105 (empty -> .)
+    PLUS            reduce using rule 105 (empty -> .)
+    COMMA           reduce using rule 105 (empty -> .)
+    RPAREN          reduce using rule 105 (empty -> .)
+    NEQ             reduce using rule 105 (empty -> .)
+    EQ              reduce using rule 105 (empty -> .)
+    LTE             reduce using rule 105 (empty -> .)
+    GTE             reduce using rule 105 (empty -> .)
+    LT              reduce using rule 105 (empty -> .)
+    GT              reduce using rule 105 (empty -> .)
+    SEMICOLON       reduce using rule 105 (empty -> .)
+    OR              reduce using rule 105 (empty -> .)
+    AND             reduce using rule 105 (empty -> .)
+    TO              reduce using rule 105 (empty -> .)
+    BY              reduce using rule 105 (empty -> .)
+    DO              reduce using rule 105 (empty -> .)
 
-    term                           shift and go to state 109
-    exp                            shift and go to state 155
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
+    term_aux                       shift and go to state 150
+    term_sign                      shift and go to state 151
+    empty                          shift and go to state 152
 
 state 132
 
-    (61) term -> factor DIVIDE . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (83) assignment -> ID ASSIGN expression SEMICOLON .
+    ID              reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
+    FROM            reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
+    WHILE           reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
+    INPUT           reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
+    PRINT           reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
+    IF              reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
+    RCURLY          reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
+    RETURN          reduce using rule 83 (assignment -> ID ASSIGN expression SEMICOLON .)
 
-    factor                         shift and go to state 110
-    term                           shift and go to state 156
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
 
 state 133
 
-    (62) term -> factor TIMES . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (55) expression -> exp expression_quadgen . expression_aux
+    (53) expression_aux -> . relation expression
+    (54) expression_aux -> . empty
+    (56) relation -> . NEQ
+    (57) relation -> . EQ
+    (58) relation -> . LTE
+    (59) relation -> . GTE
+    (60) relation -> . LT
+    (61) relation -> . GT
+    (105) empty -> .
+    NEQ             shift and go to state 158
+    EQ              shift and go to state 159
+    LTE             shift and go to state 160
+    GTE             shift and go to state 161
+    LT              shift and go to state 162
+    GT              shift and go to state 163
+    SEMICOLON       reduce using rule 105 (empty -> .)
+    RPAREN          reduce using rule 105 (empty -> .)
+    OR              reduce using rule 105 (empty -> .)
+    AND             reduce using rule 105 (empty -> .)
+    COMMA           reduce using rule 105 (empty -> .)
+    TO              reduce using rule 105 (empty -> .)
+    BY              reduce using rule 105 (empty -> .)
+    DO              reduce using rule 105 (empty -> .)
 
-    factor                         shift and go to state 110
-    term                           shift and go to state 157
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
+    expression_aux                 shift and go to state 155
+    relation                       shift and go to state 156
+    empty                          shift and go to state 157
 
 state 134
 
-    (71) assignment -> ID ASSIGN expression SEMICOLON .
-    ID              reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
-    FROM            reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
-    WHILE           reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
-    INPUT           reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
-    PRINT           reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
-    IF              reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
-    RCURLY          reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
-    RETURN          reduce using rule 71 (assignment -> ID ASSIGN expression SEMICOLON .)
+    (80) forloop -> FROM var ASSIGN expression . TO expression BY expression DO block
+    (81) forloop -> FROM var ASSIGN expression . TO expression DO block
+    TO              shift and go to state 164
 
 
 state 135
 
-    (50) expression -> exp relation . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (82) whileloop -> WHILE LPAREN expression RPAREN . block
+    (4) block -> . LCURLY decvars blockcontent RCURLY
+    LCURLY          shift and go to state 61
 
-    exp                            shift and go to state 158
-    term                           shift and go to state 109
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
+    block                          shift and go to state 165
 
 state 136
 
-    (52) relation -> NEQ .
-    LPAREN          reduce using rule 52 (relation -> NEQ .)
-    CTEFLOAT        reduce using rule 52 (relation -> NEQ .)
-    CTEINT          reduce using rule 52 (relation -> NEQ .)
-    ID              reduce using rule 52 (relation -> NEQ .)
-    FLOAT           reduce using rule 52 (relation -> NEQ .)
-    INT             reduce using rule 52 (relation -> NEQ .)
-    ELSE            reduce using rule 52 (relation -> NEQ .)
-    IF              reduce using rule 52 (relation -> NEQ .)
-    PRINT           reduce using rule 52 (relation -> NEQ .)
-    INPUT           reduce using rule 52 (relation -> NEQ .)
-    WHILE           reduce using rule 52 (relation -> NEQ .)
-    DO              reduce using rule 52 (relation -> NEQ .)
-    BY              reduce using rule 52 (relation -> NEQ .)
-    TO              reduce using rule 52 (relation -> NEQ .)
-    FROM            reduce using rule 52 (relation -> NEQ .)
-    VOID            reduce using rule 52 (relation -> NEQ .)
-    RETURN          reduce using rule 52 (relation -> NEQ .)
-    FUNC            reduce using rule 52 (relation -> NEQ .)
-    MAIN            reduce using rule 52 (relation -> NEQ .)
-    VARS            reduce using rule 52 (relation -> NEQ .)
-    PROGRAM         reduce using rule 52 (relation -> NEQ .)
+    (84) read -> INPUT LPAREN decvar RPAREN . SEMICOLON
+    SEMICOLON       shift and go to state 166
 
 
 state 137
 
-    (53) relation -> EQ .
-    LPAREN          reduce using rule 53 (relation -> EQ .)
-    CTEFLOAT        reduce using rule 53 (relation -> EQ .)
-    CTEINT          reduce using rule 53 (relation -> EQ .)
-    ID              reduce using rule 53 (relation -> EQ .)
-    FLOAT           reduce using rule 53 (relation -> EQ .)
-    INT             reduce using rule 53 (relation -> EQ .)
-    ELSE            reduce using rule 53 (relation -> EQ .)
-    IF              reduce using rule 53 (relation -> EQ .)
-    PRINT           reduce using rule 53 (relation -> EQ .)
-    INPUT           reduce using rule 53 (relation -> EQ .)
-    WHILE           reduce using rule 53 (relation -> EQ .)
-    DO              reduce using rule 53 (relation -> EQ .)
-    BY              reduce using rule 53 (relation -> EQ .)
-    TO              reduce using rule 53 (relation -> EQ .)
-    FROM            reduce using rule 53 (relation -> EQ .)
-    VOID            reduce using rule 53 (relation -> EQ .)
-    RETURN          reduce using rule 53 (relation -> EQ .)
-    FUNC            reduce using rule 53 (relation -> EQ .)
-    MAIN            reduce using rule 53 (relation -> EQ .)
-    VARS            reduce using rule 53 (relation -> EQ .)
-    PROGRAM         reduce using rule 53 (relation -> EQ .)
+    (85) write -> PRINT LPAREN writevalues RPAREN . SEMICOLON
+    SEMICOLON       shift and go to state 167
 
 
 state 138
 
-    (54) relation -> LTE .
-    LPAREN          reduce using rule 54 (relation -> LTE .)
-    CTEFLOAT        reduce using rule 54 (relation -> LTE .)
-    CTEINT          reduce using rule 54 (relation -> LTE .)
-    ID              reduce using rule 54 (relation -> LTE .)
-    FLOAT           reduce using rule 54 (relation -> LTE .)
-    INT             reduce using rule 54 (relation -> LTE .)
-    ELSE            reduce using rule 54 (relation -> LTE .)
-    IF              reduce using rule 54 (relation -> LTE .)
-    PRINT           reduce using rule 54 (relation -> LTE .)
-    INPUT           reduce using rule 54 (relation -> LTE .)
-    WHILE           reduce using rule 54 (relation -> LTE .)
-    DO              reduce using rule 54 (relation -> LTE .)
-    BY              reduce using rule 54 (relation -> LTE .)
-    TO              reduce using rule 54 (relation -> LTE .)
-    FROM            reduce using rule 54 (relation -> LTE .)
-    VOID            reduce using rule 54 (relation -> LTE .)
-    RETURN          reduce using rule 54 (relation -> LTE .)
-    FUNC            reduce using rule 54 (relation -> LTE .)
-    MAIN            reduce using rule 54 (relation -> LTE .)
-    VARS            reduce using rule 54 (relation -> LTE .)
-    PROGRAM         reduce using rule 54 (relation -> LTE .)
-
-
-state 139
-
-    (55) relation -> GTE .
-    LPAREN          reduce using rule 55 (relation -> GTE .)
-    CTEFLOAT        reduce using rule 55 (relation -> GTE .)
-    CTEINT          reduce using rule 55 (relation -> GTE .)
-    ID              reduce using rule 55 (relation -> GTE .)
-    FLOAT           reduce using rule 55 (relation -> GTE .)
-    INT             reduce using rule 55 (relation -> GTE .)
-    ELSE            reduce using rule 55 (relation -> GTE .)
-    IF              reduce using rule 55 (relation -> GTE .)
-    PRINT           reduce using rule 55 (relation -> GTE .)
-    INPUT           reduce using rule 55 (relation -> GTE .)
-    WHILE           reduce using rule 55 (relation -> GTE .)
-    DO              reduce using rule 55 (relation -> GTE .)
-    BY              reduce using rule 55 (relation -> GTE .)
-    TO              reduce using rule 55 (relation -> GTE .)
-    FROM            reduce using rule 55 (relation -> GTE .)
-    VOID            reduce using rule 55 (relation -> GTE .)
-    RETURN          reduce using rule 55 (relation -> GTE .)
-    FUNC            reduce using rule 55 (relation -> GTE .)
-    MAIN            reduce using rule 55 (relation -> GTE .)
-    VARS            reduce using rule 55 (relation -> GTE .)
-    PROGRAM         reduce using rule 55 (relation -> GTE .)
-
-
-state 140
-
-    (56) relation -> LT .
-    LPAREN          reduce using rule 56 (relation -> LT .)
-    CTEFLOAT        reduce using rule 56 (relation -> LT .)
-    CTEINT          reduce using rule 56 (relation -> LT .)
-    ID              reduce using rule 56 (relation -> LT .)
-    FLOAT           reduce using rule 56 (relation -> LT .)
-    INT             reduce using rule 56 (relation -> LT .)
-    ELSE            reduce using rule 56 (relation -> LT .)
-    IF              reduce using rule 56 (relation -> LT .)
-    PRINT           reduce using rule 56 (relation -> LT .)
-    INPUT           reduce using rule 56 (relation -> LT .)
-    WHILE           reduce using rule 56 (relation -> LT .)
-    DO              reduce using rule 56 (relation -> LT .)
-    BY              reduce using rule 56 (relation -> LT .)
-    TO              reduce using rule 56 (relation -> LT .)
-    FROM            reduce using rule 56 (relation -> LT .)
-    VOID            reduce using rule 56 (relation -> LT .)
-    RETURN          reduce using rule 56 (relation -> LT .)
-    FUNC            reduce using rule 56 (relation -> LT .)
-    MAIN            reduce using rule 56 (relation -> LT .)
-    VARS            reduce using rule 56 (relation -> LT .)
-    PROGRAM         reduce using rule 56 (relation -> LT .)
-
-
-state 141
-
-    (57) relation -> GT .
-    LPAREN          reduce using rule 57 (relation -> GT .)
-    CTEFLOAT        reduce using rule 57 (relation -> GT .)
-    CTEINT          reduce using rule 57 (relation -> GT .)
-    ID              reduce using rule 57 (relation -> GT .)
-    FLOAT           reduce using rule 57 (relation -> GT .)
-    INT             reduce using rule 57 (relation -> GT .)
-    ELSE            reduce using rule 57 (relation -> GT .)
-    IF              reduce using rule 57 (relation -> GT .)
-    PRINT           reduce using rule 57 (relation -> GT .)
-    INPUT           reduce using rule 57 (relation -> GT .)
-    WHILE           reduce using rule 57 (relation -> GT .)
-    DO              reduce using rule 57 (relation -> GT .)
-    BY              reduce using rule 57 (relation -> GT .)
-    TO              reduce using rule 57 (relation -> GT .)
-    FROM            reduce using rule 57 (relation -> GT .)
-    VOID            reduce using rule 57 (relation -> GT .)
-    RETURN          reduce using rule 57 (relation -> GT .)
-    FUNC            reduce using rule 57 (relation -> GT .)
-    MAIN            reduce using rule 57 (relation -> GT .)
-    VARS            reduce using rule 57 (relation -> GT .)
-    PROGRAM         reduce using rule 57 (relation -> GT .)
-
-
-state 142
-
-    (68) forloop -> FROM var ASSIGN expression . TO expression BY expression DO block
-    (69) forloop -> FROM var ASSIGN expression . TO expression DO block
-    TO              shift and go to state 159
-
-
-state 143
-
-    (70) whileloop -> WHILE LPAREN expression RPAREN . block
-    (4) block -> . LCURLY decvars blockcontent RCURLY
-    LCURLY          shift and go to state 61
-
-    block                          shift and go to state 160
-
-state 144
-
-    (72) read -> INPUT LPAREN decvar RPAREN . SEMICOLON
-    SEMICOLON       shift and go to state 161
-
-
-state 145
-
-    (73) write -> PRINT LPAREN writevalues RPAREN . SEMICOLON
-    SEMICOLON       shift and go to state 162
-
-
-state 146
-
-    (74) writevalues -> CTESTRING COMMA . writevalues
-    (74) writevalues -> . CTESTRING COMMA writevalues
-    (75) writevalues -> . super_exp COMMA writevalues
-    (76) writevalues -> . CTESTRING
-    (77) writevalues -> . super_exp
-    (47) super_exp -> . expression OR super_exp
-    (48) super_exp -> . expression AND super_exp
-    (49) super_exp -> . expression
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (86) writevalues -> CTESTRING COMMA . writevalues
+    (86) writevalues -> . CTESTRING COMMA writevalues
+    (87) writevalues -> . super_exp COMMA writevalues
+    (88) writevalues -> . CTESTRING
+    (89) writevalues -> . super_exp
+    (49) super_exp -> . expression super_exp_quadgen super_exp_aux
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -3161,10 +2770,260 @@ state 146
     VARS            shift and go to state 41
     PROGRAM         shift and go to state 42
 
-    writevalues                    shift and go to state 163
+    writevalues                    shift and go to state 168
     super_exp                      shift and go to state 123
     expression                     shift and go to state 124
     exp                            shift and go to state 117
+    term                           shift and go to state 109
+    factor                         shift and go to state 110
+    varcte                         shift and go to state 111
+    call                           shift and go to state 112
+    var                            shift and go to state 113
+
+state 139
+
+    (87) writevalues -> super_exp COMMA . writevalues
+    (86) writevalues -> . CTESTRING COMMA writevalues
+    (87) writevalues -> . super_exp COMMA writevalues
+    (88) writevalues -> . CTESTRING
+    (89) writevalues -> . super_exp
+    (49) super_exp -> . expression super_exp_quadgen super_exp_aux
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
+    (43) call -> . ID LPAREN callvalues RPAREN
+    (14) var -> . FLOAT
+    (15) var -> . INT
+    (16) var -> . ELSE
+    (17) var -> . IF
+    (18) var -> . PRINT
+    (19) var -> . INPUT
+    (20) var -> . WHILE
+    (21) var -> . DO
+    (22) var -> . BY
+    (23) var -> . TO
+    (24) var -> . FROM
+    (25) var -> . VOID
+    (26) var -> . RETURN
+    (27) var -> . FUNC
+    (28) var -> . MAIN
+    (29) var -> . VARS
+    (30) var -> . PROGRAM
+    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (32) var -> . ID LBRACKET CTEINT RBRACKET
+    (33) var -> . ID
+    CTESTRING       shift and go to state 122
+    LPAREN          shift and go to state 105
+    CTEFLOAT        shift and go to state 114
+    CTEINT          shift and go to state 115
+    ID              shift and go to state 104
+    FLOAT           shift and go to state 26
+    INT             shift and go to state 27
+    ELSE            shift and go to state 28
+    IF              shift and go to state 29
+    PRINT           shift and go to state 30
+    INPUT           shift and go to state 31
+    WHILE           shift and go to state 32
+    DO              shift and go to state 33
+    BY              shift and go to state 34
+    TO              shift and go to state 35
+    FROM            shift and go to state 36
+    VOID            shift and go to state 37
+    RETURN          shift and go to state 38
+    FUNC            shift and go to state 39
+    MAIN            shift and go to state 40
+    VARS            shift and go to state 41
+    PROGRAM         shift and go to state 42
+
+    super_exp                      shift and go to state 123
+    writevalues                    shift and go to state 169
+    expression                     shift and go to state 124
+    exp                            shift and go to state 117
+    term                           shift and go to state 109
+    factor                         shift and go to state 110
+    varcte                         shift and go to state 111
+    call                           shift and go to state 112
+    var                            shift and go to state 113
+
+state 140
+
+    (49) super_exp -> expression super_exp_quadgen . super_exp_aux
+    (47) super_exp_aux -> . logic super_exp
+    (48) super_exp_aux -> . empty
+    (50) logic -> . OR
+    (51) logic -> . AND
+    (105) empty -> .
+    OR              shift and go to state 173
+    AND             shift and go to state 174
+    COMMA           reduce using rule 105 (empty -> .)
+    RPAREN          reduce using rule 105 (empty -> .)
+
+    super_exp_aux                  shift and go to state 170
+    logic                          shift and go to state 171
+    empty                          shift and go to state 172
+
+state 141
+
+    (90) condition -> IF LPAREN expression RPAREN . block ELSE block
+    (91) condition -> IF LPAREN expression RPAREN . block
+    (4) block -> . LCURLY decvars blockcontent RCURLY
+    LCURLY          shift and go to state 61
+
+    block                          shift and go to state 175
+
+state 142
+
+    (5) returnblock -> LCURLY decvars blockcontent RETURN . exp SEMICOLON RCURLY
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
+    (43) call -> . ID LPAREN callvalues RPAREN
+    (14) var -> . FLOAT
+    (15) var -> . INT
+    (16) var -> . ELSE
+    (17) var -> . IF
+    (18) var -> . PRINT
+    (19) var -> . INPUT
+    (20) var -> . WHILE
+    (21) var -> . DO
+    (22) var -> . BY
+    (23) var -> . TO
+    (24) var -> . FROM
+    (25) var -> . VOID
+    (26) var -> . RETURN
+    (27) var -> . FUNC
+    (28) var -> . MAIN
+    (29) var -> . VARS
+    (30) var -> . PROGRAM
+    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (32) var -> . ID LBRACKET CTEINT RBRACKET
+    (33) var -> . ID
+    LPAREN          shift and go to state 105
+    CTEFLOAT        shift and go to state 114
+    CTEINT          shift and go to state 115
+    ID              shift and go to state 104
+    FLOAT           shift and go to state 26
+    INT             shift and go to state 27
+    ELSE            shift and go to state 28
+    IF              shift and go to state 29
+    PRINT           shift and go to state 30
+    INPUT           shift and go to state 31
+    WHILE           shift and go to state 32
+    DO              shift and go to state 33
+    BY              shift and go to state 34
+    TO              shift and go to state 35
+    FROM            shift and go to state 36
+    VOID            shift and go to state 37
+    RETURN          shift and go to state 38
+    FUNC            shift and go to state 39
+    MAIN            shift and go to state 40
+    VARS            shift and go to state 41
+    PROGRAM         shift and go to state 42
+
+    exp                            shift and go to state 176
+    term                           shift and go to state 109
+    factor                         shift and go to state 110
+    varcte                         shift and go to state 111
+    call                           shift and go to state 112
+    var                            shift and go to state 113
+
+state 143
+
+    (75) factor -> LPAREN fakefloor super_exp . RPAREN
+    RPAREN          shift and go to state 177
+
+
+state 144
+
+    (45) callvalues -> exp COMMA callvalues .
+    RPAREN          reduce using rule 45 (callvalues -> exp COMMA callvalues .)
+
+
+state 145
+
+    (65) exp -> term exp_quadgen exp_aux .
+    COMMA           reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    RPAREN          reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    NEQ             reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    EQ              reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    LTE             reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    GTE             reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    LT              reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    GT              reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    SEMICOLON       reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    OR              reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    AND             reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    TO              reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    BY              reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+    DO              reduce using rule 65 (exp -> term exp_quadgen exp_aux .)
+
+
+state 146
+
+    (63) exp_aux -> exp_sign . exp
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
+    (43) call -> . ID LPAREN callvalues RPAREN
+    (14) var -> . FLOAT
+    (15) var -> . INT
+    (16) var -> . ELSE
+    (17) var -> . IF
+    (18) var -> . PRINT
+    (19) var -> . INPUT
+    (20) var -> . WHILE
+    (21) var -> . DO
+    (22) var -> . BY
+    (23) var -> . TO
+    (24) var -> . FROM
+    (25) var -> . VOID
+    (26) var -> . RETURN
+    (27) var -> . FUNC
+    (28) var -> . MAIN
+    (29) var -> . VARS
+    (30) var -> . PROGRAM
+    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (32) var -> . ID LBRACKET CTEINT RBRACKET
+    (33) var -> . ID
+    LPAREN          shift and go to state 105
+    CTEFLOAT        shift and go to state 114
+    CTEINT          shift and go to state 115
+    ID              shift and go to state 104
+    FLOAT           shift and go to state 26
+    INT             shift and go to state 27
+    ELSE            shift and go to state 28
+    IF              shift and go to state 29
+    PRINT           shift and go to state 30
+    INPUT           shift and go to state 31
+    WHILE           shift and go to state 32
+    DO              shift and go to state 33
+    BY              shift and go to state 34
+    TO              shift and go to state 35
+    FROM            shift and go to state 36
+    VOID            shift and go to state 37
+    RETURN          shift and go to state 38
+    FUNC            shift and go to state 39
+    MAIN            shift and go to state 40
+    VARS            shift and go to state 41
+    PROGRAM         shift and go to state 42
+
+    exp                            shift and go to state 178
     term                           shift and go to state 109
     factor                         shift and go to state 110
     varcte                         shift and go to state 111
@@ -3173,250 +3032,106 @@ state 146
 
 state 147
 
-    (75) writevalues -> super_exp COMMA . writevalues
-    (74) writevalues -> . CTESTRING COMMA writevalues
-    (75) writevalues -> . super_exp COMMA writevalues
-    (76) writevalues -> . CTESTRING
-    (77) writevalues -> . super_exp
-    (47) super_exp -> . expression OR super_exp
-    (48) super_exp -> . expression AND super_exp
-    (49) super_exp -> . expression
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    CTESTRING       shift and go to state 122
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (64) exp_aux -> empty .
+    COMMA           reduce using rule 64 (exp_aux -> empty .)
+    RPAREN          reduce using rule 64 (exp_aux -> empty .)
+    NEQ             reduce using rule 64 (exp_aux -> empty .)
+    EQ              reduce using rule 64 (exp_aux -> empty .)
+    LTE             reduce using rule 64 (exp_aux -> empty .)
+    GTE             reduce using rule 64 (exp_aux -> empty .)
+    LT              reduce using rule 64 (exp_aux -> empty .)
+    GT              reduce using rule 64 (exp_aux -> empty .)
+    SEMICOLON       reduce using rule 64 (exp_aux -> empty .)
+    OR              reduce using rule 64 (exp_aux -> empty .)
+    AND             reduce using rule 64 (exp_aux -> empty .)
+    TO              reduce using rule 64 (exp_aux -> empty .)
+    BY              reduce using rule 64 (exp_aux -> empty .)
+    DO              reduce using rule 64 (exp_aux -> empty .)
 
-    super_exp                      shift and go to state 123
-    writevalues                    shift and go to state 164
-    expression                     shift and go to state 124
-    exp                            shift and go to state 117
-    term                           shift and go to state 109
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
 
 state 148
 
-    (47) super_exp -> expression OR . super_exp
-    (47) super_exp -> . expression OR super_exp
-    (48) super_exp -> . expression AND super_exp
-    (49) super_exp -> . expression
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (66) exp_sign -> MINUS .
+    LPAREN          reduce using rule 66 (exp_sign -> MINUS .)
+    CTEFLOAT        reduce using rule 66 (exp_sign -> MINUS .)
+    CTEINT          reduce using rule 66 (exp_sign -> MINUS .)
+    ID              reduce using rule 66 (exp_sign -> MINUS .)
+    FLOAT           reduce using rule 66 (exp_sign -> MINUS .)
+    INT             reduce using rule 66 (exp_sign -> MINUS .)
+    ELSE            reduce using rule 66 (exp_sign -> MINUS .)
+    IF              reduce using rule 66 (exp_sign -> MINUS .)
+    PRINT           reduce using rule 66 (exp_sign -> MINUS .)
+    INPUT           reduce using rule 66 (exp_sign -> MINUS .)
+    WHILE           reduce using rule 66 (exp_sign -> MINUS .)
+    DO              reduce using rule 66 (exp_sign -> MINUS .)
+    BY              reduce using rule 66 (exp_sign -> MINUS .)
+    TO              reduce using rule 66 (exp_sign -> MINUS .)
+    FROM            reduce using rule 66 (exp_sign -> MINUS .)
+    VOID            reduce using rule 66 (exp_sign -> MINUS .)
+    RETURN          reduce using rule 66 (exp_sign -> MINUS .)
+    FUNC            reduce using rule 66 (exp_sign -> MINUS .)
+    MAIN            reduce using rule 66 (exp_sign -> MINUS .)
+    VARS            reduce using rule 66 (exp_sign -> MINUS .)
+    PROGRAM         reduce using rule 66 (exp_sign -> MINUS .)
 
-    expression                     shift and go to state 124
-    super_exp                      shift and go to state 165
-    exp                            shift and go to state 117
-    term                           shift and go to state 109
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
 
 state 149
 
-    (48) super_exp -> expression AND . super_exp
-    (47) super_exp -> . expression OR super_exp
-    (48) super_exp -> . expression AND super_exp
-    (49) super_exp -> . expression
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (67) exp_sign -> PLUS .
+    LPAREN          reduce using rule 67 (exp_sign -> PLUS .)
+    CTEFLOAT        reduce using rule 67 (exp_sign -> PLUS .)
+    CTEINT          reduce using rule 67 (exp_sign -> PLUS .)
+    ID              reduce using rule 67 (exp_sign -> PLUS .)
+    FLOAT           reduce using rule 67 (exp_sign -> PLUS .)
+    INT             reduce using rule 67 (exp_sign -> PLUS .)
+    ELSE            reduce using rule 67 (exp_sign -> PLUS .)
+    IF              reduce using rule 67 (exp_sign -> PLUS .)
+    PRINT           reduce using rule 67 (exp_sign -> PLUS .)
+    INPUT           reduce using rule 67 (exp_sign -> PLUS .)
+    WHILE           reduce using rule 67 (exp_sign -> PLUS .)
+    DO              reduce using rule 67 (exp_sign -> PLUS .)
+    BY              reduce using rule 67 (exp_sign -> PLUS .)
+    TO              reduce using rule 67 (exp_sign -> PLUS .)
+    FROM            reduce using rule 67 (exp_sign -> PLUS .)
+    VOID            reduce using rule 67 (exp_sign -> PLUS .)
+    RETURN          reduce using rule 67 (exp_sign -> PLUS .)
+    FUNC            reduce using rule 67 (exp_sign -> PLUS .)
+    MAIN            reduce using rule 67 (exp_sign -> PLUS .)
+    VARS            reduce using rule 67 (exp_sign -> PLUS .)
+    PROGRAM         reduce using rule 67 (exp_sign -> PLUS .)
 
-    expression                     shift and go to state 124
-    super_exp                      shift and go to state 166
-    exp                            shift and go to state 117
-    term                           shift and go to state 109
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
-    var                            shift and go to state 113
 
 state 150
 
-    (78) condition -> IF LPAREN expression RPAREN . block ELSE block
-    (79) condition -> IF LPAREN expression RPAREN . block
-    (4) block -> . LCURLY decvars blockcontent RCURLY
-    LCURLY          shift and go to state 61
+    (71) term -> factor term_quadgen term_aux .
+    MINUS           reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    PLUS            reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    COMMA           reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    RPAREN          reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    NEQ             reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    EQ              reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    LTE             reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    GTE             reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    LT              reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    GT              reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    SEMICOLON       reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    OR              reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    AND             reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    TO              reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    BY              reduce using rule 71 (term -> factor term_quadgen term_aux .)
+    DO              reduce using rule 71 (term -> factor term_quadgen term_aux .)
 
-    block                          shift and go to state 167
 
 state 151
 
-    (5) returnblock -> LCURLY decvars blockcontent RETURN . exp SEMICOLON RCURLY
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (69) term_aux -> term_sign . term
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -3460,8 +3175,7 @@ state 151
     VARS            shift and go to state 41
     PROGRAM         shift and go to state 42
 
-    exp                            shift and go to state 168
-    term                           shift and go to state 109
+    term                           shift and go to state 179
     factor                         shift and go to state 110
     varcte                         shift and go to state 111
     call                           shift and go to state 112
@@ -3469,320 +3183,335 @@ state 151
 
 state 152
 
-    (64) factor -> LPAREN super_exp RPAREN .
-    DIVIDE          reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    TIMES           reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    MINUS           reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    PLUS            reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    COMMA           reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    RPAREN          reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    NEQ             reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    EQ              reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    LTE             reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    GTE             reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    LT              reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    GT              reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    SEMICOLON       reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    OR              reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    AND             reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    TO              reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    BY              reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
-    DO              reduce using rule 64 (factor -> LPAREN super_exp RPAREN .)
+    (70) term_aux -> empty .
+    MINUS           reduce using rule 70 (term_aux -> empty .)
+    PLUS            reduce using rule 70 (term_aux -> empty .)
+    COMMA           reduce using rule 70 (term_aux -> empty .)
+    RPAREN          reduce using rule 70 (term_aux -> empty .)
+    NEQ             reduce using rule 70 (term_aux -> empty .)
+    EQ              reduce using rule 70 (term_aux -> empty .)
+    LTE             reduce using rule 70 (term_aux -> empty .)
+    GTE             reduce using rule 70 (term_aux -> empty .)
+    LT              reduce using rule 70 (term_aux -> empty .)
+    GT              reduce using rule 70 (term_aux -> empty .)
+    SEMICOLON       reduce using rule 70 (term_aux -> empty .)
+    OR              reduce using rule 70 (term_aux -> empty .)
+    AND             reduce using rule 70 (term_aux -> empty .)
+    TO              reduce using rule 70 (term_aux -> empty .)
+    BY              reduce using rule 70 (term_aux -> empty .)
+    DO              reduce using rule 70 (term_aux -> empty .)
 
 
 state 153
 
-    (45) callvalues -> exp COMMA callvalues .
-    RPAREN          reduce using rule 45 (callvalues -> exp COMMA callvalues .)
+    (72) term_sign -> DIVIDE .
+    LPAREN          reduce using rule 72 (term_sign -> DIVIDE .)
+    CTEFLOAT        reduce using rule 72 (term_sign -> DIVIDE .)
+    CTEINT          reduce using rule 72 (term_sign -> DIVIDE .)
+    ID              reduce using rule 72 (term_sign -> DIVIDE .)
+    FLOAT           reduce using rule 72 (term_sign -> DIVIDE .)
+    INT             reduce using rule 72 (term_sign -> DIVIDE .)
+    ELSE            reduce using rule 72 (term_sign -> DIVIDE .)
+    IF              reduce using rule 72 (term_sign -> DIVIDE .)
+    PRINT           reduce using rule 72 (term_sign -> DIVIDE .)
+    INPUT           reduce using rule 72 (term_sign -> DIVIDE .)
+    WHILE           reduce using rule 72 (term_sign -> DIVIDE .)
+    DO              reduce using rule 72 (term_sign -> DIVIDE .)
+    BY              reduce using rule 72 (term_sign -> DIVIDE .)
+    TO              reduce using rule 72 (term_sign -> DIVIDE .)
+    FROM            reduce using rule 72 (term_sign -> DIVIDE .)
+    VOID            reduce using rule 72 (term_sign -> DIVIDE .)
+    RETURN          reduce using rule 72 (term_sign -> DIVIDE .)
+    FUNC            reduce using rule 72 (term_sign -> DIVIDE .)
+    MAIN            reduce using rule 72 (term_sign -> DIVIDE .)
+    VARS            reduce using rule 72 (term_sign -> DIVIDE .)
+    PROGRAM         reduce using rule 72 (term_sign -> DIVIDE .)
 
 
 state 154
 
-    (58) exp -> term MINUS exp .
-    COMMA           reduce using rule 58 (exp -> term MINUS exp .)
-    RPAREN          reduce using rule 58 (exp -> term MINUS exp .)
-    NEQ             reduce using rule 58 (exp -> term MINUS exp .)
-    EQ              reduce using rule 58 (exp -> term MINUS exp .)
-    LTE             reduce using rule 58 (exp -> term MINUS exp .)
-    GTE             reduce using rule 58 (exp -> term MINUS exp .)
-    LT              reduce using rule 58 (exp -> term MINUS exp .)
-    GT              reduce using rule 58 (exp -> term MINUS exp .)
-    SEMICOLON       reduce using rule 58 (exp -> term MINUS exp .)
-    OR              reduce using rule 58 (exp -> term MINUS exp .)
-    AND             reduce using rule 58 (exp -> term MINUS exp .)
-    TO              reduce using rule 58 (exp -> term MINUS exp .)
-    BY              reduce using rule 58 (exp -> term MINUS exp .)
-    DO              reduce using rule 58 (exp -> term MINUS exp .)
+    (73) term_sign -> TIMES .
+    LPAREN          reduce using rule 73 (term_sign -> TIMES .)
+    CTEFLOAT        reduce using rule 73 (term_sign -> TIMES .)
+    CTEINT          reduce using rule 73 (term_sign -> TIMES .)
+    ID              reduce using rule 73 (term_sign -> TIMES .)
+    FLOAT           reduce using rule 73 (term_sign -> TIMES .)
+    INT             reduce using rule 73 (term_sign -> TIMES .)
+    ELSE            reduce using rule 73 (term_sign -> TIMES .)
+    IF              reduce using rule 73 (term_sign -> TIMES .)
+    PRINT           reduce using rule 73 (term_sign -> TIMES .)
+    INPUT           reduce using rule 73 (term_sign -> TIMES .)
+    WHILE           reduce using rule 73 (term_sign -> TIMES .)
+    DO              reduce using rule 73 (term_sign -> TIMES .)
+    BY              reduce using rule 73 (term_sign -> TIMES .)
+    TO              reduce using rule 73 (term_sign -> TIMES .)
+    FROM            reduce using rule 73 (term_sign -> TIMES .)
+    VOID            reduce using rule 73 (term_sign -> TIMES .)
+    RETURN          reduce using rule 73 (term_sign -> TIMES .)
+    FUNC            reduce using rule 73 (term_sign -> TIMES .)
+    MAIN            reduce using rule 73 (term_sign -> TIMES .)
+    VARS            reduce using rule 73 (term_sign -> TIMES .)
+    PROGRAM         reduce using rule 73 (term_sign -> TIMES .)
 
 
 state 155
 
-    (59) exp -> term PLUS exp .
-    COMMA           reduce using rule 59 (exp -> term PLUS exp .)
-    RPAREN          reduce using rule 59 (exp -> term PLUS exp .)
-    NEQ             reduce using rule 59 (exp -> term PLUS exp .)
-    EQ              reduce using rule 59 (exp -> term PLUS exp .)
-    LTE             reduce using rule 59 (exp -> term PLUS exp .)
-    GTE             reduce using rule 59 (exp -> term PLUS exp .)
-    LT              reduce using rule 59 (exp -> term PLUS exp .)
-    GT              reduce using rule 59 (exp -> term PLUS exp .)
-    SEMICOLON       reduce using rule 59 (exp -> term PLUS exp .)
-    OR              reduce using rule 59 (exp -> term PLUS exp .)
-    AND             reduce using rule 59 (exp -> term PLUS exp .)
-    TO              reduce using rule 59 (exp -> term PLUS exp .)
-    BY              reduce using rule 59 (exp -> term PLUS exp .)
-    DO              reduce using rule 59 (exp -> term PLUS exp .)
+    (55) expression -> exp expression_quadgen expression_aux .
+    SEMICOLON       reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
+    RPAREN          reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
+    OR              reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
+    AND             reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
+    COMMA           reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
+    TO              reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
+    BY              reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
+    DO              reduce using rule 55 (expression -> exp expression_quadgen expression_aux .)
 
 
 state 156
 
-    (61) term -> factor DIVIDE term .
-    MINUS           reduce using rule 61 (term -> factor DIVIDE term .)
-    PLUS            reduce using rule 61 (term -> factor DIVIDE term .)
-    COMMA           reduce using rule 61 (term -> factor DIVIDE term .)
-    RPAREN          reduce using rule 61 (term -> factor DIVIDE term .)
-    NEQ             reduce using rule 61 (term -> factor DIVIDE term .)
-    EQ              reduce using rule 61 (term -> factor DIVIDE term .)
-    LTE             reduce using rule 61 (term -> factor DIVIDE term .)
-    GTE             reduce using rule 61 (term -> factor DIVIDE term .)
-    LT              reduce using rule 61 (term -> factor DIVIDE term .)
-    GT              reduce using rule 61 (term -> factor DIVIDE term .)
-    SEMICOLON       reduce using rule 61 (term -> factor DIVIDE term .)
-    OR              reduce using rule 61 (term -> factor DIVIDE term .)
-    AND             reduce using rule 61 (term -> factor DIVIDE term .)
-    TO              reduce using rule 61 (term -> factor DIVIDE term .)
-    BY              reduce using rule 61 (term -> factor DIVIDE term .)
-    DO              reduce using rule 61 (term -> factor DIVIDE term .)
+    (53) expression_aux -> relation . expression
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
+    (43) call -> . ID LPAREN callvalues RPAREN
+    (14) var -> . FLOAT
+    (15) var -> . INT
+    (16) var -> . ELSE
+    (17) var -> . IF
+    (18) var -> . PRINT
+    (19) var -> . INPUT
+    (20) var -> . WHILE
+    (21) var -> . DO
+    (22) var -> . BY
+    (23) var -> . TO
+    (24) var -> . FROM
+    (25) var -> . VOID
+    (26) var -> . RETURN
+    (27) var -> . FUNC
+    (28) var -> . MAIN
+    (29) var -> . VARS
+    (30) var -> . PROGRAM
+    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (32) var -> . ID LBRACKET CTEINT RBRACKET
+    (33) var -> . ID
+    LPAREN          shift and go to state 105
+    CTEFLOAT        shift and go to state 114
+    CTEINT          shift and go to state 115
+    ID              shift and go to state 104
+    FLOAT           shift and go to state 26
+    INT             shift and go to state 27
+    ELSE            shift and go to state 28
+    IF              shift and go to state 29
+    PRINT           shift and go to state 30
+    INPUT           shift and go to state 31
+    WHILE           shift and go to state 32
+    DO              shift and go to state 33
+    BY              shift and go to state 34
+    TO              shift and go to state 35
+    FROM            shift and go to state 36
+    VOID            shift and go to state 37
+    RETURN          shift and go to state 38
+    FUNC            shift and go to state 39
+    MAIN            shift and go to state 40
+    VARS            shift and go to state 41
+    PROGRAM         shift and go to state 42
 
+    expression                     shift and go to state 180
+    exp                            shift and go to state 117
+    term                           shift and go to state 109
+    factor                         shift and go to state 110
+    varcte                         shift and go to state 111
+    call                           shift and go to state 112
+    var                            shift and go to state 113
 
 state 157
 
-    (62) term -> factor TIMES term .
-    MINUS           reduce using rule 62 (term -> factor TIMES term .)
-    PLUS            reduce using rule 62 (term -> factor TIMES term .)
-    COMMA           reduce using rule 62 (term -> factor TIMES term .)
-    RPAREN          reduce using rule 62 (term -> factor TIMES term .)
-    NEQ             reduce using rule 62 (term -> factor TIMES term .)
-    EQ              reduce using rule 62 (term -> factor TIMES term .)
-    LTE             reduce using rule 62 (term -> factor TIMES term .)
-    GTE             reduce using rule 62 (term -> factor TIMES term .)
-    LT              reduce using rule 62 (term -> factor TIMES term .)
-    GT              reduce using rule 62 (term -> factor TIMES term .)
-    SEMICOLON       reduce using rule 62 (term -> factor TIMES term .)
-    OR              reduce using rule 62 (term -> factor TIMES term .)
-    AND             reduce using rule 62 (term -> factor TIMES term .)
-    TO              reduce using rule 62 (term -> factor TIMES term .)
-    BY              reduce using rule 62 (term -> factor TIMES term .)
-    DO              reduce using rule 62 (term -> factor TIMES term .)
+    (54) expression_aux -> empty .
+    SEMICOLON       reduce using rule 54 (expression_aux -> empty .)
+    RPAREN          reduce using rule 54 (expression_aux -> empty .)
+    OR              reduce using rule 54 (expression_aux -> empty .)
+    AND             reduce using rule 54 (expression_aux -> empty .)
+    COMMA           reduce using rule 54 (expression_aux -> empty .)
+    TO              reduce using rule 54 (expression_aux -> empty .)
+    BY              reduce using rule 54 (expression_aux -> empty .)
+    DO              reduce using rule 54 (expression_aux -> empty .)
 
 
 state 158
 
-    (50) expression -> exp relation exp .
-    SEMICOLON       reduce using rule 50 (expression -> exp relation exp .)
-    RPAREN          reduce using rule 50 (expression -> exp relation exp .)
-    OR              reduce using rule 50 (expression -> exp relation exp .)
-    AND             reduce using rule 50 (expression -> exp relation exp .)
-    COMMA           reduce using rule 50 (expression -> exp relation exp .)
-    TO              reduce using rule 50 (expression -> exp relation exp .)
-    BY              reduce using rule 50 (expression -> exp relation exp .)
-    DO              reduce using rule 50 (expression -> exp relation exp .)
+    (56) relation -> NEQ .
+    LPAREN          reduce using rule 56 (relation -> NEQ .)
+    CTEFLOAT        reduce using rule 56 (relation -> NEQ .)
+    CTEINT          reduce using rule 56 (relation -> NEQ .)
+    ID              reduce using rule 56 (relation -> NEQ .)
+    FLOAT           reduce using rule 56 (relation -> NEQ .)
+    INT             reduce using rule 56 (relation -> NEQ .)
+    ELSE            reduce using rule 56 (relation -> NEQ .)
+    IF              reduce using rule 56 (relation -> NEQ .)
+    PRINT           reduce using rule 56 (relation -> NEQ .)
+    INPUT           reduce using rule 56 (relation -> NEQ .)
+    WHILE           reduce using rule 56 (relation -> NEQ .)
+    DO              reduce using rule 56 (relation -> NEQ .)
+    BY              reduce using rule 56 (relation -> NEQ .)
+    TO              reduce using rule 56 (relation -> NEQ .)
+    FROM            reduce using rule 56 (relation -> NEQ .)
+    VOID            reduce using rule 56 (relation -> NEQ .)
+    RETURN          reduce using rule 56 (relation -> NEQ .)
+    FUNC            reduce using rule 56 (relation -> NEQ .)
+    MAIN            reduce using rule 56 (relation -> NEQ .)
+    VARS            reduce using rule 56 (relation -> NEQ .)
+    PROGRAM         reduce using rule 56 (relation -> NEQ .)
 
 
 state 159
 
-    (68) forloop -> FROM var ASSIGN expression TO . expression BY expression DO block
-    (69) forloop -> FROM var ASSIGN expression TO . expression DO block
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
-    (43) call -> . ID LPAREN callvalues RPAREN
-    (14) var -> . FLOAT
-    (15) var -> . INT
-    (16) var -> . ELSE
-    (17) var -> . IF
-    (18) var -> . PRINT
-    (19) var -> . INPUT
-    (20) var -> . WHILE
-    (21) var -> . DO
-    (22) var -> . BY
-    (23) var -> . TO
-    (24) var -> . FROM
-    (25) var -> . VOID
-    (26) var -> . RETURN
-    (27) var -> . FUNC
-    (28) var -> . MAIN
-    (29) var -> . VARS
-    (30) var -> . PROGRAM
-    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (32) var -> . ID LBRACKET CTEINT RBRACKET
-    (33) var -> . ID
-    LPAREN          shift and go to state 105
-    CTEFLOAT        shift and go to state 114
-    CTEINT          shift and go to state 115
-    ID              shift and go to state 104
-    FLOAT           shift and go to state 26
-    INT             shift and go to state 27
-    ELSE            shift and go to state 28
-    IF              shift and go to state 29
-    PRINT           shift and go to state 30
-    INPUT           shift and go to state 31
-    WHILE           shift and go to state 32
-    DO              shift and go to state 33
-    BY              shift and go to state 34
-    TO              shift and go to state 35
-    FROM            shift and go to state 36
-    VOID            shift and go to state 37
-    RETURN          shift and go to state 38
-    FUNC            shift and go to state 39
-    MAIN            shift and go to state 40
-    VARS            shift and go to state 41
-    PROGRAM         shift and go to state 42
+    (57) relation -> EQ .
+    LPAREN          reduce using rule 57 (relation -> EQ .)
+    CTEFLOAT        reduce using rule 57 (relation -> EQ .)
+    CTEINT          reduce using rule 57 (relation -> EQ .)
+    ID              reduce using rule 57 (relation -> EQ .)
+    FLOAT           reduce using rule 57 (relation -> EQ .)
+    INT             reduce using rule 57 (relation -> EQ .)
+    ELSE            reduce using rule 57 (relation -> EQ .)
+    IF              reduce using rule 57 (relation -> EQ .)
+    PRINT           reduce using rule 57 (relation -> EQ .)
+    INPUT           reduce using rule 57 (relation -> EQ .)
+    WHILE           reduce using rule 57 (relation -> EQ .)
+    DO              reduce using rule 57 (relation -> EQ .)
+    BY              reduce using rule 57 (relation -> EQ .)
+    TO              reduce using rule 57 (relation -> EQ .)
+    FROM            reduce using rule 57 (relation -> EQ .)
+    VOID            reduce using rule 57 (relation -> EQ .)
+    RETURN          reduce using rule 57 (relation -> EQ .)
+    FUNC            reduce using rule 57 (relation -> EQ .)
+    MAIN            reduce using rule 57 (relation -> EQ .)
+    VARS            reduce using rule 57 (relation -> EQ .)
+    PROGRAM         reduce using rule 57 (relation -> EQ .)
 
-    var                            shift and go to state 113
-    expression                     shift and go to state 169
-    exp                            shift and go to state 117
-    term                           shift and go to state 109
-    factor                         shift and go to state 110
-    varcte                         shift and go to state 111
-    call                           shift and go to state 112
 
 state 160
 
-    (70) whileloop -> WHILE LPAREN expression RPAREN block .
-    ID              reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
-    FROM            reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
-    WHILE           reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
-    INPUT           reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
-    PRINT           reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
-    IF              reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
-    RCURLY          reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
-    RETURN          reduce using rule 70 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    (58) relation -> LTE .
+    LPAREN          reduce using rule 58 (relation -> LTE .)
+    CTEFLOAT        reduce using rule 58 (relation -> LTE .)
+    CTEINT          reduce using rule 58 (relation -> LTE .)
+    ID              reduce using rule 58 (relation -> LTE .)
+    FLOAT           reduce using rule 58 (relation -> LTE .)
+    INT             reduce using rule 58 (relation -> LTE .)
+    ELSE            reduce using rule 58 (relation -> LTE .)
+    IF              reduce using rule 58 (relation -> LTE .)
+    PRINT           reduce using rule 58 (relation -> LTE .)
+    INPUT           reduce using rule 58 (relation -> LTE .)
+    WHILE           reduce using rule 58 (relation -> LTE .)
+    DO              reduce using rule 58 (relation -> LTE .)
+    BY              reduce using rule 58 (relation -> LTE .)
+    TO              reduce using rule 58 (relation -> LTE .)
+    FROM            reduce using rule 58 (relation -> LTE .)
+    VOID            reduce using rule 58 (relation -> LTE .)
+    RETURN          reduce using rule 58 (relation -> LTE .)
+    FUNC            reduce using rule 58 (relation -> LTE .)
+    MAIN            reduce using rule 58 (relation -> LTE .)
+    VARS            reduce using rule 58 (relation -> LTE .)
+    PROGRAM         reduce using rule 58 (relation -> LTE .)
 
 
 state 161
 
-    (72) read -> INPUT LPAREN decvar RPAREN SEMICOLON .
-    ID              reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
-    FROM            reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
-    WHILE           reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
-    INPUT           reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
-    PRINT           reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
-    IF              reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
-    RCURLY          reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
-    RETURN          reduce using rule 72 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    (59) relation -> GTE .
+    LPAREN          reduce using rule 59 (relation -> GTE .)
+    CTEFLOAT        reduce using rule 59 (relation -> GTE .)
+    CTEINT          reduce using rule 59 (relation -> GTE .)
+    ID              reduce using rule 59 (relation -> GTE .)
+    FLOAT           reduce using rule 59 (relation -> GTE .)
+    INT             reduce using rule 59 (relation -> GTE .)
+    ELSE            reduce using rule 59 (relation -> GTE .)
+    IF              reduce using rule 59 (relation -> GTE .)
+    PRINT           reduce using rule 59 (relation -> GTE .)
+    INPUT           reduce using rule 59 (relation -> GTE .)
+    WHILE           reduce using rule 59 (relation -> GTE .)
+    DO              reduce using rule 59 (relation -> GTE .)
+    BY              reduce using rule 59 (relation -> GTE .)
+    TO              reduce using rule 59 (relation -> GTE .)
+    FROM            reduce using rule 59 (relation -> GTE .)
+    VOID            reduce using rule 59 (relation -> GTE .)
+    RETURN          reduce using rule 59 (relation -> GTE .)
+    FUNC            reduce using rule 59 (relation -> GTE .)
+    MAIN            reduce using rule 59 (relation -> GTE .)
+    VARS            reduce using rule 59 (relation -> GTE .)
+    PROGRAM         reduce using rule 59 (relation -> GTE .)
 
 
 state 162
 
-    (73) write -> PRINT LPAREN writevalues RPAREN SEMICOLON .
-    ID              reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
-    FROM            reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
-    WHILE           reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
-    INPUT           reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
-    PRINT           reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
-    IF              reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
-    RCURLY          reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
-    RETURN          reduce using rule 73 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    (60) relation -> LT .
+    LPAREN          reduce using rule 60 (relation -> LT .)
+    CTEFLOAT        reduce using rule 60 (relation -> LT .)
+    CTEINT          reduce using rule 60 (relation -> LT .)
+    ID              reduce using rule 60 (relation -> LT .)
+    FLOAT           reduce using rule 60 (relation -> LT .)
+    INT             reduce using rule 60 (relation -> LT .)
+    ELSE            reduce using rule 60 (relation -> LT .)
+    IF              reduce using rule 60 (relation -> LT .)
+    PRINT           reduce using rule 60 (relation -> LT .)
+    INPUT           reduce using rule 60 (relation -> LT .)
+    WHILE           reduce using rule 60 (relation -> LT .)
+    DO              reduce using rule 60 (relation -> LT .)
+    BY              reduce using rule 60 (relation -> LT .)
+    TO              reduce using rule 60 (relation -> LT .)
+    FROM            reduce using rule 60 (relation -> LT .)
+    VOID            reduce using rule 60 (relation -> LT .)
+    RETURN          reduce using rule 60 (relation -> LT .)
+    FUNC            reduce using rule 60 (relation -> LT .)
+    MAIN            reduce using rule 60 (relation -> LT .)
+    VARS            reduce using rule 60 (relation -> LT .)
+    PROGRAM         reduce using rule 60 (relation -> LT .)
 
 
 state 163
 
-    (74) writevalues -> CTESTRING COMMA writevalues .
-    RPAREN          reduce using rule 74 (writevalues -> CTESTRING COMMA writevalues .)
+    (61) relation -> GT .
+    LPAREN          reduce using rule 61 (relation -> GT .)
+    CTEFLOAT        reduce using rule 61 (relation -> GT .)
+    CTEINT          reduce using rule 61 (relation -> GT .)
+    ID              reduce using rule 61 (relation -> GT .)
+    FLOAT           reduce using rule 61 (relation -> GT .)
+    INT             reduce using rule 61 (relation -> GT .)
+    ELSE            reduce using rule 61 (relation -> GT .)
+    IF              reduce using rule 61 (relation -> GT .)
+    PRINT           reduce using rule 61 (relation -> GT .)
+    INPUT           reduce using rule 61 (relation -> GT .)
+    WHILE           reduce using rule 61 (relation -> GT .)
+    DO              reduce using rule 61 (relation -> GT .)
+    BY              reduce using rule 61 (relation -> GT .)
+    TO              reduce using rule 61 (relation -> GT .)
+    FROM            reduce using rule 61 (relation -> GT .)
+    VOID            reduce using rule 61 (relation -> GT .)
+    RETURN          reduce using rule 61 (relation -> GT .)
+    FUNC            reduce using rule 61 (relation -> GT .)
+    MAIN            reduce using rule 61 (relation -> GT .)
+    VARS            reduce using rule 61 (relation -> GT .)
+    PROGRAM         reduce using rule 61 (relation -> GT .)
 
 
 state 164
 
-    (75) writevalues -> super_exp COMMA writevalues .
-    RPAREN          reduce using rule 75 (writevalues -> super_exp COMMA writevalues .)
-
-
-state 165
-
-    (47) super_exp -> expression OR super_exp .
-    COMMA           reduce using rule 47 (super_exp -> expression OR super_exp .)
-    RPAREN          reduce using rule 47 (super_exp -> expression OR super_exp .)
-
-
-state 166
-
-    (48) super_exp -> expression AND super_exp .
-    COMMA           reduce using rule 48 (super_exp -> expression AND super_exp .)
-    RPAREN          reduce using rule 48 (super_exp -> expression AND super_exp .)
-
-
-state 167
-
-    (78) condition -> IF LPAREN expression RPAREN block . ELSE block
-    (79) condition -> IF LPAREN expression RPAREN block .
-    ELSE            shift and go to state 170
-    ID              reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-    FROM            reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-    WHILE           reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-    INPUT           reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-    PRINT           reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-    IF              reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-    RCURLY          reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-    RETURN          reduce using rule 79 (condition -> IF LPAREN expression RPAREN block .)
-
-
-state 168
-
-    (5) returnblock -> LCURLY decvars blockcontent RETURN exp . SEMICOLON RCURLY
-    SEMICOLON       shift and go to state 171
-
-
-state 169
-
-    (68) forloop -> FROM var ASSIGN expression TO expression . BY expression DO block
-    (69) forloop -> FROM var ASSIGN expression TO expression . DO block
-    BY              shift and go to state 172
-    DO              shift and go to state 173
-
-
-state 170
-
-    (78) condition -> IF LPAREN expression RPAREN block ELSE . block
-    (4) block -> . LCURLY decvars blockcontent RCURLY
-    LCURLY          shift and go to state 61
-
-    block                          shift and go to state 174
-
-state 171
-
-    (5) returnblock -> LCURLY decvars blockcontent RETURN exp SEMICOLON . RCURLY
-    RCURLY          shift and go to state 175
-
-
-state 172
-
-    (68) forloop -> FROM var ASSIGN expression TO expression BY . expression DO block
-    (50) expression -> . exp relation exp
-    (51) expression -> . exp
-    (58) exp -> . term MINUS exp
-    (59) exp -> . term PLUS exp
-    (60) exp -> . term
-    (61) term -> . factor DIVIDE term
-    (62) term -> . factor TIMES term
-    (63) term -> . factor
-    (64) factor -> . LPAREN super_exp RPAREN
-    (65) factor -> . varcte
-    (66) factor -> . call
-    (67) factor -> . var
-    (80) varcte -> . CTEFLOAT
-    (81) varcte -> . CTEINT
+    (80) forloop -> FROM var ASSIGN expression TO . expression BY expression DO block
+    (81) forloop -> FROM var ASSIGN expression TO . expression DO block
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
     (43) call -> . ID LPAREN callvalues RPAREN
     (14) var -> . FLOAT
     (15) var -> . INT
@@ -3827,76 +3556,447 @@ state 172
     PROGRAM         shift and go to state 42
 
     var                            shift and go to state 113
-    expression                     shift and go to state 176
+    expression                     shift and go to state 181
     exp                            shift and go to state 117
     term                           shift and go to state 109
     factor                         shift and go to state 110
     varcte                         shift and go to state 111
     call                           shift and go to state 112
 
+state 165
+
+    (82) whileloop -> WHILE LPAREN expression RPAREN block .
+    ID              reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    FROM            reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    WHILE           reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    INPUT           reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    PRINT           reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    IF              reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    RCURLY          reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+    RETURN          reduce using rule 82 (whileloop -> WHILE LPAREN expression RPAREN block .)
+
+
+state 166
+
+    (84) read -> INPUT LPAREN decvar RPAREN SEMICOLON .
+    ID              reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    FROM            reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    WHILE           reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    INPUT           reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    PRINT           reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    IF              reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    RCURLY          reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+    RETURN          reduce using rule 84 (read -> INPUT LPAREN decvar RPAREN SEMICOLON .)
+
+
+state 167
+
+    (85) write -> PRINT LPAREN writevalues RPAREN SEMICOLON .
+    ID              reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    FROM            reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    WHILE           reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    INPUT           reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    PRINT           reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    IF              reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    RCURLY          reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+    RETURN          reduce using rule 85 (write -> PRINT LPAREN writevalues RPAREN SEMICOLON .)
+
+
+state 168
+
+    (86) writevalues -> CTESTRING COMMA writevalues .
+    RPAREN          reduce using rule 86 (writevalues -> CTESTRING COMMA writevalues .)
+
+
+state 169
+
+    (87) writevalues -> super_exp COMMA writevalues .
+    RPAREN          reduce using rule 87 (writevalues -> super_exp COMMA writevalues .)
+
+
+state 170
+
+    (49) super_exp -> expression super_exp_quadgen super_exp_aux .
+    COMMA           reduce using rule 49 (super_exp -> expression super_exp_quadgen super_exp_aux .)
+    RPAREN          reduce using rule 49 (super_exp -> expression super_exp_quadgen super_exp_aux .)
+
+
+state 171
+
+    (47) super_exp_aux -> logic . super_exp
+    (49) super_exp -> . expression super_exp_quadgen super_exp_aux
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
+    (43) call -> . ID LPAREN callvalues RPAREN
+    (14) var -> . FLOAT
+    (15) var -> . INT
+    (16) var -> . ELSE
+    (17) var -> . IF
+    (18) var -> . PRINT
+    (19) var -> . INPUT
+    (20) var -> . WHILE
+    (21) var -> . DO
+    (22) var -> . BY
+    (23) var -> . TO
+    (24) var -> . FROM
+    (25) var -> . VOID
+    (26) var -> . RETURN
+    (27) var -> . FUNC
+    (28) var -> . MAIN
+    (29) var -> . VARS
+    (30) var -> . PROGRAM
+    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (32) var -> . ID LBRACKET CTEINT RBRACKET
+    (33) var -> . ID
+    LPAREN          shift and go to state 105
+    CTEFLOAT        shift and go to state 114
+    CTEINT          shift and go to state 115
+    ID              shift and go to state 104
+    FLOAT           shift and go to state 26
+    INT             shift and go to state 27
+    ELSE            shift and go to state 28
+    IF              shift and go to state 29
+    PRINT           shift and go to state 30
+    INPUT           shift and go to state 31
+    WHILE           shift and go to state 32
+    DO              shift and go to state 33
+    BY              shift and go to state 34
+    TO              shift and go to state 35
+    FROM            shift and go to state 36
+    VOID            shift and go to state 37
+    RETURN          shift and go to state 38
+    FUNC            shift and go to state 39
+    MAIN            shift and go to state 40
+    VARS            shift and go to state 41
+    PROGRAM         shift and go to state 42
+
+    super_exp                      shift and go to state 182
+    expression                     shift and go to state 124
+    exp                            shift and go to state 117
+    term                           shift and go to state 109
+    factor                         shift and go to state 110
+    varcte                         shift and go to state 111
+    call                           shift and go to state 112
+    var                            shift and go to state 113
+
+state 172
+
+    (48) super_exp_aux -> empty .
+    COMMA           reduce using rule 48 (super_exp_aux -> empty .)
+    RPAREN          reduce using rule 48 (super_exp_aux -> empty .)
+
+
 state 173
 
-    (69) forloop -> FROM var ASSIGN expression TO expression DO . block
-    (4) block -> . LCURLY decvars blockcontent RCURLY
-    LCURLY          shift and go to state 61
+    (50) logic -> OR .
+    LPAREN          reduce using rule 50 (logic -> OR .)
+    CTEFLOAT        reduce using rule 50 (logic -> OR .)
+    CTEINT          reduce using rule 50 (logic -> OR .)
+    ID              reduce using rule 50 (logic -> OR .)
+    FLOAT           reduce using rule 50 (logic -> OR .)
+    INT             reduce using rule 50 (logic -> OR .)
+    ELSE            reduce using rule 50 (logic -> OR .)
+    IF              reduce using rule 50 (logic -> OR .)
+    PRINT           reduce using rule 50 (logic -> OR .)
+    INPUT           reduce using rule 50 (logic -> OR .)
+    WHILE           reduce using rule 50 (logic -> OR .)
+    DO              reduce using rule 50 (logic -> OR .)
+    BY              reduce using rule 50 (logic -> OR .)
+    TO              reduce using rule 50 (logic -> OR .)
+    FROM            reduce using rule 50 (logic -> OR .)
+    VOID            reduce using rule 50 (logic -> OR .)
+    RETURN          reduce using rule 50 (logic -> OR .)
+    FUNC            reduce using rule 50 (logic -> OR .)
+    MAIN            reduce using rule 50 (logic -> OR .)
+    VARS            reduce using rule 50 (logic -> OR .)
+    PROGRAM         reduce using rule 50 (logic -> OR .)
 
-    block                          shift and go to state 177
 
 state 174
 
-    (78) condition -> IF LPAREN expression RPAREN block ELSE block .
-    ID              reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    FROM            reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    WHILE           reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    INPUT           reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    PRINT           reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    IF              reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    RCURLY          reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
-    RETURN          reduce using rule 78 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    (51) logic -> AND .
+    LPAREN          reduce using rule 51 (logic -> AND .)
+    CTEFLOAT        reduce using rule 51 (logic -> AND .)
+    CTEINT          reduce using rule 51 (logic -> AND .)
+    ID              reduce using rule 51 (logic -> AND .)
+    FLOAT           reduce using rule 51 (logic -> AND .)
+    INT             reduce using rule 51 (logic -> AND .)
+    ELSE            reduce using rule 51 (logic -> AND .)
+    IF              reduce using rule 51 (logic -> AND .)
+    PRINT           reduce using rule 51 (logic -> AND .)
+    INPUT           reduce using rule 51 (logic -> AND .)
+    WHILE           reduce using rule 51 (logic -> AND .)
+    DO              reduce using rule 51 (logic -> AND .)
+    BY              reduce using rule 51 (logic -> AND .)
+    TO              reduce using rule 51 (logic -> AND .)
+    FROM            reduce using rule 51 (logic -> AND .)
+    VOID            reduce using rule 51 (logic -> AND .)
+    RETURN          reduce using rule 51 (logic -> AND .)
+    FUNC            reduce using rule 51 (logic -> AND .)
+    MAIN            reduce using rule 51 (logic -> AND .)
+    VARS            reduce using rule 51 (logic -> AND .)
+    PROGRAM         reduce using rule 51 (logic -> AND .)
 
 
 state 175
+
+    (90) condition -> IF LPAREN expression RPAREN block . ELSE block
+    (91) condition -> IF LPAREN expression RPAREN block .
+    ELSE            shift and go to state 183
+    ID              reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+    FROM            reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+    WHILE           reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+    INPUT           reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+    PRINT           reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+    IF              reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+    RCURLY          reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+    RETURN          reduce using rule 91 (condition -> IF LPAREN expression RPAREN block .)
+
+
+state 176
+
+    (5) returnblock -> LCURLY decvars blockcontent RETURN exp . SEMICOLON RCURLY
+    SEMICOLON       shift and go to state 184
+
+
+state 177
+
+    (75) factor -> LPAREN fakefloor super_exp RPAREN .
+    DIVIDE          reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    TIMES           reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    MINUS           reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    PLUS            reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    COMMA           reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    RPAREN          reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    NEQ             reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    EQ              reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    LTE             reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    GTE             reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    LT              reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    GT              reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    SEMICOLON       reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    OR              reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    AND             reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    TO              reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    BY              reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+    DO              reduce using rule 75 (factor -> LPAREN fakefloor super_exp RPAREN .)
+
+
+state 178
+
+    (63) exp_aux -> exp_sign exp .
+    COMMA           reduce using rule 63 (exp_aux -> exp_sign exp .)
+    RPAREN          reduce using rule 63 (exp_aux -> exp_sign exp .)
+    NEQ             reduce using rule 63 (exp_aux -> exp_sign exp .)
+    EQ              reduce using rule 63 (exp_aux -> exp_sign exp .)
+    LTE             reduce using rule 63 (exp_aux -> exp_sign exp .)
+    GTE             reduce using rule 63 (exp_aux -> exp_sign exp .)
+    LT              reduce using rule 63 (exp_aux -> exp_sign exp .)
+    GT              reduce using rule 63 (exp_aux -> exp_sign exp .)
+    SEMICOLON       reduce using rule 63 (exp_aux -> exp_sign exp .)
+    OR              reduce using rule 63 (exp_aux -> exp_sign exp .)
+    AND             reduce using rule 63 (exp_aux -> exp_sign exp .)
+    TO              reduce using rule 63 (exp_aux -> exp_sign exp .)
+    BY              reduce using rule 63 (exp_aux -> exp_sign exp .)
+    DO              reduce using rule 63 (exp_aux -> exp_sign exp .)
+
+
+state 179
+
+    (69) term_aux -> term_sign term .
+    MINUS           reduce using rule 69 (term_aux -> term_sign term .)
+    PLUS            reduce using rule 69 (term_aux -> term_sign term .)
+    COMMA           reduce using rule 69 (term_aux -> term_sign term .)
+    RPAREN          reduce using rule 69 (term_aux -> term_sign term .)
+    NEQ             reduce using rule 69 (term_aux -> term_sign term .)
+    EQ              reduce using rule 69 (term_aux -> term_sign term .)
+    LTE             reduce using rule 69 (term_aux -> term_sign term .)
+    GTE             reduce using rule 69 (term_aux -> term_sign term .)
+    LT              reduce using rule 69 (term_aux -> term_sign term .)
+    GT              reduce using rule 69 (term_aux -> term_sign term .)
+    SEMICOLON       reduce using rule 69 (term_aux -> term_sign term .)
+    OR              reduce using rule 69 (term_aux -> term_sign term .)
+    AND             reduce using rule 69 (term_aux -> term_sign term .)
+    TO              reduce using rule 69 (term_aux -> term_sign term .)
+    BY              reduce using rule 69 (term_aux -> term_sign term .)
+    DO              reduce using rule 69 (term_aux -> term_sign term .)
+
+
+state 180
+
+    (53) expression_aux -> relation expression .
+    SEMICOLON       reduce using rule 53 (expression_aux -> relation expression .)
+    RPAREN          reduce using rule 53 (expression_aux -> relation expression .)
+    OR              reduce using rule 53 (expression_aux -> relation expression .)
+    AND             reduce using rule 53 (expression_aux -> relation expression .)
+    COMMA           reduce using rule 53 (expression_aux -> relation expression .)
+    TO              reduce using rule 53 (expression_aux -> relation expression .)
+    BY              reduce using rule 53 (expression_aux -> relation expression .)
+    DO              reduce using rule 53 (expression_aux -> relation expression .)
+
+
+state 181
+
+    (80) forloop -> FROM var ASSIGN expression TO expression . BY expression DO block
+    (81) forloop -> FROM var ASSIGN expression TO expression . DO block
+    BY              shift and go to state 185
+    DO              shift and go to state 186
+
+
+state 182
+
+    (47) super_exp_aux -> logic super_exp .
+    COMMA           reduce using rule 47 (super_exp_aux -> logic super_exp .)
+    RPAREN          reduce using rule 47 (super_exp_aux -> logic super_exp .)
+
+
+state 183
+
+    (90) condition -> IF LPAREN expression RPAREN block ELSE . block
+    (4) block -> . LCURLY decvars blockcontent RCURLY
+    LCURLY          shift and go to state 61
+
+    block                          shift and go to state 187
+
+state 184
+
+    (5) returnblock -> LCURLY decvars blockcontent RETURN exp SEMICOLON . RCURLY
+    RCURLY          shift and go to state 188
+
+
+state 185
+
+    (80) forloop -> FROM var ASSIGN expression TO expression BY . expression DO block
+    (55) expression -> . exp expression_quadgen expression_aux
+    (65) exp -> . term exp_quadgen exp_aux
+    (71) term -> . factor term_quadgen term_aux
+    (75) factor -> . LPAREN fakefloor super_exp RPAREN
+    (76) factor -> . varcte
+    (77) factor -> . call
+    (78) factor -> . var
+    (92) varcte -> . CTEFLOAT
+    (93) varcte -> . CTEINT
+    (43) call -> . ID LPAREN callvalues RPAREN
+    (14) var -> . FLOAT
+    (15) var -> . INT
+    (16) var -> . ELSE
+    (17) var -> . IF
+    (18) var -> . PRINT
+    (19) var -> . INPUT
+    (20) var -> . WHILE
+    (21) var -> . DO
+    (22) var -> . BY
+    (23) var -> . TO
+    (24) var -> . FROM
+    (25) var -> . VOID
+    (26) var -> . RETURN
+    (27) var -> . FUNC
+    (28) var -> . MAIN
+    (29) var -> . VARS
+    (30) var -> . PROGRAM
+    (31) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (32) var -> . ID LBRACKET CTEINT RBRACKET
+    (33) var -> . ID
+    LPAREN          shift and go to state 105
+    CTEFLOAT        shift and go to state 114
+    CTEINT          shift and go to state 115
+    ID              shift and go to state 104
+    FLOAT           shift and go to state 26
+    INT             shift and go to state 27
+    ELSE            shift and go to state 28
+    IF              shift and go to state 29
+    PRINT           shift and go to state 30
+    INPUT           shift and go to state 31
+    WHILE           shift and go to state 32
+    DO              shift and go to state 33
+    BY              shift and go to state 34
+    TO              shift and go to state 35
+    FROM            shift and go to state 36
+    VOID            shift and go to state 37
+    RETURN          shift and go to state 38
+    FUNC            shift and go to state 39
+    MAIN            shift and go to state 40
+    VARS            shift and go to state 41
+    PROGRAM         shift and go to state 42
+
+    var                            shift and go to state 113
+    expression                     shift and go to state 189
+    exp                            shift and go to state 117
+    term                           shift and go to state 109
+    factor                         shift and go to state 110
+    varcte                         shift and go to state 111
+    call                           shift and go to state 112
+
+state 186
+
+    (81) forloop -> FROM var ASSIGN expression TO expression DO . block
+    (4) block -> . LCURLY decvars blockcontent RCURLY
+    LCURLY          shift and go to state 61
+
+    block                          shift and go to state 190
+
+state 187
+
+    (90) condition -> IF LPAREN expression RPAREN block ELSE block .
+    ID              reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    FROM            reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    WHILE           reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    INPUT           reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    PRINT           reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    IF              reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    RCURLY          reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+    RETURN          reduce using rule 90 (condition -> IF LPAREN expression RPAREN block ELSE block .)
+
+
+state 188
 
     (5) returnblock -> LCURLY decvars blockcontent RETURN exp SEMICOLON RCURLY .
     FUNC            reduce using rule 5 (returnblock -> LCURLY decvars blockcontent RETURN exp SEMICOLON RCURLY .)
     MAIN            reduce using rule 5 (returnblock -> LCURLY decvars blockcontent RETURN exp SEMICOLON RCURLY .)
 
 
-state 176
+state 189
 
-    (68) forloop -> FROM var ASSIGN expression TO expression BY expression . DO block
-    DO              shift and go to state 178
-
-
-state 177
-
-    (69) forloop -> FROM var ASSIGN expression TO expression DO block .
-    ID              reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    FROM            reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    WHILE           reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    INPUT           reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    PRINT           reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    IF              reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    RCURLY          reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    RETURN          reduce using rule 69 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    (80) forloop -> FROM var ASSIGN expression TO expression BY expression . DO block
+    DO              shift and go to state 191
 
 
-state 178
+state 190
 
-    (68) forloop -> FROM var ASSIGN expression TO expression BY expression DO . block
+    (81) forloop -> FROM var ASSIGN expression TO expression DO block .
+    ID              reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    FROM            reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    WHILE           reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    INPUT           reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    PRINT           reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    IF              reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    RCURLY          reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    RETURN          reduce using rule 81 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+
+
+state 191
+
+    (80) forloop -> FROM var ASSIGN expression TO expression BY expression DO . block
     (4) block -> . LCURLY decvars blockcontent RCURLY
     LCURLY          shift and go to state 61
 
-    block                          shift and go to state 179
+    block                          shift and go to state 192
 
-state 179
+state 192
 
-    (68) forloop -> FROM var ASSIGN expression TO expression BY expression DO block .
-    ID              reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    FROM            reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    WHILE           reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    INPUT           reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    PRINT           reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    IF              reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    RCURLY          reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    RETURN          reduce using rule 68 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    (80) forloop -> FROM var ASSIGN expression TO expression BY expression DO block .
+    ID              reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    FROM            reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    WHILE           reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    INPUT           reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    PRINT           reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    IF              reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    RCURLY          reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
+    RETURN          reduce using rule 80 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)

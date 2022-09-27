@@ -32,7 +32,7 @@ class OrangeVarTable():
             raise semanticError(f'🚫 Variable < {id} > already exists in current context')
 
         else:
-            print(f'✅ Variable < {id} > successfully added')
+            # print(f'✅ Variable < {id} > successfully added')
             self.table[id] = {'name': id, 'type': type, 'scope': scope}
 
     '''

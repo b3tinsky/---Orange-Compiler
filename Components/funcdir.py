@@ -37,7 +37,7 @@ class OrangeFuncDir():
             raise semanticError(f'🚫 Function < {id} > already exists')
 
         else:
-            print(f'✅ Function < {id} > successfully added')
+            # print(f'✅ Function < {id} > successfully added')
             self.dir[id] = {'name': id, 'type': type, 'table': table}
 
     # DOC: Use PEP standard for this docstring

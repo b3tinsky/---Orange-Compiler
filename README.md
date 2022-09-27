@@ -248,6 +248,16 @@ __Inputs__
 - No tests added in this run, since some core things to quadruple generation are yet to be added. This means that if I added the tests, I would have to refactor them later.
 - Constant variable handling is still pending. I added starter code, but I don't know if thats the way to do it. Maybe in a later class recording the teacher will explain how to do it.
 
+---
+
+### 📆 September 27 🕓 17:01
+- Refactored parser's arithmetic expressions. I noticed that the way the grammar was written was wrong, since even though it works for precedence, it doesn't for order of operations (it was designed for right association). Fixed it for relational and logical as well.
+- Fixed parenthesis usage. Before, the parenthesis were basically ignored. Now a 'fake floor' is created every time a parenthesis is observed, and its removed whenever the parenthesis ends. 
+- Added input_17
+- Added a basic test for quadruple generation, to see if correct order, precedence, associativity and generation are achieved.
+
+
+
 # Reference
 
 ## Official Documentation

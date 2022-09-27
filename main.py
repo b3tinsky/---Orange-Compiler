@@ -49,14 +49,14 @@ def orange_juice(test_name, test_data):
     except Exception as err:
         print(str(err))
 
-    parser.OFD.printdata()
-    print('QUADRUPLES: ', parser.QM.quadruples)
+    # parser.OFD.printdata()
     print('OPERANDS: ', parser.QM.operands)
     print('OPERATORS: ', parser.QM.operators)
-    print('-'*21)
-    print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
-    print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')
-    print(f'Semantic  Status:  {StatusChecker.semanticStatus} |')
+    print('-'*28)
+    parser.QM.printQuads()
+    # print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
+    # print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')
+    # print(f'Semantic  Status:  {StatusChecker.semanticStatus} |')
     print('▲'*30, test_name ,'▲'*30)
     print()
 

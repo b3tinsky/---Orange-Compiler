@@ -195,70 +195,104 @@ class OrangeParser(Parser):
 
     # Super Expression (logical)
         # Single expression
-    @_('expression')
-    def super_exp(self, p):
+    @_('empty', 'logic super_exp')
+    def super_exp_aux(self, p):
         return p
     
         # Chained expression
-    @_(
-        'expression AND super_exp',
-        'expression OR super_exp',
-    )
+    @_('expression super_exp_quadgen super_exp_aux')
     def super_exp(self, p):
         return p
     
+    @_('AND', 'OR')
+    def logic(self, p):
+        self.QM.addOperator(p[0])
+        return p
+    
+    @_('')
+    def super_exp_quadgen(self, p):
+        # If latest floor has something <- [['+', '/'], []]
+        if self.QM.operators[-1]:
+            prec = ['&&', '||']
+            if self.QM.operators[-1][-1] in prec:
+                self.QM.generateQuadruple()       
+        return p
+
     # Expression
         # Single expression
-    @_('exp')
-    def expression(self, p):
+    @_('empty', 'relation expression')
+    def expression_aux(self, p):
         return p
     
         # Chained expression
-    @_('exp relation exp')
+    @_('exp expression_quadgen expression_aux')
     def expression(self, p):
         return p
     
     # Relational symbol
     @_('GT', 'LT', 'GTE', 'LTE', 'EQ', 'NEQ')
     def relation(self, p):
+        self.QM.addOperator(p[0])
         return p
     
+    @_('')
+    def expression_quadgen(self, p):
+        # If latest floor has something <- [['+', '/'], []]
+        if self.QM.operators[-1]:
+            prec = ['>', '<', '>=', '<=', '==', '!=']
+            if self.QM.operators[-1][-1] in prec:
+                self.QM.generateQuadruple()       
+        return p
+
     # Exp
         # Single term
-    @_('term')
-    def exp(self, p):
+    @_('empty', 'exp_sign exp')
+    def exp_aux(self, p):
         return p
         
         # Arithmetic exp
-    @_(
-        'term PLUS exp',
-        'term MINUS exp',
-    )
+    @_('term exp_quadgen exp_aux')
     def exp(self, p):
-        # Add operator to Quadruple Machine operator stack
-        self.QM.addOperator(p[1])
-        self.QM.generateQuadruple()
-
+        return p
+    
+    @_('PLUS', 'MINUS')
+    def exp_sign(self, p):
+        self.QM.addOperator(p[0])
+        return p
+    
+    @_('')
+    def exp_quadgen(self, p):
+        # If latest floor has something <- [['+', '/'], []]
+        if self.QM.operators[-1]:
+            prec = ['+', '-']
+            if self.QM.operators[-1][-1] in prec:
+                self.QM.generateQuadruple()       
         return p
     
     # Term
         # Single factor
-    @_('factor')
-    def term(self, p):
+    @_('empty', 'term_sign term')
+    def term_aux(self, p):
         return p
         
         # Arithmetic exp
-    @_(
-        'factor TIMES term',
-        'factor DIVIDE term',
-    )
+    @_('factor term_quadgen term_aux')
     def term(self, p):
-        # Add operator to Quadruple Machine operator stack
-        self.QM.addOperator(p[1])
-        self.QM.generateQuadruple()
-
         return p
     
+    @_('TIMES', 'DIVIDE')
+    def term_sign(self, p):
+        self.QM.addOperator(p[0])
+        return p
+
+    @_('')
+    def term_quadgen(self, p):
+        # If latest floor has something <- [['*', '-'], []]
+        if self.QM.operators[-1]:
+            prec = ['*', '/']
+            if self.QM.operators[-1][-1] in prec:
+                self.QM.generateQuadruple()       
+        return p
     
     # Factor
         # Call variable
@@ -285,9 +319,19 @@ class OrangeParser(Parser):
         # self.QM.addOperand(p[0])
         return p
         
-        # Expression with parenthesis
-    @_('LPAREN super_exp RPAREN')
+    # Expression with parenthesis
+    @_('LPAREN fakefloor super_exp RPAREN')
     def factor(self, p):
+        # Simbolizes the end of a parenthesis
+            # Removes the latest 'fake floor'
+        self.QM.operators.pop()
+        return p
+    
+    # 'Creates' a new operator 'context' to follow a correct
+    # order of operations given their precedence (through parenthesis)
+    @_('')
+    def fakefloor(self, p):
+        self.QM.operators.append([])
         return p
         
     # For loop definition

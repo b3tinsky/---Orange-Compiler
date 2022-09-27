@@ -135,3 +135,9 @@ __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
 __Expected SEM status__: '❌'
 Main using local vars, but requested var exists in function
+
+### Input_17
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Precedence, associativity and order of operations should be correct when generating quadruples for arithmetic expressions. In this case the operation uses sums, substractions, division, multiplication, parenthesis, and also a relation.

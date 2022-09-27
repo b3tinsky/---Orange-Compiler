@@ -1,4 +1,4 @@
-program test_16
+program test_17
     vars 
         int a, b, c, d, e;
         int z;
@@ -7,6 +7,4 @@ program test_16
 main()
 {
     z = a*(b+c*d-e)>b+(c*d-e);
-    # z = b+c*d-e;
-    
 }
