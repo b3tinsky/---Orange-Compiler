@@ -270,12 +270,17 @@ __Inputs__
 - Added quadruple generation for assignment
 - Added error raising for 'type mismatch' in the quadruple generation function
 
-
 ---
 
 ### 📆 September 28 🕓 14:52
-- Quadruple generation for print statements (write)
+- Quadruple generation for print statements (write).
 - Changed regular expression in the scanner for constant strings. This was because it used to match anything, any amount of times inside two quotation marks, causing an error to identify ALL of the parameters in a print as one.
+
+---
+
+### 📆 September 28 🕓 16:18
+- Quadruple generation for inputs (read). 
+- Quadruple generation for constant variables (int, float, bool, string)
 
 
 # Reference
@@ -318,6 +323,8 @@ __Inputs__
 [Import a file from a subdirectory](https://stackoverflow.com/questions/1260792/import-a-file-from-a-subdirectory)
 
 [How to compare type of an object](https://stackoverflow.com/questions/707674/how-to-compare-type-of-an-object-in-python)
+
+[Matching special characters and letters in regex](https://stackoverflow.com/questions/13946651/matching-special-characters-and-letters-in-regex)
 
 
 # Tags

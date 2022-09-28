@@ -371,10 +371,23 @@ class OrangeParser(Parser):
         return p
         
     # Input variable values
-    @_('INPUT LPAREN decvar RPAREN SEMICOLON')
+    @_('INPUT LPAREN readaux RPAREN SEMICOLON')
     def read(self, p):
         return p
         
+    @_('readvalue', 'readvalue COMMA readaux')
+    def readaux(self, p):
+        return p
+
+    @_('var')
+    def readvalue(self, p):
+        self.QM.addOperand(p[0][1])          # To not break the internals of addOperand, add fluff
+        self.QM.addOperand(('', ''))      # To not break the internals of addOperand, add fluff
+        self.QM.addOperator('R')          # P stands for PRINT
+        self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))        
+        return p
+
+
     # Print variables and/or strings
     @_('PRINT LPAREN writeaux RPAREN SEMICOLON')
     def write(self, p):
@@ -408,16 +421,20 @@ class OrangeParser(Parser):
     def condition(self, p):
         return p
     
-    # LOOK: Returns constant vars with its type
     # Constant variable
     @_('CTEINT')
     def varcte(self, p):
+        self.QM.addOperand((p[0], 'int')) # Constants are identified as (constant, type)
         return (p[0], 'int')
+
     @_('CTEFLOAT')
     def varcte(self, p):
+        self.QM.addOperand((p[0], 'float')) # Constants are identified as (constant, type)
         return (p[0], 'float')
+
     @_('CTEBOOL')
     def varcte(self, p):
+        self.QM.addOperand((p[0], 'bool')) # Constants are identified as (constant, type)
         return (p[0], 'bool')
     
     # Available types

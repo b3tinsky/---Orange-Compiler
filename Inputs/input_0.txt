@@ -5,9 +5,12 @@ main()
     vars
         int x;
         int y, z;
+        bool t;
 
-    # x = 1; # Still can't handle constant variables
-    # y = 2; # Still can't handle constant variables
+    x = 1; # Still can't handle constant variables
+    y = 2; # Still can't handle constant variables
+    t = False;
+    input(x, y, z);
     z = x + y;
 
     # print("Your result: ", z + 11); # Still can't handle constant variables

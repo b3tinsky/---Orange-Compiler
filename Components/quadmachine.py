@@ -57,6 +57,13 @@ class OrangeQuadMachine():
                 self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
                 return
 
+            # Input
+            elif operator == 'R':
+                # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
+                # so constant strings are added the same way to keep consistency
+                self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+                return
+
             
             # If there is a type mismatch:
                 # A key won't be found, causing an error

@@ -23,7 +23,7 @@ class OrangeLexer(Lexer):
     'ELSE',
     'INT',
     'FLOAT',
-    'BOOL'
+    'BOOL',
     )
 
     # Set of token names
@@ -103,15 +103,15 @@ class OrangeLexer(Lexer):
     RBRACKET = r'\]'
     LCURLY = r'\{'
     RCURLY = r'\}'
-    ASSIGN = r'\='
     EQ = r'\=\='
     NEQ = r'\!\='
-    GT = r'\>'
     GTE = r'\>\='
-    LT = r'\<'
     LTE = r'\<\='
     AND = r'\&\&'
     OR = r'\|\|'
+    ASSIGN = r'\='
+    GT = r'\>'
+    LT = r'\<'
     PLUS = r'\+'
     MINUS = r'\-'
     TIMES = r'\*'
@@ -120,6 +120,11 @@ class OrangeLexer(Lexer):
     # String containing ignored characters between tokens
     ignore         = ' \t'
     ignore_comment = r'\#.*'
+    
+    @_('True', 'False')
+    def CTEBOOL(self,t):
+        # t.value = bool(t.value)
+        return t
 
     # Rule definitions
     @_(r'[a-zA-Z_][a-zA-Z_0-9]*')
@@ -135,10 +140,7 @@ class OrangeLexer(Lexer):
     def CTEINT(self,t):
         t.value = int(t.value)
         return t
-    @_('True', 'False')
-    def CTEBOOL(self,t):
-        t.value = bool(t.value)
-        return t
+
 
     @_(r'\"[\w\s&.\-!@#$%^&*()_+\-=\[\]{};\':\\|,.<>\/?]*\"')
     def CTESTRING(self,t):
