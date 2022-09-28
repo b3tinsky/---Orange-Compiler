@@ -376,13 +376,31 @@ class OrangeParser(Parser):
         return p
         
     # Print variables and/or strings
-    @_('PRINT LPAREN writevalues RPAREN SEMICOLON')
+    @_('PRINT LPAREN writeaux RPAREN SEMICOLON')
     def write(self, p):
         return p
         
     # Print a super expression and/or a string
-    @_('super_exp', 'CTESTRING', 'super_exp COMMA writevalues', 'CTESTRING COMMA writevalues')
+    @_('writevalues COMMA writeaux', 'writevalues')
+    def writeaux(self, p):
+        return p
+
+    # Print a super expression and/or a string
+    @_('super_exp')
     def writevalues(self, p):
+        self.QM.addOperand(('', ''))      # To not break the internals of addOperand, add fluff
+        self.QM.addOperator('P')          # P stands for PRINT
+        self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))        
+        return p
+    
+    # Print a super expression and/or a string
+    @_('CTESTRING')
+    def writevalues(self, p):
+        self.QM.addOperand((p[0], 'str')) # Constants are identified as (constant, type)
+        self.QM.addOperand(('', ''))      # To not break the internals of addOperand, add fluff
+        self.QM.addOperator('P')          # P stands for PRINT
+        self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))
+
         return p
 
     # Conditional statement    

@@ -140,7 +140,7 @@ class OrangeLexer(Lexer):
         t.value = bool(t.value)
         return t
 
-    @_(r'\".*\"')
+    @_(r'\"[\w\s&.\-!@#$%^&*()_+\-=\[\]{};\':\\|,.<>\/?]*\"')
     def CTESTRING(self,t):
         t.value = str(t.value[1:-1]) # Returns string without quotation marks
         return t

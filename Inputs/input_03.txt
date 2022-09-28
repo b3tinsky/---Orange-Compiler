@@ -10,7 +10,7 @@ main()
     # y = 2; # Still can't handle constant variables
     z = x + y;
 
-    # print("Your result: ", z + 11); # Still can't handle prints
+    # print("Your result: ", z + 11); # Still can't handle constant variables
 
 }
 

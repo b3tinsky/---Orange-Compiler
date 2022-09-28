@@ -16,8 +16,19 @@ class OrangeQuadMachine():
         return f'T{self.TempNumber}'
 
     def addOperand(self, operand):
-        operandName, operandType = self.OFD.checkVar(operand)
-        self.operands.append((operandName, operandType))
+        # Constants <- 5 | 12.3 | "name"
+            # Passed as tuples (constant, type)
+        if isinstance(operand, tuple):
+            operandName = operand[0]
+            operandType = operand[1]
+            self.operands.append((operandName, operandType))
+            
+
+        # Variables <- (id, type)
+        else:
+            operandName, operandType = self.OFD.checkVar(operand)
+            self.operands.append((operandName, operandType))
+    
     
     def addOperator(self, operator):
         # Append to latest 'fake floor'
@@ -27,20 +38,25 @@ class OrangeQuadMachine():
     
 
     def generateQuadruple(self):
-        if self.operators[-1][-1] == '=':
-            print('💩[R]: ',self.operands[-1] )
-            print('💩[L]: ',self.operands[-2] )
-            print('💩[O]: ',self.operators[-1][-1] )
         rightOperand = self.operands.pop()    # ('name', 'type')
         leftOperand = self.operands.pop()     # ('name', 'type')
         operator = self.operators[-1].pop()   # '+' <- [['+']] // Get from latest 'fake floor'
 
-        # DOC
+        # Try catch because if the semantic cube doesn't have [type][operator][type]
+        # the error should be catched and a semantic error should be raised
         try:
+            # Assignment
             if operator == '=':
-                print('💩[Type]: ', self.SC[leftOperand[1]][operator][rightOperand[1]])
                 self.quadruples.append( (operator, rightOperand[0], '', leftOperand[0]) ) 
                 return
+            
+            # Print
+            elif operator == 'P':
+                # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
+                # so constant strings are added the same way to keep consistency
+                self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+                return
+
             
             # If there is a type mismatch:
                 # A key won't be found, causing an error

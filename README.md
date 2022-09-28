@@ -17,11 +17,11 @@ Checkpoints are given by our professor, although they can change during the seme
 
 ### ⚠️ Checkpoint \#3: Expression semantics
 - ~~Semantic cube~~
-- Code generation for arithmetic expressions and secuential statutes
-    - Assignment
-    - Read
-    - Write
-    - Etc.
+- ~~Code generation for arithmetic expressions and secuential statutes~~
+- ~~Assignment~~
+- Read
+- ~~Write~~
+- Etc.
 
 ### ❌ Checkpoint \#4: Code generation for conditional statutes
 - Decisions
@@ -271,6 +271,13 @@ __Inputs__
 - Added error raising for 'type mismatch' in the quadruple generation function
 
 
+---
+
+### 📆 September 28 🕓 14:52
+- Quadruple generation for print statements (write)
+- Changed regular expression in the scanner for constant strings. This was because it used to match anything, any amount of times inside two quotation marks, causing an error to identify ALL of the parameters in a print as one.
+
+
 # Reference
 
 ## Official Documentation
@@ -279,6 +286,10 @@ __Inputs__
 [Pytest Documentation](https://docs.pytest.org)
 
 [VS Code Settings Sync](https://code.visualstudio.com/docs/editor/settings-sync)
+
+
+## Tools
+[Regex 101](https://regex101.com/)
 
 
 ## Blogs
