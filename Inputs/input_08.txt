@@ -4,8 +4,8 @@ vars
 
 func int sum(){
     vars int a, b, c;
-    # a = 2; # Still can't handle constant variables
-    # b = 3; # Still can't handle constant variables
+    a = 2;
+    b = 3;
     return a + b;
 }
 
@@ -13,9 +13,9 @@ main()
 {
     vars
         float a, b, c;
-    # a = 1; # Still can't handle constant variables
-    # b = 2; # Still can't handle constant variables
+    a = 1;
+    b = 2;
     c = a + b;
 
-    # print("Your result: ", c); # Still can't handle prints
+    print("Your result: ", c);
 }

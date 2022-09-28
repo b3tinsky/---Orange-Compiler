@@ -2,14 +2,14 @@ program test_15
 
 func int sum(){
     vars int a, b;
-    # a = 2; # Still can't handle constant variables
-    # b = 3; # Still can't handle constant variables
+    a = 2;
+    b = 3;
     return a + b;
 }
 
 main()
 {
-    # x = 1; # Still can't handle constant variables
-    # y = 2; # Still can't handle constant variables
+    x = 1;
+    y = 2;
     z = x + y;
 }

@@ -147,3 +147,9 @@ __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
 __Expected SEM status__: '✅'
 Precedence, associativity and order of operations should be correct when generating quadruples for arithmetic expressions. In this case the operation uses sums, substractions, division, multiplication, parenthesis, and also a relation.
+
+### Input_19
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+While testing arithemtic operations, also test print statements, input statements and constant variables. The goal of this test is focused on quadruple generation (correct quadruples, correct order, etc.)

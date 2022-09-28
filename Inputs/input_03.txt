@@ -6,11 +6,11 @@ main()
         int x;
         int y, z;
 
-    # x = 1; # Still can't handle constant variables
-    # y = 2; # Still can't handle constant variables
+    x = 1;
+    y = 2;
     z = x + y;
 
-    # print("Your result: ", z + 11); # Still can't handle constant variables
+    print("Your result: ", z + 11);
 
 }
 

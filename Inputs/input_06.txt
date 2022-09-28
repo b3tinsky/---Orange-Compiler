@@ -8,7 +8,7 @@ func void sum(){
     vars
         int sum_a, sum_b;
         int result;
-    # print("sum"); # Still can't handle prints
+    print("sum");
 }
 
 main()
@@ -16,10 +16,10 @@ main()
     vars
         int test;
 
-    # a = 1; # Still can't handle constant variables
-    # b = 2; # Still can't handle constant variables
+    a = 1;
+    b = 2;
     c = a + b;
-    # input(d); # Still can't handle inputs
+    input(d);
 
     # print("Your result: ", c + d); # Still can't handle prints
 }
