@@ -262,6 +262,13 @@ __Inputs__
 - Added input_18
 - Added another test similar to test_17 just to keep check of associativity, order of operations, parenthesis and quadruple generation, but with a different input 
 
+---
+
+### 📆 September 27 🕓 20:03
+- Modified some tests. Some tests broke because with quadruple generation, some things that still don't exist are verified, hence errors are raised
+- Added boolean type
+- Added quadruple generation for assignment
+- Added error raising for 'type mismatch' in the quadruple generation function
 
 
 # Reference

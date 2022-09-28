@@ -1,7 +1,7 @@
 program test_17
     vars 
         int a, b, c, d, e;
-        int z;
+        bool z;
         float f;
 
 main()

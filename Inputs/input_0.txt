@@ -1,9 +1,16 @@
-program test_16
-    vars 
-        int a, b, c, d, e, f, g, h, i;
+program test_03
 
 main()
 {
-    z = a * b / (c + d * f / g + h) - i > (a + b) * c - d;
-    
+    vars
+        int x;
+        int y, z;
+
+    #x = 1;
+    #y = 2;
+    z = x + y;
+
+
 }
+
+ 

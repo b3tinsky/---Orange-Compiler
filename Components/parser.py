@@ -351,8 +351,23 @@ class OrangeParser(Parser):
         return p
         
     # Variable value assignment
-    @_('ID ASSIGN expression SEMICOLON')
+    @_('assignment_var assignment_sign expression SEMICOLON')
     def assignment(self, p):
+        # If latest floor has something <- [['*', '-'], []]
+        if self.QM.operators[-1]:
+            prec = ['=']
+            if self.QM.operators[-1][-1] in prec:
+                self.QM.generateQuadruple()    
+        return p
+
+    @_('ASSIGN')
+    def assignment_sign(self, p):
+        self.QM.addOperator(p[0])
+        return p
+    
+    @_('ID')
+    def assignment_var(self, p):
+        self.QM.addOperand(p[0])
         return p
         
     # Input variable values
@@ -383,9 +398,12 @@ class OrangeParser(Parser):
     @_('CTEFLOAT')
     def varcte(self, p):
         return (p[0], 'float')
+    @_('CTEBOOL')
+    def varcte(self, p):
+        return (p[0], 'bool')
     
     # Available types
-    @_('INT', 'FLOAT')
+    @_('INT', 'FLOAT', 'BOOL')
     def type(self, p):
         return p
         

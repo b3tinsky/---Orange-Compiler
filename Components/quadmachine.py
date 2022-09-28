@@ -1,3 +1,5 @@
+from Components.status import semanticError
+
 class OrangeQuadMachine():
     def __init__(self, OFD, SC) -> None:
         self.OFD = OFD              # Orange Function Directory 
@@ -25,15 +27,31 @@ class OrangeQuadMachine():
     
 
     def generateQuadruple(self):
+        if self.operators[-1][-1] == '=':
+            print('💩[R]: ',self.operands[-1] )
+            print('💩[L]: ',self.operands[-2] )
+            print('💩[O]: ',self.operators[-1][-1] )
         rightOperand = self.operands.pop()    # ('name', 'type')
         leftOperand = self.operands.pop()     # ('name', 'type')
         operator = self.operators[-1].pop()   # '+' <- [['+']] // Get from latest 'fake floor'
 
-        
-        # If there is a type mismatch:
-            # A key won't be found, causing an error
-        resultType = self.SC[leftOperand[1]][operator][rightOperand[1]]
+        # DOC
+        try:
+            if operator == '=':
+                print('💩[Type]: ', self.SC[leftOperand[1]][operator][rightOperand[1]])
+                self.quadruples.append( (operator, rightOperand[0], '', leftOperand[0]) ) 
+                return
+            
+            # If there is a type mismatch:
+                # A key won't be found, causing an error
+            resultType = self.SC[leftOperand[1]][operator][rightOperand[1]]
+        except:
+            raise semanticError(f'❌ Type mismatch {leftOperand} with {rightOperand}')
+
         tmpVar = self.generateTempVar()
+
+
+
 
         # Add the quadruple to quadruple list
         self.quadruples.append( (operator, leftOperand[0], rightOperand[0], tmpVar) ) 

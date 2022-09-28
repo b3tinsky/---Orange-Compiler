@@ -618,6 +618,7 @@ class TestInput16:
         with pytest.raises(semanticError):
             # Initialize a different compiler with the needed file
             status, lexer, parser = initializeCompiler('input_16.txt')
+
 class TestInput17:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_17.txt')
@@ -631,6 +632,30 @@ class TestInput17:
             ('*', 'c', 'd', 'T5'),
             ('-', 'T5', 'e', 'T6'),
             ('+', 'b', 'T6', 'T7'),
-            ('>', 'T4', 'T7', 'T8')
-            ]
+            ('>', 'T4', 'T7', 'T8'),
+            ('=', 'T8', '', 'z')
+
+        ]
+        assert self.parser.QM.quadruples == quads
+
+class TestInput18:
+    # Initialize a different compiler with the needed file
+    status, lexer, parser = initializeCompiler('input_18.txt')
+
+    def test_QUADGENERATION(self):
+        quads = [
+           ('*', 'a', 'b', 'T1'),
+           ('*', 'd', 'f', 'T2'),
+           ('/', 'T2', 'g', 'T3'),
+           ('+', 'c', 'T3', 'T4'),
+           ('+', 'T4', 'h', 'T5'),
+           ('/', 'T1', 'T5', 'T6'),
+           ('-', 'T6', 'i', 'T7'),
+           ('+', 'a', 'b', 'T8'),
+           ('*', 'T8', 'c', 'T9'),
+           ('-', 'T9', 'd', 'T10'),
+           ('>', 'T7', 'T10', 'T11'),
+           ('=', 'T11', '', 'z')
+        ]
+
         assert self.parser.QM.quadruples == quads

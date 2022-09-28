@@ -9,12 +9,12 @@ main()
     vars
         int test;
 
-    a = 1;
-    b = 2;
+    # a = 1; # Still can't handle constant variables
+    # b = 2; # Still can't handle constant variables
     c = a + b;
-    input(d);
+    # input(d); # Still can't handle inputs
 
-    print("Your result: ", c + d);
+    # print("Your result: ", c + d); # Still can't handle prints
 }
 
  

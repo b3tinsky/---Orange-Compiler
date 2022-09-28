@@ -1,8 +1,10 @@
 program test_18
     vars 
         int a, b, c, d, e, f, g, h, i;
+        bool z;
 
 main()
 {
     z = a * b / (c + d * f / g + h) - i > (a + b) * c - d;
+    
 }

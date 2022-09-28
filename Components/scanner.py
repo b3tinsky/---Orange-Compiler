@@ -22,7 +22,8 @@ class OrangeLexer(Lexer):
     'IF',
     'ELSE',
     'INT',
-    'FLOAT'
+    'FLOAT',
+    'BOOL'
     )
 
     # Set of token names
@@ -44,6 +45,7 @@ class OrangeLexer(Lexer):
         ELSE,
         INT,
         FLOAT,
+        BOOL,
         ID,
         SEMICOLON,
         COMMA,
@@ -67,6 +69,7 @@ class OrangeLexer(Lexer):
         TIMES,
         DIVIDE,
         CTEINT,
+        CTEBOOL,
         CTEFLOAT,
         CTESTRING,
     }
@@ -89,6 +92,7 @@ class OrangeLexer(Lexer):
     ELSE = 'else'
     INT = 'int'
     FLOAT = 'float'
+    BOOL = 'bool'
 
     # Regular expression rules for tokens
     SEMICOLON = r'\;'
@@ -130,6 +134,10 @@ class OrangeLexer(Lexer):
     @_(r'\-?\d+')
     def CTEINT(self,t):
         t.value = int(t.value)
+        return t
+    @_('True', 'False')
+    def CTEBOOL(self,t):
+        t.value = bool(t.value)
         return t
 
     @_(r'\".*\"')

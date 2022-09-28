@@ -18,7 +18,8 @@ def orange_juice(test_name, test_data):
     try:
         lexer = OrangeLexer(StatusChecker)
         parser = OrangeParser(StatusChecker)
-        print('▼'*30, test_name ,'▼'*30)
+        print('▼'*28, test_name ,'▼'*28)
+        # print('▼'*30, test_name ,'▼'*30)
         lexer_status = '🚸'
         parser_status = '🚸'
         
@@ -57,7 +58,8 @@ def orange_juice(test_name, test_data):
     # print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
     # print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')
     # print(f'Semantic  Status:  {StatusChecker.semanticStatus} |')
-    print('▲'*30, test_name ,'▲'*30)
+    print('▲'*28, test_name ,'▲'*28)
+    # print('▲'*30, test_name ,'▲'*30)
     print()
 
 
