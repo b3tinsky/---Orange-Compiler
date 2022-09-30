@@ -15,16 +15,16 @@ Checkpoints are given by our professor, although they can change during the seme
 - ~~Procedure directory~~
 - ~~Variable table~~
 
-### ⚠️ Checkpoint \#3: Expression semantics
+### ✅ Checkpoint \#3: Expression semantics
 - ~~Semantic cube~~
 - ~~Code generation for arithmetic expressions and secuential statutes~~
 - ~~Assignment~~
-- Read
+- ~~Read~~
 - ~~Write~~
 - Etc.
 
-### ❌ Checkpoint \#4: Code generation for conditional statutes
-- Decisions
+### ⚠️ Checkpoint \#4: Code generation for conditional statutes
+- ~~Decisions~~
 - Cycles
 
 ### ❌ Checkpoint \#5: Code generation for functions
@@ -282,6 +282,17 @@ __Inputs__
 - Quadruple generation for inputs (read). 
 - Quadruple generation for constant variables (int, float, bool, string)
 
+---
+
+### 📆 September 30 🕓 16:03
+- Quadruple generation for conditional statements. This includes individual IF statements, IF statements with an ELSE statement, and nested conditional statements.
+- Testing for conditional quadruple generation. This includes three tests (lonely IF, IF with an ELSE, nested IFs).
+- Refactored <BLOCK>. This was because ANY block could have variable declaration, and this included conditionals, loops, etc. That caused trouble because every block tried to create a new function with the current context, causing a semantic error for 'Function already declared'. All I did was make another type of block that included variable declaration, and changed the rules that actually needed it (main block, global, functions). And everything else remained with a normal block (without being able to declare variables).
+- Quadruple machine now tracks quadruple number for later reference. Also, a new stack was added to keep track of unfilled jump positions.
+- Added input_20
+- Added input_21
+- Added input_22
+
 
 # Reference
 
@@ -311,6 +322,8 @@ __Inputs__
 [W3Schools - Python Raise an Exception](https://www.w3schools.com/python/gloss_python_raise.asp)
 
 [Note.nkmk.me - Python unpack values](https://note.nkmk.me/en/python-argument-expand/)
+
+[Splunk Tool - Python evenly space output data with varying string lengths](https://splunktool.com/python-evenly-space-output-data-with-varying-string-lengths)
 
 
 ## StackOverflow

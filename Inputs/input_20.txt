@@ -1,0 +1,13 @@
+program test_20
+    vars 
+        int a, b, c, d, e, f, g, h, i;
+        bool x, y, z;
+
+main()
+{
+    if(a + b > c * d)
+        {
+            a = b + d;
+        }
+    b = a * c;
+}

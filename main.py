@@ -51,10 +51,12 @@ def orange_juice(test_name, test_data):
         print(str(err))
 
     # parser.OFD.printdata()
+    print('JUMPS: ', parser.QM.jumps)
     print('OPERANDS: ', parser.QM.operands)
     print('OPERATORS: ', parser.QM.operators)
-    print('-'*41)
+    print(f'-'*50)
     parser.QM.printQuads()
+    print(f'-'*50)
     # print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
     # print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')
     # print(f'Semantic  Status:  {StatusChecker.semanticStatus} |')

@@ -42,13 +42,18 @@ class OrangeParser(Parser):
         return p
 
     # Main program block
-    @_('MAIN changecontext LPAREN RPAREN block')
+    @_('MAIN changecontext LPAREN RPAREN declareblock')
     def main_block(self, p):
         return p
 
     # Normal block
-    @_('LCURLY decvars blockcontent RCURLY')
+    @_('LCURLY blockcontent RCURLY')
     def block(self, p):
+        return p
+    
+    # Block with variable declaration
+    @_('LCURLY decvars blockcontent RCURLY')
+    def declareblock(self, p):
         return p
     
     # WARNING: Changed RETURN factor to RETURN exp
@@ -156,7 +161,7 @@ class OrangeParser(Parser):
         # void fullname(firstname, lastname) {
         #   print("Fullname: ", firstname, " ", lastname)
         # }
-    @_('VOID ID changecontext LPAREN params RPAREN block')
+    @_('VOID ID changecontext LPAREN params RPAREN declareblock')
     def voidfunc(self, p):
         return p
 
@@ -312,7 +317,6 @@ class OrangeParser(Parser):
     def factor(self, p):
         return p
         
-    # FIXME: QM checks constants as if they were vars, resulting in 'Undeclared variable'
         # Constant variable
     @_('varcte')
     def factor(self, p):
@@ -417,10 +421,47 @@ class OrangeParser(Parser):
         return p
 
     # Conditional statement    
-    @_('IF LPAREN expression RPAREN block', 'IF LPAREN expression RPAREN block ELSE block')
+    @_('IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps')
     def condition(self, p):
         return p
+
+    @_('IF LPAREN super_exp RPAREN openjumpslot block filljumps')
+    def condition(self, p):
+        return p
+
+    @_('')
+    def openjumpslot(self, p):
+        # Opening slot for an IF
+        if p[-1] == ')':    # if (condition) <WE ARE HERE> {statements}
+            self.QM.addOperator('GOTOF')
+            self.QM.addOperand(('', ''))
+            self.QM.generateQuadruple()
+        
+        # Opening slot for an ELSE
+        elif p[-2] == 'else':   # if (condition) {statements} ELSE <WE ARE HERE> {statements}
+            self.QM.addOperator('GOTO')
+            self.QM.addOperand(('', ''))
+            self.QM.addOperand(('', ''))
+            self.QM.generateQuadruple()
+        return p
     
+    @_('')
+    def filljumps(self, p):
+        # When filling an ELSE statement, we have fill the previous jump AHEAD
+        # of the current quadruple location, since the current location is a GOTO,
+        # everything inside would be ignored (it would be a double jump)
+        if p[-1] == 'else':
+            self.QM.QuadrupleNumber+=1  # Update with position ahead
+            self.QM.fillJumps()         # Fill previous quadruple with position ahead
+            self.QM.QuadrupleNumber-=1  # Revert position back to normal
+        
+        # Filling a normal IF statement <- GOTOF
+        else:
+            self.QM.fillJumps()
+        return p
+
+
+
     # Constant variable
     @_('CTEINT')
     def varcte(self, p):

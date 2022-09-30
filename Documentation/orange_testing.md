@@ -153,3 +153,21 @@ __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
 __Expected SEM status__: '✅'
 While testing arithemtic operations, also test print statements, input statements and constant variables. The goal of this test is focused on quadruple generation (correct quadruples, correct order, etc.)
+
+### Input_20
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Single conditional statement must generate correct quadruples in the correct order. The focus of this test is on the "jumps" a conditional statement creates. In this case it only accounts for a single IF statement.
+
+### Input_21
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Single conditional statement must generate correct quadruples in the correct order. The focus of this test is on the "jumps" a conditional statement creates. In this case it accounts for an  IF statement with an ELSE clause.
+
+### Input_22
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Single conditional statement must generate correct quadruples in the correct order. The focus of this test is on the "jumps" a conditional statement creates. In this case it accounts for an  IF statement with nested IF statements and an ELSE clause.
