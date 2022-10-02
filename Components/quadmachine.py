@@ -116,23 +116,17 @@ class OrangeQuadMachine():
         self.operands.append( (tmpVar, resultType) )
     
     
-    def fillJumps(self):
-        # Quadruple number that doesn't know where to jump
-        quadToFill   = self.jumps.pop() - 1     # -1 to use index in list
+    def fillJumps(self, quadrupleToFill, jumpToPosition):
+        # quadrupleToFill <- Quadruple number that doesn't know where to jump
+            # -1 to use index in list
 
         # Copy quadruple info
             # Since quadruples are stored as tuples, we can't directly mutate them
-        operator     = self.quadruples[quadToFill][0]
-        leftOperand  = self.quadruples[quadToFill][1]
-        rightOperand = self.quadruples[quadToFill][2]
-        
-        # Jump to NEXT instruction, since at this point our current position
-        # is still inside the IF block, and we need to continue outside of it
-        jumpPosition = self.QuadrupleNumber + 1
+        operator, leftOperand, rightOperand, _ = self.quadruples[quadrupleToFill - 1]
 
         # Replace with new quadruple
             # Quadruples are stored in a list (lists are mutable, but tuples themselves are not)
-        self.quadruples[quadToFill] = (operator, leftOperand, rightOperand, jumpPosition)
+        self.quadruples[quadrupleToFill - 1] = (operator, leftOperand, rightOperand, jumpToPosition)
     
     # Prints quadruples for an easier review
     def printQuads(self):

@@ -418,10 +418,8 @@ class OrangeParser(Parser):
         self.QM.addOperand(('', ''))      # To not break the internals of addOperand, add fluff
         self.QM.addOperator('P')          # P stands for PRINT
         self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))
-
         return p
 
-    # HACK: Copy structure for looping
     # Conditional statement    
     @_('IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps')
     def condition(self, p):
@@ -440,7 +438,6 @@ class OrangeParser(Parser):
             self.QM.generateQuadruple()
             self.QM.jumps.append(self.QM.QuadrupleNumber)
             
-        
         # Opening slot for an ELSE
         elif p[-2] == 'else':   # if (condition) {statements} ELSE filljumps <WE ARE HERE> {statements}
             self.QM.addOperator('GOTO')
@@ -448,7 +445,6 @@ class OrangeParser(Parser):
             self.QM.addOperand(('', ''))
             self.QM.generateQuadruple()
             self.QM.jumps.append(self.QM.QuadrupleNumber)
-
 
         return p
     
@@ -459,15 +455,17 @@ class OrangeParser(Parser):
 
     @_('')
     def filljumps(self, p):
-        # When filling an ELSE statement, we have fill the previous jump AHEAD
-        # of the current quadruple location, since the current location is a GOTO,
-        # everything inside would be ignored (it would be a double jump)
-        # print('🍫: ', p[-7])
+        '''
+        When filling an ELSE statement, we have to fill the previous jump AHEAD
+        of the current quadruple location, since the current location is a GOTO,
+        resulting in an infinite loop
+        '''
         if p[-1] == 'else':
-            self.QM.QuadrupleNumber+=1  # Update with position ahead
-            self.QM.fillJumps()         # Fill previous quadruple with position ahead
-            self.QM.QuadrupleNumber-=1  # Revert position back to normal
+            quadrupleToFill = self.QM.jumps.pop()
+            jumpToPosition = self.QM.QuadrupleNumber + 2       # Jump to position ahead
+            self.QM.fillJumps(quadrupleToFill, jumpToPosition) # Fill previous quadruple with position ahead
         
+
         elif p[-7] == 'while':
             # Generate GOTO quadruple that will return us to before the WHILE's condition
             self.QM.addOperator('GOTO')
@@ -476,23 +474,20 @@ class OrangeParser(Parser):
             self.QM.generateQuadruple()
             
             # Fill the WHILE's condition (GOTOF) with position AFTER the GOTO we just created
-            self.QM.fillJumps()         # Fill previous quadruple with position ahead
+            quadrupleToFill = self.QM.jumps.pop()
+            jumpToPosition = self.QM.QuadrupleNumber + 1        # Jump AFTER the GOTO instruction
+            self.QM.fillJumps(quadrupleToFill, jumpToPosition)  # Fill previous quadruple with position ahead
             
             # Fill the GOTO quadruple that will return us to before the WHILE's condition
-            whileStartPosition = self.QM.jumps.pop()  # <- This is the position we left after reading the <WHILE> token
-            currentPosition = self.QM.QuadrupleNumber # <
-            self.QM.jumps.append(currentPosition)
-            self.QM.QuadrupleNumber = whileStartPosition-1
-            self.QM.fillJumps()
-            self.QM.QuadrupleNumber = currentPosition
-
-
-            # self.QM.QuadrupleNumber+=1  # Update with position ahead
-            # self.QM.QuadrupleNumber-=1  # Revert position back to normal
+            whileStartPosition = self.QM.jumps.pop()            # This is the position we left after reading the <WHILE> token
+            currentQuadruple = self.QM.QuadrupleNumber          # Immediately fill the GOTO we just created
+            self.QM.fillJumps(currentQuadruple, whileStartPosition)
 
         # Filling a normal IF statement <- GOTOF
         else:
-            self.QM.fillJumps()
+            quadrupleToFill = self.QM.jumps.pop()
+            jumpToPosition = self.QM.QuadrupleNumber + 1
+            self.QM.fillJumps(quadrupleToFill, jumpToPosition)
         return p
 
 

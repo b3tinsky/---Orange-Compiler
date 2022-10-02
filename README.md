@@ -26,6 +26,8 @@ Checkpoints are given by our professor, although they can change during the seme
 ### ⚠️ Checkpoint \#4: Code generation for conditional statutes
 - ~~Decisions~~
 - Cycles
+    - ~~WHILE~~
+    - FOR
 
 ### ❌ Checkpoint \#5: Code generation for functions
 
@@ -296,8 +298,14 @@ __Inputs__
 ---
 
 ### 📆 October 02 🕓 17:41
+- Watched recorded class for October 11. The teacher talked about code generation for WHILE and DO WHILE loops.
 - Quadruple generation for a WHILE loop. A this point the jumps work, but I feel the code could be better (in a more readable/understandable way). All tests pass, but I want to refactor a bit the 'fillJumps()' function and create more tests (nested while loops, while loops with if statements, loops & conditionals, etc.)
 - Added input_23
+
+---
+
+### 📆 October 02 🕓 18:18
+- Refactored fillJumps() function and jump filling functionality.
 
 
 # Reference
