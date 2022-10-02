@@ -171,3 +171,9 @@ __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
 __Expected SEM status__: '✅'
 Single conditional statement must generate correct quadruples in the correct order. The focus of this test is on the "jumps" a conditional statement creates. In this case it accounts for an  IF statement with nested IF statements and an ELSE clause.
+
+### Input_23
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+While loop must generate correct quadruples in the correct order. This tests focuses on the GOTOF and GOTO a while loop must generate.

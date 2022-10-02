@@ -293,6 +293,12 @@ __Inputs__
 - Added input_21
 - Added input_22
 
+---
+
+### 📆 October 02 🕓 17:41
+- Quadruple generation for a WHILE loop. A this point the jumps work, but I feel the code could be better (in a more readable/understandable way). All tests pass, but I want to refactor a bit the 'fillJumps()' function and create more tests (nested while loops, while loops with if statements, loops & conditionals, etc.)
+- Added input_23
+
 
 # Reference
 

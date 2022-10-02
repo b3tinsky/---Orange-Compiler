@@ -348,9 +348,10 @@ class OrangeParser(Parser):
     @_('FROM var ASSIGN expression TO expression BY expression DO block')
     def forloop(self, p):
         return p
-        
+
+    # TODO: Finish while loop
     # While loop definition
-    @_('WHILE LPAREN expression RPAREN block')
+    @_('WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps')
     def whileloop(self, p):
         return p
         
@@ -420,6 +421,7 @@ class OrangeParser(Parser):
 
         return p
 
+    # HACK: Copy structure for looping
     # Conditional statement    
     @_('IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps')
     def condition(self, p):
@@ -436,25 +438,58 @@ class OrangeParser(Parser):
             self.QM.addOperator('GOTOF')
             self.QM.addOperand(('', ''))
             self.QM.generateQuadruple()
+            self.QM.jumps.append(self.QM.QuadrupleNumber)
+            
         
         # Opening slot for an ELSE
-        elif p[-2] == 'else':   # if (condition) {statements} ELSE <WE ARE HERE> {statements}
+        elif p[-2] == 'else':   # if (condition) {statements} ELSE filljumps <WE ARE HERE> {statements}
             self.QM.addOperator('GOTO')
             self.QM.addOperand(('', ''))
             self.QM.addOperand(('', ''))
             self.QM.generateQuadruple()
+            self.QM.jumps.append(self.QM.QuadrupleNumber)
+
+
         return p
     
+    @_('')
+    def saveposition(self, p):
+        self.QM.jumps.append(self.QM.QuadrupleNumber + 1)
+        return p
+
     @_('')
     def filljumps(self, p):
         # When filling an ELSE statement, we have fill the previous jump AHEAD
         # of the current quadruple location, since the current location is a GOTO,
         # everything inside would be ignored (it would be a double jump)
+        # print('🍫: ', p[-7])
         if p[-1] == 'else':
             self.QM.QuadrupleNumber+=1  # Update with position ahead
             self.QM.fillJumps()         # Fill previous quadruple with position ahead
             self.QM.QuadrupleNumber-=1  # Revert position back to normal
         
+        elif p[-7] == 'while':
+            # Generate GOTO quadruple that will return us to before the WHILE's condition
+            self.QM.addOperator('GOTO')
+            self.QM.addOperand(('', ''))
+            self.QM.addOperand(('', ''))
+            self.QM.generateQuadruple()
+            
+            # Fill the WHILE's condition (GOTOF) with position AFTER the GOTO we just created
+            self.QM.fillJumps()         # Fill previous quadruple with position ahead
+            
+            # Fill the GOTO quadruple that will return us to before the WHILE's condition
+            whileStartPosition = self.QM.jumps.pop()  # <- This is the position we left after reading the <WHILE> token
+            currentPosition = self.QM.QuadrupleNumber # <
+            self.QM.jumps.append(currentPosition)
+            self.QM.QuadrupleNumber = whileStartPosition-1
+            self.QM.fillJumps()
+            self.QM.QuadrupleNumber = currentPosition
+
+
+            # self.QM.QuadrupleNumber+=1  # Update with position ahead
+            # self.QM.QuadrupleNumber-=1  # Revert position back to normal
+
         # Filling a normal IF statement <- GOTOF
         else:
             self.QM.fillJumps()

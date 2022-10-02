@@ -77,7 +77,7 @@ class OrangeQuadMachine():
                     self.quadruples.append( (operator, leftOperand[0], '', '?') ) 
                     
                     # Store quadruple number to later fill
-                    self.jumps.append(self.QuadrupleNumber)
+                    # self.jumps.append(self.QuadrupleNumber)
                 
                 # If condition does not result in a boolean, a special mismatch error is raised
                 else:
@@ -91,7 +91,7 @@ class OrangeQuadMachine():
                 self.quadruples.append( (operator, '', '', '?') ) 
                 
                 # Store quadruple number to later fill
-                self.jumps.append(self.QuadrupleNumber)
+                # self.jumps.append(self.QuadrupleNumber)
                 
                 
                 return
