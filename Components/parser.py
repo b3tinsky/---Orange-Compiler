@@ -349,10 +349,14 @@ class OrangeParser(Parser):
     def forloop(self, p):
         return p
 
-    # TODO: Finish while loop
     # While loop definition
     @_('WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps')
     def whileloop(self, p):
+        return p
+    
+    # Do While loop definition
+    @_('DO saveposition block WHILE LPAREN expression RPAREN openjumpslot')
+    def dowhileloop(self, p):
         return p
         
     # Variable value assignment
@@ -431,8 +435,15 @@ class OrangeParser(Parser):
 
     @_('')
     def openjumpslot(self, p):
+        # Opening slot for a DO WHILE 
+        if p[-7] == 'do':   # DO saveposition block WHILE LPAREN expression RPAREN <WE ARE HERE> filljumps
+            self.QM.addOperator('GOTOT')
+            self.QM.addOperand(('', ''))
+            self.QM.generateQuadruple()
+
+
         # Opening slot for an IF
-        if p[-1] == ')':    # if (condition) <WE ARE HERE> {statements}
+        elif p[-1] == ')':    # if (condition) <WE ARE HERE> {statements}
             self.QM.addOperator('GOTOF')
             self.QM.addOperand(('', ''))
             self.QM.generateQuadruple()
@@ -445,6 +456,7 @@ class OrangeParser(Parser):
             self.QM.addOperand(('', ''))
             self.QM.generateQuadruple()
             self.QM.jumps.append(self.QM.QuadrupleNumber)
+        
 
         return p
     
@@ -483,6 +495,8 @@ class OrangeParser(Parser):
             currentQuadruple = self.QM.QuadrupleNumber          # Immediately fill the GOTO we just created
             self.QM.fillJumps(currentQuadruple, whileStartPosition)
 
+
+
         # Filling a normal IF statement <- GOTOF
         else:
             quadrupleToFill = self.QM.jumps.pop()
@@ -514,7 +528,7 @@ class OrangeParser(Parser):
         return p
         
     # Statute definition
-    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'forloop', 'call')
+    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'dowhileloop', 'forloop', 'call')
     def statute(self, p):
         return p
     

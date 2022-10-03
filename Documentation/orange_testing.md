@@ -176,4 +176,10 @@ Single conditional statement must generate correct quadruples in the correct ord
 __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
 __Expected SEM status__: '✅'
-While loop must generate correct quadruples in the correct order. This tests focuses on the GOTOF and GOTO a while loop must generate.
+While loop must generate correct quadruples in the correct order. This test focuses on the GOTOF and GOTO a while loop must generate.
+
+### Input_24
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+Do while loop must generate correct quadruples in the correct order. This test focuses on the GOTOT, GOTOF and GOTO a do while loop must generate. It also has nested conditions, while and do-while loops.

@@ -27,6 +27,7 @@ Checkpoints are given by our professor, although they can change during the seme
 - ~~Decisions~~
 - Cycles
     - ~~WHILE~~
+    - ~~DO WHILE~~
     - FOR
 
 ### ❌ Checkpoint \#5: Code generation for functions
@@ -306,6 +307,13 @@ __Inputs__
 
 ### 📆 October 02 🕓 18:18
 - Refactored fillJumps() function and jump filling functionality.
+
+---
+
+### 📆 October 02 🕓 23:26
+- Added DO WHILE loops. I wasn't planning on adding a DO WHILE, but while watching the recording of class 7, the teacher added an example for a DO WHILE that included nested WHILE loops and conditionals, and that seemed to me like the perfect example to test everything, so I just decided to give it a shot now that I'm at it.
+- Watched recorded class for October 14. The teacher talked about code generation for FOR loops
+- Added input_24
 
 
 # Reference

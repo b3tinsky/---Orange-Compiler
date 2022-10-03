@@ -84,16 +84,28 @@ class OrangeQuadMachine():
                     mismatchErrorMessage = '❌ Type mismatch. Condition must result in a boolean value.'
                 
                 return
+            
+            # DO WHILE
+            elif operator == 'GOTOT':
+                # Validates that contiion results in a boolean <- if (a + b > c * d)
+                if leftOperand[1] == 'bool':
+                    jumpToPosition = self.jumps.pop()
+                    # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+                    self.quadruples.append( (operator, leftOperand[0], '', jumpToPosition) ) 
+                    
+                    # Store quadruple number to later fill
+                    # self.jumps.append(self.QuadrupleNumber)
+                
+                # If condition does not result in a boolean, a special mismatch error is raised
+                else:
+                    mismatchErrorMessage = '❌ Type mismatch. Condition must result in a boolean value.'
+                
+                return
 
             # ELSE
             elif operator == 'GOTO':
                 # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
                 self.quadruples.append( (operator, '', '', '?') ) 
-                
-                # Store quadruple number to later fill
-                # self.jumps.append(self.QuadrupleNumber)
-                
-                
                 return
 
             
@@ -106,7 +118,7 @@ class OrangeQuadMachine():
         tmpVar = self.generateTempVar()
 
 
-
+        # FIXME: Include following section in a continuous function, only 1 return, etc.
 
         # Add the quadruple to quadruple list
         self.quadruples.append( (operator, leftOperand[0], rightOperand[0], tmpVar) ) 
@@ -132,5 +144,5 @@ class OrangeQuadMachine():
     def printQuads(self):
         counter = 1
         for quad in self.quadruples:
-            print(f'{str(counter):2s} | {quad[0]:10s} {quad[1]:10s} {quad[2]:10s} {str(quad[3]):10s} |')
+            print(f'{str(counter):2s} | {str(quad[0]):10s} {str(quad[1]):10s} {str(quad[2]):10s} {str(quad[3]):10s} |')
             counter+=1

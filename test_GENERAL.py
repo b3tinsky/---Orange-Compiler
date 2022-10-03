@@ -786,3 +786,41 @@ class TestInput23:
         ]
 
         assert self.parser.QM.quadruples == quads
+
+class TestInput24:
+    # Initialize a different compiler with the needed file
+    status, lexer, parser = initializeCompiler('input_24.txt')
+
+    def test_QUADGENERATION(self):
+        quads = [
+            ('*', 'b', 'c', 'T1'),
+            ('+', 'a', 'T1', 'T2'),
+            ('<', 'T2', 'd', 'T3'),
+            ('GOTOF', 'T3', '', 26),
+            ('+', 'a', 'b', 'T4'),
+            ('<', 'T4', 'c', 'T5'),
+            ('GOTOF', 'T5', '', 16),
+            ('+', 'b', 'c', 'T6'),
+            ('=', 'T6', '', 'a'),
+            ('-', 'a', 1, 'T7'),
+            ('=', 'T7', '', 'a'),
+            ('+', 'b', 'c', 'T8'),
+            ('>', 'a', 'T8', 'T9'),
+            ('GOTOT', 'T9', '', 10),
+            ('GOTO', '', '', 25),
+            ('+', 'c', 'd', 'T10'),
+            ('>', 'b', 'T10', 'T11'),
+            ('GOTOF', 'T11', '', 25),
+            ('*', 'c', 'd', 'T12'),
+            ('+', 'b', 'T12', 'T13'),
+            ('=', 'T13', '', 'a'),
+            ('-', 'a', 'd', 'T14'),
+            ('=', 'T14', '', 'b'),
+            ('GOTO', '', '', 16),
+            ('GOTO', '', '', 1),
+            ('*', 'b', 'c', 'T15'),
+            ('=', 'T15', '', 'a'),
+            ('=', 0, '', 'c')
+        ]
+
+        assert self.parser.QM.quadruples == quads
