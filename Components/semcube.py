@@ -6,6 +6,9 @@ class OrangeCube():
                     'int'   : 'int',
                     'float' : 'float'
                 },
+                '++' : {
+                    'int'   : 'int', # Only for FOR LOOPS
+                },
                 '-' : {
                     'int'   : 'int',
                     'float' : 'float'

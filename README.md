@@ -315,6 +315,16 @@ __Inputs__
 - Watched recorded class for October 14. The teacher talked about code generation for FOR loops
 - Added input_24
 
+---
+
+### 📆 October 04 🕓 18:24
+- Added FOR loops. 
+- Added '++' to semantic cube. It only works for integers, and its only used in FOR LOOPS. This could be refactored, but for now it made it easy for me incrementing the control variable in a FOR loop and saving its value to itself instead of a temporary variable.
+- Added some custom mismatch errors in quadruple machine
+- Minor bug fix in openjumpslot that confused the p[-7] position looking for a <DO> token. Since a DO WHILE loop and a FOR LOOP both use the 'do' keyword, and oddly enough in the same position.
+- Added input_25
+- Added input_26
+- Added input_27
 
 # Reference
 

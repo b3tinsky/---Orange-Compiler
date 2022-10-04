@@ -82,72 +82,75 @@ Rule 78    factor -> varcte
 Rule 79    factor -> call
 Rule 80    factor -> var
 Rule 81    fakefloor -> <empty>
-Rule 82    forloop -> FROM var ASSIGN expression TO expression BY expression DO block
-Rule 83    forloop -> FROM var ASSIGN expression TO expression DO block
-Rule 84    whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
-Rule 85    dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
-Rule 86    assignment -> assignment_var assignment_sign expression SEMICOLON
-Rule 87    assignment_sign -> ASSIGN
-Rule 88    assignment_var -> ID
-Rule 89    read -> INPUT LPAREN readaux RPAREN SEMICOLON
-Rule 90    readaux -> readvalue COMMA readaux
-Rule 91    readaux -> readvalue
-Rule 92    readvalue -> var
-Rule 93    write -> PRINT LPAREN writeaux RPAREN SEMICOLON
-Rule 94    writeaux -> writevalues
-Rule 95    writeaux -> writevalues COMMA writeaux
-Rule 96    writevalues -> CTESTRING
-Rule 97    writevalues -> super_exp
-Rule 98    condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps
-Rule 99    condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
-Rule 100   openjumpslot -> <empty>
-Rule 101   saveposition -> <empty>
-Rule 102   filljumps -> <empty>
-Rule 103   varcte -> CTEBOOL
-Rule 104   varcte -> CTEFLOAT
-Rule 105   varcte -> CTEINT
-Rule 106   type -> BOOL
-Rule 107   type -> FLOAT
-Rule 108   type -> INT
-Rule 109   statute -> call
-Rule 110   statute -> forloop
-Rule 111   statute -> dowhileloop
-Rule 112   statute -> whileloop
-Rule 113   statute -> read
-Rule 114   statute -> write
-Rule 115   statute -> condition
-Rule 116   statute -> assignment
-Rule 117   changecontext -> <empty>
-Rule 118   saveprogramname -> <empty>
-Rule 119   empty -> <empty>
+Rule 82    forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+Rule 83    forloopcontrolvar -> var
+Rule 84    validatecontrolvar -> <empty>
+Rule 85    createfinaltempvar -> <empty>
+Rule 86    validateloopend -> <empty>
+Rule 87    whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
+Rule 88    dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
+Rule 89    assignment -> assignment_var assignment_sign expression SEMICOLON
+Rule 90    assignment_sign -> ASSIGN
+Rule 91    assignment_var -> ID
+Rule 92    read -> INPUT LPAREN readaux RPAREN SEMICOLON
+Rule 93    readaux -> readvalue COMMA readaux
+Rule 94    readaux -> readvalue
+Rule 95    readvalue -> var
+Rule 96    write -> PRINT LPAREN writeaux RPAREN SEMICOLON
+Rule 97    writeaux -> writevalues
+Rule 98    writeaux -> writevalues COMMA writeaux
+Rule 99    writevalues -> CTESTRING
+Rule 100   writevalues -> super_exp
+Rule 101   condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps
+Rule 102   condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+Rule 103   openjumpslot -> <empty>
+Rule 104   saveposition -> <empty>
+Rule 105   filljumps -> <empty>
+Rule 106   varcte -> CTEBOOL
+Rule 107   varcte -> CTEFLOAT
+Rule 108   varcte -> CTEINT
+Rule 109   type -> BOOL
+Rule 110   type -> FLOAT
+Rule 111   type -> INT
+Rule 112   statute -> call
+Rule 113   statute -> forloop
+Rule 114   statute -> dowhileloop
+Rule 115   statute -> whileloop
+Rule 116   statute -> read
+Rule 117   statute -> write
+Rule 118   statute -> condition
+Rule 119   statute -> assignment
+Rule 120   changecontext -> <empty>
+Rule 121   saveprogramname -> <empty>
+Rule 122   empty -> <empty>
 
 Terminals, with rules where they appear:
 
 AND                  : 53
-ASSIGN               : 82 83 87
-BOOL                 : 15 106
-BY                   : 24 82
-COMMA                : 13 43 47 90 95
-CTEBOOL              : 103
-CTEFLOAT             : 104
-CTEINT               : 33 33 34 105
-CTESTRING            : 96
+ASSIGN               : 90
+BOOL                 : 15 109
+BY                   : 24
+COMMA                : 13 43 47 93 98
+CTEBOOL              : 106
+CTEFLOAT             : 107
+CTEINT               : 33 33 34 108
+CTESTRING            : 99
 DIVIDE               : 74
-DO                   : 23 82 83 85
-ELSE                 : 18 99
+DO                   : 23 82 88
+ELSE                 : 18 102
 EQ                   : 59
-FLOAT                : 16 107
-FROM                 : 26 82 83
+FLOAT                : 16 110
+FROM                 : 26 82
 FUNC                 : 29 38 39
 GT                   : 63
 GTE                  : 61
-ID                   : 1 33 34 35 40 41 43 44 45 88
-IF                   : 19 98 99
-INPUT                : 21 89
-INT                  : 17 108
+ID                   : 1 33 34 35 40 41 43 44 45 91
+IF                   : 19 101 102
+INPUT                : 21 92
+INT                  : 17 111
 LBRACKET             : 33 33 34
 LCURLY               : 4 5 6
-LPAREN               : 3 40 41 45 77 84 85 89 93 98 99
+LPAREN               : 3 40 41 45 77 87 88 92 96 101 102
 LT                   : 62
 LTE                  : 60
 MAIN                 : 3 30
@@ -155,65 +158,67 @@ MINUS                : 68
 NEQ                  : 58
 OR                   : 52
 PLUS                 : 69
-PRINT                : 20 93
+PRINT                : 20 96
 PROGRAM              : 1 32
 RBRACKET             : 33 33 34
 RCURLY               : 4 5 6
 RETURN               : 6 28
-RPAREN               : 3 40 41 45 77 84 85 89 93 98 99
-SEMICOLON            : 6 11 12 86 89 93
+RPAREN               : 3 40 41 45 77 87 88 92 96 101 102
+SEMICOLON            : 6 11 12 89 92 96
 TIMES                : 75
-TO                   : 25 82 83
+TO                   : 25 82
 VARS                 : 10 31
 VOID                 : 27 40
-WHILE                : 22 84 85
+WHILE                : 22 87 88
 error                : 
 
 Nonterminals, with rules where they appear:
 
-assignment           : 116
-assignment_sign      : 86
-assignment_var       : 86
-block                : 82 83 84 85 98 99 99
+assignment           : 119
+assignment_sign      : 82 89
+assignment_var       : 89
+block                : 82 87 88 101 102 102
 blockcontent         : 4 5 6 8
-call                 : 79 109
+call                 : 79 112
 callvalues           : 45 47
 changecontext        : 3 40 41
-condition            : 115
+condition            : 118
+createfinaltempvar   : 82
 decfuncs             : 2 37
 declare              : 1
 declareblock         : 3 40
 decvar               : 11 12 13
 decvar_line          : 10 11
 decvars              : 2 5 6
-dowhileloop          : 111
+dowhileloop          : 114
 empty                : 7 9 36 42 46 50 56 66 72
 exp                  : 6 47 48 57 65
 exp_aux              : 67
 exp_quadgen          : 67
 exp_sign             : 65
-expression           : 51 55 82 82 82 83 83 84 85 86
+expression           : 51 55 82 82 87 88 89
 expression_aux       : 57
 expression_quadgen   : 57
 factor               : 73
 fakefloor            : 77
-filljumps            : 84 98 99 99
-forloop              : 110
+filljumps            : 82 87 101 102 102
+forloop              : 113
+forloopcontrolvar    : 82
 func                 : 37
 logic                : 49
 main_block           : 2
-openjumpslot         : 84 85 98 99 99
+openjumpslot         : 82 87 88 101 102 102
 params               : 40 41 43
 program              : 0
-read                 : 113
-readaux              : 89 90
-readvalue            : 90 91
+read                 : 116
+readaux              : 92 93
+readvalue            : 93 94
 relation             : 55
 returnblock          : 41
-saveposition         : 84 85
+saveposition         : 87 88
 saveprogramname      : 1
 statute              : 8
-super_exp            : 49 77 97 98 99
+super_exp            : 49 77 100 101 102
 super_exp_aux        : 51
 super_exp_quadgen    : 51
 term                 : 67 71
@@ -222,13 +227,15 @@ term_quadgen         : 73
 term_sign            : 71
 type                 : 11 12 41 43 44
 typefunc             : 38
-var                  : 13 14 80 82 83 92
+validatecontrolvar   : 82
+validateloopend      : 82
+var                  : 13 14 80 83 95
 varcte               : 78
 voidfunc             : 39
-whileloop            : 112
-write                : 114
-writeaux             : 93 95
-writevalues          : 94 95
+whileloop            : 115
+write                : 117
+writeaux             : 96 98
+writevalues          : 97 98
 
 
 state 0
@@ -253,10 +260,10 @@ state 2
 state 3
 
     (1) program -> PROGRAM ID . saveprogramname declare
-    (118) saveprogramname -> .
-    VARS            reduce using rule 118 (saveprogramname -> .)
-    FUNC            reduce using rule 118 (saveprogramname -> .)
-    MAIN            reduce using rule 118 (saveprogramname -> .)
+    (121) saveprogramname -> .
+    VARS            reduce using rule 121 (saveprogramname -> .)
+    FUNC            reduce using rule 121 (saveprogramname -> .)
+    MAIN            reduce using rule 121 (saveprogramname -> .)
 
     saveprogramname                shift and go to state 4
 
@@ -266,10 +273,10 @@ state 4
     (2) declare -> . decvars decfuncs main_block
     (9) decvars -> . empty
     (10) decvars -> . VARS decvar_line
-    (119) empty -> .
+    (122) empty -> .
     VARS            shift and go to state 8
-    FUNC            reduce using rule 119 (empty -> .)
-    MAIN            reduce using rule 119 (empty -> .)
+    FUNC            reduce using rule 122 (empty -> .)
+    MAIN            reduce using rule 122 (empty -> .)
 
     declare                        shift and go to state 5
     decvars                        shift and go to state 6
@@ -286,10 +293,10 @@ state 6
     (2) declare -> decvars . decfuncs main_block
     (36) decfuncs -> . empty
     (37) decfuncs -> . func decfuncs
-    (119) empty -> .
+    (122) empty -> .
     (38) func -> . FUNC typefunc
     (39) func -> . FUNC voidfunc
-    MAIN            reduce using rule 119 (empty -> .)
+    MAIN            reduce using rule 122 (empty -> .)
     FUNC            shift and go to state 12
 
     decfuncs                       shift and go to state 9
@@ -317,9 +324,9 @@ state 8
     (10) decvars -> VARS . decvar_line
     (11) decvar_line -> . type decvar SEMICOLON decvar_line
     (12) decvar_line -> . type decvar SEMICOLON
-    (106) type -> . BOOL
-    (107) type -> . FLOAT
-    (108) type -> . INT
+    (109) type -> . BOOL
+    (110) type -> . FLOAT
+    (111) type -> . INT
     BOOL            shift and go to state 15
     FLOAT           shift and go to state 16
     INT             shift and go to state 17
@@ -346,10 +353,10 @@ state 11
     (37) decfuncs -> func . decfuncs
     (36) decfuncs -> . empty
     (37) decfuncs -> . func decfuncs
-    (119) empty -> .
+    (122) empty -> .
     (38) func -> . FUNC typefunc
     (39) func -> . FUNC voidfunc
-    MAIN            reduce using rule 119 (empty -> .)
+    MAIN            reduce using rule 122 (empty -> .)
     FUNC            shift and go to state 12
 
     func                           shift and go to state 11
@@ -362,9 +369,9 @@ state 12
     (39) func -> FUNC . voidfunc
     (41) typefunc -> . type ID changecontext LPAREN params RPAREN returnblock
     (40) voidfunc -> . VOID ID changecontext LPAREN params RPAREN declareblock
-    (106) type -> . BOOL
-    (107) type -> . FLOAT
-    (108) type -> . INT
+    (109) type -> . BOOL
+    (110) type -> . FLOAT
+    (111) type -> . INT
     VOID            shift and go to state 24
     BOOL            shift and go to state 15
     FLOAT           shift and go to state 16
@@ -442,74 +449,74 @@ state 14
 
 state 15
 
-    (106) type -> BOOL .
-    BOOL            reduce using rule 106 (type -> BOOL .)
-    FLOAT           reduce using rule 106 (type -> BOOL .)
-    INT             reduce using rule 106 (type -> BOOL .)
-    ELSE            reduce using rule 106 (type -> BOOL .)
-    IF              reduce using rule 106 (type -> BOOL .)
-    PRINT           reduce using rule 106 (type -> BOOL .)
-    INPUT           reduce using rule 106 (type -> BOOL .)
-    WHILE           reduce using rule 106 (type -> BOOL .)
-    DO              reduce using rule 106 (type -> BOOL .)
-    BY              reduce using rule 106 (type -> BOOL .)
-    TO              reduce using rule 106 (type -> BOOL .)
-    FROM            reduce using rule 106 (type -> BOOL .)
-    VOID            reduce using rule 106 (type -> BOOL .)
-    RETURN          reduce using rule 106 (type -> BOOL .)
-    FUNC            reduce using rule 106 (type -> BOOL .)
-    MAIN            reduce using rule 106 (type -> BOOL .)
-    VARS            reduce using rule 106 (type -> BOOL .)
-    PROGRAM         reduce using rule 106 (type -> BOOL .)
-    ID              reduce using rule 106 (type -> BOOL .)
+    (109) type -> BOOL .
+    BOOL            reduce using rule 109 (type -> BOOL .)
+    FLOAT           reduce using rule 109 (type -> BOOL .)
+    INT             reduce using rule 109 (type -> BOOL .)
+    ELSE            reduce using rule 109 (type -> BOOL .)
+    IF              reduce using rule 109 (type -> BOOL .)
+    PRINT           reduce using rule 109 (type -> BOOL .)
+    INPUT           reduce using rule 109 (type -> BOOL .)
+    WHILE           reduce using rule 109 (type -> BOOL .)
+    DO              reduce using rule 109 (type -> BOOL .)
+    BY              reduce using rule 109 (type -> BOOL .)
+    TO              reduce using rule 109 (type -> BOOL .)
+    FROM            reduce using rule 109 (type -> BOOL .)
+    VOID            reduce using rule 109 (type -> BOOL .)
+    RETURN          reduce using rule 109 (type -> BOOL .)
+    FUNC            reduce using rule 109 (type -> BOOL .)
+    MAIN            reduce using rule 109 (type -> BOOL .)
+    VARS            reduce using rule 109 (type -> BOOL .)
+    PROGRAM         reduce using rule 109 (type -> BOOL .)
+    ID              reduce using rule 109 (type -> BOOL .)
 
 
 state 16
 
-    (107) type -> FLOAT .
-    BOOL            reduce using rule 107 (type -> FLOAT .)
-    FLOAT           reduce using rule 107 (type -> FLOAT .)
-    INT             reduce using rule 107 (type -> FLOAT .)
-    ELSE            reduce using rule 107 (type -> FLOAT .)
-    IF              reduce using rule 107 (type -> FLOAT .)
-    PRINT           reduce using rule 107 (type -> FLOAT .)
-    INPUT           reduce using rule 107 (type -> FLOAT .)
-    WHILE           reduce using rule 107 (type -> FLOAT .)
-    DO              reduce using rule 107 (type -> FLOAT .)
-    BY              reduce using rule 107 (type -> FLOAT .)
-    TO              reduce using rule 107 (type -> FLOAT .)
-    FROM            reduce using rule 107 (type -> FLOAT .)
-    VOID            reduce using rule 107 (type -> FLOAT .)
-    RETURN          reduce using rule 107 (type -> FLOAT .)
-    FUNC            reduce using rule 107 (type -> FLOAT .)
-    MAIN            reduce using rule 107 (type -> FLOAT .)
-    VARS            reduce using rule 107 (type -> FLOAT .)
-    PROGRAM         reduce using rule 107 (type -> FLOAT .)
-    ID              reduce using rule 107 (type -> FLOAT .)
+    (110) type -> FLOAT .
+    BOOL            reduce using rule 110 (type -> FLOAT .)
+    FLOAT           reduce using rule 110 (type -> FLOAT .)
+    INT             reduce using rule 110 (type -> FLOAT .)
+    ELSE            reduce using rule 110 (type -> FLOAT .)
+    IF              reduce using rule 110 (type -> FLOAT .)
+    PRINT           reduce using rule 110 (type -> FLOAT .)
+    INPUT           reduce using rule 110 (type -> FLOAT .)
+    WHILE           reduce using rule 110 (type -> FLOAT .)
+    DO              reduce using rule 110 (type -> FLOAT .)
+    BY              reduce using rule 110 (type -> FLOAT .)
+    TO              reduce using rule 110 (type -> FLOAT .)
+    FROM            reduce using rule 110 (type -> FLOAT .)
+    VOID            reduce using rule 110 (type -> FLOAT .)
+    RETURN          reduce using rule 110 (type -> FLOAT .)
+    FUNC            reduce using rule 110 (type -> FLOAT .)
+    MAIN            reduce using rule 110 (type -> FLOAT .)
+    VARS            reduce using rule 110 (type -> FLOAT .)
+    PROGRAM         reduce using rule 110 (type -> FLOAT .)
+    ID              reduce using rule 110 (type -> FLOAT .)
 
 
 state 17
 
-    (108) type -> INT .
-    BOOL            reduce using rule 108 (type -> INT .)
-    FLOAT           reduce using rule 108 (type -> INT .)
-    INT             reduce using rule 108 (type -> INT .)
-    ELSE            reduce using rule 108 (type -> INT .)
-    IF              reduce using rule 108 (type -> INT .)
-    PRINT           reduce using rule 108 (type -> INT .)
-    INPUT           reduce using rule 108 (type -> INT .)
-    WHILE           reduce using rule 108 (type -> INT .)
-    DO              reduce using rule 108 (type -> INT .)
-    BY              reduce using rule 108 (type -> INT .)
-    TO              reduce using rule 108 (type -> INT .)
-    FROM            reduce using rule 108 (type -> INT .)
-    VOID            reduce using rule 108 (type -> INT .)
-    RETURN          reduce using rule 108 (type -> INT .)
-    FUNC            reduce using rule 108 (type -> INT .)
-    MAIN            reduce using rule 108 (type -> INT .)
-    VARS            reduce using rule 108 (type -> INT .)
-    PROGRAM         reduce using rule 108 (type -> INT .)
-    ID              reduce using rule 108 (type -> INT .)
+    (111) type -> INT .
+    BOOL            reduce using rule 111 (type -> INT .)
+    FLOAT           reduce using rule 111 (type -> INT .)
+    INT             reduce using rule 111 (type -> INT .)
+    ELSE            reduce using rule 111 (type -> INT .)
+    IF              reduce using rule 111 (type -> INT .)
+    PRINT           reduce using rule 111 (type -> INT .)
+    INPUT           reduce using rule 111 (type -> INT .)
+    WHILE           reduce using rule 111 (type -> INT .)
+    DO              reduce using rule 111 (type -> INT .)
+    BY              reduce using rule 111 (type -> INT .)
+    TO              reduce using rule 111 (type -> INT .)
+    FROM            reduce using rule 111 (type -> INT .)
+    VOID            reduce using rule 111 (type -> INT .)
+    RETURN          reduce using rule 111 (type -> INT .)
+    FUNC            reduce using rule 111 (type -> INT .)
+    MAIN            reduce using rule 111 (type -> INT .)
+    VARS            reduce using rule 111 (type -> INT .)
+    PROGRAM         reduce using rule 111 (type -> INT .)
+    ID              reduce using rule 111 (type -> INT .)
 
 
 state 18
@@ -521,8 +528,8 @@ state 18
 state 19
 
     (3) main_block -> MAIN . changecontext LPAREN RPAREN declareblock
-    (117) changecontext -> .
-    LPAREN          reduce using rule 117 (changecontext -> .)
+    (120) changecontext -> .
+    LPAREN          reduce using rule 120 (changecontext -> .)
 
     changecontext                  shift and go to state 46
 
@@ -593,7 +600,6 @@ state 27
     OR              reduce using rule 15 (var -> BOOL .)
     AND             reduce using rule 15 (var -> BOOL .)
     TO              reduce using rule 15 (var -> BOOL .)
-    BY              reduce using rule 15 (var -> BOOL .)
     DO              reduce using rule 15 (var -> BOOL .)
 
 
@@ -617,7 +623,6 @@ state 28
     OR              reduce using rule 16 (var -> FLOAT .)
     AND             reduce using rule 16 (var -> FLOAT .)
     TO              reduce using rule 16 (var -> FLOAT .)
-    BY              reduce using rule 16 (var -> FLOAT .)
     DO              reduce using rule 16 (var -> FLOAT .)
 
 
@@ -641,7 +646,6 @@ state 29
     OR              reduce using rule 17 (var -> INT .)
     AND             reduce using rule 17 (var -> INT .)
     TO              reduce using rule 17 (var -> INT .)
-    BY              reduce using rule 17 (var -> INT .)
     DO              reduce using rule 17 (var -> INT .)
 
 
@@ -665,7 +669,6 @@ state 30
     OR              reduce using rule 18 (var -> ELSE .)
     AND             reduce using rule 18 (var -> ELSE .)
     TO              reduce using rule 18 (var -> ELSE .)
-    BY              reduce using rule 18 (var -> ELSE .)
     DO              reduce using rule 18 (var -> ELSE .)
 
 
@@ -689,7 +692,6 @@ state 31
     OR              reduce using rule 19 (var -> IF .)
     AND             reduce using rule 19 (var -> IF .)
     TO              reduce using rule 19 (var -> IF .)
-    BY              reduce using rule 19 (var -> IF .)
     DO              reduce using rule 19 (var -> IF .)
 
 
@@ -713,7 +715,6 @@ state 32
     OR              reduce using rule 20 (var -> PRINT .)
     AND             reduce using rule 20 (var -> PRINT .)
     TO              reduce using rule 20 (var -> PRINT .)
-    BY              reduce using rule 20 (var -> PRINT .)
     DO              reduce using rule 20 (var -> PRINT .)
 
 
@@ -737,7 +738,6 @@ state 33
     OR              reduce using rule 21 (var -> INPUT .)
     AND             reduce using rule 21 (var -> INPUT .)
     TO              reduce using rule 21 (var -> INPUT .)
-    BY              reduce using rule 21 (var -> INPUT .)
     DO              reduce using rule 21 (var -> INPUT .)
 
 
@@ -761,7 +761,6 @@ state 34
     OR              reduce using rule 22 (var -> WHILE .)
     AND             reduce using rule 22 (var -> WHILE .)
     TO              reduce using rule 22 (var -> WHILE .)
-    BY              reduce using rule 22 (var -> WHILE .)
     DO              reduce using rule 22 (var -> WHILE .)
 
 
@@ -785,7 +784,6 @@ state 35
     OR              reduce using rule 23 (var -> DO .)
     AND             reduce using rule 23 (var -> DO .)
     TO              reduce using rule 23 (var -> DO .)
-    BY              reduce using rule 23 (var -> DO .)
     DO              reduce using rule 23 (var -> DO .)
 
 
@@ -809,7 +807,6 @@ state 36
     OR              reduce using rule 24 (var -> BY .)
     AND             reduce using rule 24 (var -> BY .)
     TO              reduce using rule 24 (var -> BY .)
-    BY              reduce using rule 24 (var -> BY .)
     DO              reduce using rule 24 (var -> BY .)
 
 
@@ -833,7 +830,6 @@ state 37
     OR              reduce using rule 25 (var -> TO .)
     AND             reduce using rule 25 (var -> TO .)
     TO              reduce using rule 25 (var -> TO .)
-    BY              reduce using rule 25 (var -> TO .)
     DO              reduce using rule 25 (var -> TO .)
 
 
@@ -857,7 +853,6 @@ state 38
     OR              reduce using rule 26 (var -> FROM .)
     AND             reduce using rule 26 (var -> FROM .)
     TO              reduce using rule 26 (var -> FROM .)
-    BY              reduce using rule 26 (var -> FROM .)
     DO              reduce using rule 26 (var -> FROM .)
 
 
@@ -881,7 +876,6 @@ state 39
     OR              reduce using rule 27 (var -> VOID .)
     AND             reduce using rule 27 (var -> VOID .)
     TO              reduce using rule 27 (var -> VOID .)
-    BY              reduce using rule 27 (var -> VOID .)
     DO              reduce using rule 27 (var -> VOID .)
 
 
@@ -905,7 +899,6 @@ state 40
     OR              reduce using rule 28 (var -> RETURN .)
     AND             reduce using rule 28 (var -> RETURN .)
     TO              reduce using rule 28 (var -> RETURN .)
-    BY              reduce using rule 28 (var -> RETURN .)
     DO              reduce using rule 28 (var -> RETURN .)
 
 
@@ -929,7 +922,6 @@ state 41
     OR              reduce using rule 29 (var -> FUNC .)
     AND             reduce using rule 29 (var -> FUNC .)
     TO              reduce using rule 29 (var -> FUNC .)
-    BY              reduce using rule 29 (var -> FUNC .)
     DO              reduce using rule 29 (var -> FUNC .)
 
 
@@ -953,7 +945,6 @@ state 42
     OR              reduce using rule 30 (var -> MAIN .)
     AND             reduce using rule 30 (var -> MAIN .)
     TO              reduce using rule 30 (var -> MAIN .)
-    BY              reduce using rule 30 (var -> MAIN .)
     DO              reduce using rule 30 (var -> MAIN .)
 
 
@@ -977,7 +968,6 @@ state 43
     OR              reduce using rule 31 (var -> VARS .)
     AND             reduce using rule 31 (var -> VARS .)
     TO              reduce using rule 31 (var -> VARS .)
-    BY              reduce using rule 31 (var -> VARS .)
     DO              reduce using rule 31 (var -> VARS .)
 
 
@@ -1001,7 +991,6 @@ state 44
     OR              reduce using rule 32 (var -> PROGRAM .)
     AND             reduce using rule 32 (var -> PROGRAM .)
     TO              reduce using rule 32 (var -> PROGRAM .)
-    BY              reduce using rule 32 (var -> PROGRAM .)
     DO              reduce using rule 32 (var -> PROGRAM .)
 
 
@@ -1026,16 +1015,16 @@ state 46
 state 47
 
     (41) typefunc -> type ID . changecontext LPAREN params RPAREN returnblock
-    (117) changecontext -> .
-    LPAREN          reduce using rule 117 (changecontext -> .)
+    (120) changecontext -> .
+    LPAREN          reduce using rule 120 (changecontext -> .)
 
     changecontext                  shift and go to state 53
 
 state 48
 
     (40) voidfunc -> VOID ID . changecontext LPAREN params RPAREN declareblock
-    (117) changecontext -> .
-    LPAREN          reduce using rule 117 (changecontext -> .)
+    (120) changecontext -> .
+    LPAREN          reduce using rule 120 (changecontext -> .)
 
     changecontext                  shift and go to state 54
 
@@ -1045,9 +1034,9 @@ state 49
     (12) decvar_line -> type decvar SEMICOLON .
     (11) decvar_line -> . type decvar SEMICOLON decvar_line
     (12) decvar_line -> . type decvar SEMICOLON
-    (106) type -> . BOOL
-    (107) type -> . FLOAT
-    (108) type -> . INT
+    (109) type -> . BOOL
+    (110) type -> . FLOAT
+    (111) type -> . INT
     FUNC            reduce using rule 12 (decvar_line -> type decvar SEMICOLON .)
     MAIN            reduce using rule 12 (decvar_line -> type decvar SEMICOLON .)
     ID              reduce using rule 12 (decvar_line -> type decvar SEMICOLON .)
@@ -1183,11 +1172,11 @@ state 59
     (42) params -> . empty
     (43) params -> . type ID COMMA params
     (44) params -> . type ID
-    (119) empty -> .
-    (106) type -> . BOOL
-    (107) type -> . FLOAT
-    (108) type -> . INT
-    RPAREN          reduce using rule 119 (empty -> .)
+    (122) empty -> .
+    (109) type -> . BOOL
+    (110) type -> . FLOAT
+    (111) type -> . INT
+    RPAREN          reduce using rule 122 (empty -> .)
     BOOL            shift and go to state 15
     FLOAT           shift and go to state 16
     INT             shift and go to state 17
@@ -1202,11 +1191,11 @@ state 60
     (42) params -> . empty
     (43) params -> . type ID COMMA params
     (44) params -> . type ID
-    (119) empty -> .
-    (106) type -> . BOOL
-    (107) type -> . FLOAT
-    (108) type -> . INT
-    RPAREN          reduce using rule 119 (empty -> .)
+    (122) empty -> .
+    (109) type -> . BOOL
+    (110) type -> . FLOAT
+    (111) type -> . INT
+    RPAREN          reduce using rule 122 (empty -> .)
     BOOL            shift and go to state 15
     FLOAT           shift and go to state 16
     INT             shift and go to state 17
@@ -1237,7 +1226,6 @@ state 61
     OR              reduce using rule 34 (var -> ID LBRACKET CTEINT RBRACKET .)
     AND             reduce using rule 34 (var -> ID LBRACKET CTEINT RBRACKET .)
     TO              reduce using rule 34 (var -> ID LBRACKET CTEINT RBRACKET .)
-    BY              reduce using rule 34 (var -> ID LBRACKET CTEINT RBRACKET .)
     DO              reduce using rule 34 (var -> ID LBRACKET CTEINT RBRACKET .)
 
 
@@ -1252,16 +1240,16 @@ state 63
     (5) declareblock -> LCURLY . decvars blockcontent RCURLY
     (9) decvars -> . empty
     (10) decvars -> . VARS decvar_line
-    (119) empty -> .
+    (122) empty -> .
     VARS            shift and go to state 8
-    ID              reduce using rule 119 (empty -> .)
-    FROM            reduce using rule 119 (empty -> .)
-    DO              reduce using rule 119 (empty -> .)
-    WHILE           reduce using rule 119 (empty -> .)
-    INPUT           reduce using rule 119 (empty -> .)
-    PRINT           reduce using rule 119 (empty -> .)
-    IF              reduce using rule 119 (empty -> .)
-    RCURLY          reduce using rule 119 (empty -> .)
+    ID              reduce using rule 122 (empty -> .)
+    FROM            reduce using rule 122 (empty -> .)
+    DO              reduce using rule 122 (empty -> .)
+    WHILE           reduce using rule 122 (empty -> .)
+    INPUT           reduce using rule 122 (empty -> .)
+    PRINT           reduce using rule 122 (empty -> .)
+    IF              reduce using rule 122 (empty -> .)
+    RCURLY          reduce using rule 122 (empty -> .)
 
     decvars                        shift and go to state 69
     empty                          shift and go to state 7
@@ -1302,27 +1290,26 @@ state 69
     (5) declareblock -> LCURLY decvars . blockcontent RCURLY
     (7) blockcontent -> . empty
     (8) blockcontent -> . statute blockcontent
-    (119) empty -> .
-    (109) statute -> . call
-    (110) statute -> . forloop
-    (111) statute -> . dowhileloop
-    (112) statute -> . whileloop
-    (113) statute -> . read
-    (114) statute -> . write
-    (115) statute -> . condition
-    (116) statute -> . assignment
+    (122) empty -> .
+    (112) statute -> . call
+    (113) statute -> . forloop
+    (114) statute -> . dowhileloop
+    (115) statute -> . whileloop
+    (116) statute -> . read
+    (117) statute -> . write
+    (118) statute -> . condition
+    (119) statute -> . assignment
     (45) call -> . ID LPAREN callvalues RPAREN
-    (82) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
-    (83) forloop -> . FROM var ASSIGN expression TO expression DO block
-    (85) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
-    (84) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
-    (89) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
-    (93) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
-    (98) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
-    (99) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
-    (86) assignment -> . assignment_var assignment_sign expression SEMICOLON
-    (88) assignment_var -> . ID
-    RCURLY          reduce using rule 119 (empty -> .)
+    (82) forloop -> . FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (88) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
+    (87) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
+    (92) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
+    (96) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
+    (101) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
+    (102) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    (89) assignment -> . assignment_var assignment_sign expression SEMICOLON
+    (91) assignment_var -> . ID
+    RCURLY          reduce using rule 122 (empty -> .)
     ID              shift and go to state 85
     FROM            shift and go to state 86
     DO              shift and go to state 87
@@ -1392,28 +1379,27 @@ state 76
     (8) blockcontent -> statute . blockcontent
     (7) blockcontent -> . empty
     (8) blockcontent -> . statute blockcontent
-    (119) empty -> .
-    (109) statute -> . call
-    (110) statute -> . forloop
-    (111) statute -> . dowhileloop
-    (112) statute -> . whileloop
-    (113) statute -> . read
-    (114) statute -> . write
-    (115) statute -> . condition
-    (116) statute -> . assignment
+    (122) empty -> .
+    (112) statute -> . call
+    (113) statute -> . forloop
+    (114) statute -> . dowhileloop
+    (115) statute -> . whileloop
+    (116) statute -> . read
+    (117) statute -> . write
+    (118) statute -> . condition
+    (119) statute -> . assignment
     (45) call -> . ID LPAREN callvalues RPAREN
-    (82) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
-    (83) forloop -> . FROM var ASSIGN expression TO expression DO block
-    (85) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
-    (84) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
-    (89) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
-    (93) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
-    (98) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
-    (99) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
-    (86) assignment -> . assignment_var assignment_sign expression SEMICOLON
-    (88) assignment_var -> . ID
-    RCURLY          reduce using rule 119 (empty -> .)
-    RETURN          reduce using rule 119 (empty -> .)
+    (82) forloop -> . FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (88) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
+    (87) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
+    (92) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
+    (96) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
+    (101) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
+    (102) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    (89) assignment -> . assignment_var assignment_sign expression SEMICOLON
+    (91) assignment_var -> . ID
+    RCURLY          reduce using rule 122 (empty -> .)
+    RETURN          reduce using rule 122 (empty -> .)
     ID              shift and go to state 85
     FROM            shift and go to state 86
     DO              shift and go to state 87
@@ -1437,128 +1423,128 @@ state 76
 
 state 77
 
-    (109) statute -> call .
-    ID              reduce using rule 109 (statute -> call .)
-    FROM            reduce using rule 109 (statute -> call .)
-    DO              reduce using rule 109 (statute -> call .)
-    WHILE           reduce using rule 109 (statute -> call .)
-    INPUT           reduce using rule 109 (statute -> call .)
-    PRINT           reduce using rule 109 (statute -> call .)
-    IF              reduce using rule 109 (statute -> call .)
-    RCURLY          reduce using rule 109 (statute -> call .)
-    RETURN          reduce using rule 109 (statute -> call .)
+    (112) statute -> call .
+    ID              reduce using rule 112 (statute -> call .)
+    FROM            reduce using rule 112 (statute -> call .)
+    DO              reduce using rule 112 (statute -> call .)
+    WHILE           reduce using rule 112 (statute -> call .)
+    INPUT           reduce using rule 112 (statute -> call .)
+    PRINT           reduce using rule 112 (statute -> call .)
+    IF              reduce using rule 112 (statute -> call .)
+    RCURLY          reduce using rule 112 (statute -> call .)
+    RETURN          reduce using rule 112 (statute -> call .)
 
 
 state 78
 
-    (110) statute -> forloop .
-    ID              reduce using rule 110 (statute -> forloop .)
-    FROM            reduce using rule 110 (statute -> forloop .)
-    DO              reduce using rule 110 (statute -> forloop .)
-    WHILE           reduce using rule 110 (statute -> forloop .)
-    INPUT           reduce using rule 110 (statute -> forloop .)
-    PRINT           reduce using rule 110 (statute -> forloop .)
-    IF              reduce using rule 110 (statute -> forloop .)
-    RCURLY          reduce using rule 110 (statute -> forloop .)
-    RETURN          reduce using rule 110 (statute -> forloop .)
+    (113) statute -> forloop .
+    ID              reduce using rule 113 (statute -> forloop .)
+    FROM            reduce using rule 113 (statute -> forloop .)
+    DO              reduce using rule 113 (statute -> forloop .)
+    WHILE           reduce using rule 113 (statute -> forloop .)
+    INPUT           reduce using rule 113 (statute -> forloop .)
+    PRINT           reduce using rule 113 (statute -> forloop .)
+    IF              reduce using rule 113 (statute -> forloop .)
+    RCURLY          reduce using rule 113 (statute -> forloop .)
+    RETURN          reduce using rule 113 (statute -> forloop .)
 
 
 state 79
 
-    (111) statute -> dowhileloop .
-    ID              reduce using rule 111 (statute -> dowhileloop .)
-    FROM            reduce using rule 111 (statute -> dowhileloop .)
-    DO              reduce using rule 111 (statute -> dowhileloop .)
-    WHILE           reduce using rule 111 (statute -> dowhileloop .)
-    INPUT           reduce using rule 111 (statute -> dowhileloop .)
-    PRINT           reduce using rule 111 (statute -> dowhileloop .)
-    IF              reduce using rule 111 (statute -> dowhileloop .)
-    RCURLY          reduce using rule 111 (statute -> dowhileloop .)
-    RETURN          reduce using rule 111 (statute -> dowhileloop .)
+    (114) statute -> dowhileloop .
+    ID              reduce using rule 114 (statute -> dowhileloop .)
+    FROM            reduce using rule 114 (statute -> dowhileloop .)
+    DO              reduce using rule 114 (statute -> dowhileloop .)
+    WHILE           reduce using rule 114 (statute -> dowhileloop .)
+    INPUT           reduce using rule 114 (statute -> dowhileloop .)
+    PRINT           reduce using rule 114 (statute -> dowhileloop .)
+    IF              reduce using rule 114 (statute -> dowhileloop .)
+    RCURLY          reduce using rule 114 (statute -> dowhileloop .)
+    RETURN          reduce using rule 114 (statute -> dowhileloop .)
 
 
 state 80
 
-    (112) statute -> whileloop .
-    ID              reduce using rule 112 (statute -> whileloop .)
-    FROM            reduce using rule 112 (statute -> whileloop .)
-    DO              reduce using rule 112 (statute -> whileloop .)
-    WHILE           reduce using rule 112 (statute -> whileloop .)
-    INPUT           reduce using rule 112 (statute -> whileloop .)
-    PRINT           reduce using rule 112 (statute -> whileloop .)
-    IF              reduce using rule 112 (statute -> whileloop .)
-    RCURLY          reduce using rule 112 (statute -> whileloop .)
-    RETURN          reduce using rule 112 (statute -> whileloop .)
+    (115) statute -> whileloop .
+    ID              reduce using rule 115 (statute -> whileloop .)
+    FROM            reduce using rule 115 (statute -> whileloop .)
+    DO              reduce using rule 115 (statute -> whileloop .)
+    WHILE           reduce using rule 115 (statute -> whileloop .)
+    INPUT           reduce using rule 115 (statute -> whileloop .)
+    PRINT           reduce using rule 115 (statute -> whileloop .)
+    IF              reduce using rule 115 (statute -> whileloop .)
+    RCURLY          reduce using rule 115 (statute -> whileloop .)
+    RETURN          reduce using rule 115 (statute -> whileloop .)
 
 
 state 81
 
-    (113) statute -> read .
-    ID              reduce using rule 113 (statute -> read .)
-    FROM            reduce using rule 113 (statute -> read .)
-    DO              reduce using rule 113 (statute -> read .)
-    WHILE           reduce using rule 113 (statute -> read .)
-    INPUT           reduce using rule 113 (statute -> read .)
-    PRINT           reduce using rule 113 (statute -> read .)
-    IF              reduce using rule 113 (statute -> read .)
-    RCURLY          reduce using rule 113 (statute -> read .)
-    RETURN          reduce using rule 113 (statute -> read .)
+    (116) statute -> read .
+    ID              reduce using rule 116 (statute -> read .)
+    FROM            reduce using rule 116 (statute -> read .)
+    DO              reduce using rule 116 (statute -> read .)
+    WHILE           reduce using rule 116 (statute -> read .)
+    INPUT           reduce using rule 116 (statute -> read .)
+    PRINT           reduce using rule 116 (statute -> read .)
+    IF              reduce using rule 116 (statute -> read .)
+    RCURLY          reduce using rule 116 (statute -> read .)
+    RETURN          reduce using rule 116 (statute -> read .)
 
 
 state 82
 
-    (114) statute -> write .
-    ID              reduce using rule 114 (statute -> write .)
-    FROM            reduce using rule 114 (statute -> write .)
-    DO              reduce using rule 114 (statute -> write .)
-    WHILE           reduce using rule 114 (statute -> write .)
-    INPUT           reduce using rule 114 (statute -> write .)
-    PRINT           reduce using rule 114 (statute -> write .)
-    IF              reduce using rule 114 (statute -> write .)
-    RCURLY          reduce using rule 114 (statute -> write .)
-    RETURN          reduce using rule 114 (statute -> write .)
+    (117) statute -> write .
+    ID              reduce using rule 117 (statute -> write .)
+    FROM            reduce using rule 117 (statute -> write .)
+    DO              reduce using rule 117 (statute -> write .)
+    WHILE           reduce using rule 117 (statute -> write .)
+    INPUT           reduce using rule 117 (statute -> write .)
+    PRINT           reduce using rule 117 (statute -> write .)
+    IF              reduce using rule 117 (statute -> write .)
+    RCURLY          reduce using rule 117 (statute -> write .)
+    RETURN          reduce using rule 117 (statute -> write .)
 
 
 state 83
 
-    (115) statute -> condition .
-    ID              reduce using rule 115 (statute -> condition .)
-    FROM            reduce using rule 115 (statute -> condition .)
-    DO              reduce using rule 115 (statute -> condition .)
-    WHILE           reduce using rule 115 (statute -> condition .)
-    INPUT           reduce using rule 115 (statute -> condition .)
-    PRINT           reduce using rule 115 (statute -> condition .)
-    IF              reduce using rule 115 (statute -> condition .)
-    RCURLY          reduce using rule 115 (statute -> condition .)
-    RETURN          reduce using rule 115 (statute -> condition .)
+    (118) statute -> condition .
+    ID              reduce using rule 118 (statute -> condition .)
+    FROM            reduce using rule 118 (statute -> condition .)
+    DO              reduce using rule 118 (statute -> condition .)
+    WHILE           reduce using rule 118 (statute -> condition .)
+    INPUT           reduce using rule 118 (statute -> condition .)
+    PRINT           reduce using rule 118 (statute -> condition .)
+    IF              reduce using rule 118 (statute -> condition .)
+    RCURLY          reduce using rule 118 (statute -> condition .)
+    RETURN          reduce using rule 118 (statute -> condition .)
 
 
 state 84
 
-    (116) statute -> assignment .
-    ID              reduce using rule 116 (statute -> assignment .)
-    FROM            reduce using rule 116 (statute -> assignment .)
-    DO              reduce using rule 116 (statute -> assignment .)
-    WHILE           reduce using rule 116 (statute -> assignment .)
-    INPUT           reduce using rule 116 (statute -> assignment .)
-    PRINT           reduce using rule 116 (statute -> assignment .)
-    IF              reduce using rule 116 (statute -> assignment .)
-    RCURLY          reduce using rule 116 (statute -> assignment .)
-    RETURN          reduce using rule 116 (statute -> assignment .)
+    (119) statute -> assignment .
+    ID              reduce using rule 119 (statute -> assignment .)
+    FROM            reduce using rule 119 (statute -> assignment .)
+    DO              reduce using rule 119 (statute -> assignment .)
+    WHILE           reduce using rule 119 (statute -> assignment .)
+    INPUT           reduce using rule 119 (statute -> assignment .)
+    PRINT           reduce using rule 119 (statute -> assignment .)
+    IF              reduce using rule 119 (statute -> assignment .)
+    RCURLY          reduce using rule 119 (statute -> assignment .)
+    RETURN          reduce using rule 119 (statute -> assignment .)
 
 
 state 85
 
     (45) call -> ID . LPAREN callvalues RPAREN
-    (88) assignment_var -> ID .
+    (91) assignment_var -> ID .
     LPAREN          shift and go to state 100
-    ASSIGN          reduce using rule 88 (assignment_var -> ID .)
+    ASSIGN          reduce using rule 91 (assignment_var -> ID .)
 
 
 state 86
 
-    (82) forloop -> FROM . var ASSIGN expression TO expression BY expression DO block
-    (83) forloop -> FROM . var ASSIGN expression TO expression DO block
+    (82) forloop -> FROM . forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (83) forloopcontrolvar -> . var
     (15) var -> . BOOL
     (16) var -> . FLOAT
     (17) var -> . INT
@@ -1600,50 +1586,51 @@ state 86
     PROGRAM         shift and go to state 44
     ID              shift and go to state 45
 
-    var                            shift and go to state 101
+    forloopcontrolvar              shift and go to state 101
+    var                            shift and go to state 102
 
 state 87
 
-    (85) dowhileloop -> DO . saveposition block WHILE LPAREN expression RPAREN openjumpslot
-    (101) saveposition -> .
-    LCURLY          reduce using rule 101 (saveposition -> .)
-
-    saveposition                   shift and go to state 102
-
-state 88
-
-    (84) whileloop -> WHILE . saveposition LPAREN expression RPAREN openjumpslot block filljumps
-    (101) saveposition -> .
-    LPAREN          reduce using rule 101 (saveposition -> .)
+    (88) dowhileloop -> DO . saveposition block WHILE LPAREN expression RPAREN openjumpslot
+    (104) saveposition -> .
+    LCURLY          reduce using rule 104 (saveposition -> .)
 
     saveposition                   shift and go to state 103
 
+state 88
+
+    (87) whileloop -> WHILE . saveposition LPAREN expression RPAREN openjumpslot block filljumps
+    (104) saveposition -> .
+    LPAREN          reduce using rule 104 (saveposition -> .)
+
+    saveposition                   shift and go to state 104
+
 state 89
 
-    (89) read -> INPUT . LPAREN readaux RPAREN SEMICOLON
-    LPAREN          shift and go to state 104
+    (92) read -> INPUT . LPAREN readaux RPAREN SEMICOLON
+    LPAREN          shift and go to state 105
 
 
 state 90
 
-    (93) write -> PRINT . LPAREN writeaux RPAREN SEMICOLON
-    LPAREN          shift and go to state 105
+    (96) write -> PRINT . LPAREN writeaux RPAREN SEMICOLON
+    LPAREN          shift and go to state 106
 
 
 state 91
 
-    (98) condition -> IF . LPAREN super_exp RPAREN openjumpslot block filljumps
-    (99) condition -> IF . LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
-    LPAREN          shift and go to state 106
+    (101) condition -> IF . LPAREN super_exp RPAREN openjumpslot block filljumps
+    (102) condition -> IF . LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    LPAREN          shift and go to state 107
 
 
 state 92
 
-    (86) assignment -> assignment_var . assignment_sign expression SEMICOLON
-    (87) assignment_sign -> . ASSIGN
-    ASSIGN          shift and go to state 108
+    (89) assignment -> assignment_var . assignment_sign expression SEMICOLON
+    (90) assignment_sign -> . ASSIGN
+    ASSIGN          shift and go to state 109
 
-    assignment_sign                shift and go to state 107
+    assignment_sign                shift and go to state 108
 
 state 93
 
@@ -1651,17 +1638,17 @@ state 93
     (42) params -> . empty
     (43) params -> . type ID COMMA params
     (44) params -> . type ID
-    (119) empty -> .
-    (106) type -> . BOOL
-    (107) type -> . FLOAT
-    (108) type -> . INT
-    RPAREN          reduce using rule 119 (empty -> .)
+    (122) empty -> .
+    (109) type -> . BOOL
+    (110) type -> . FLOAT
+    (111) type -> . INT
+    RPAREN          reduce using rule 122 (empty -> .)
     BOOL            shift and go to state 15
     FLOAT           shift and go to state 16
     INT             shift and go to state 17
 
     type                           shift and go to state 64
-    params                         shift and go to state 109
+    params                         shift and go to state 110
     empty                          shift and go to state 66
 
 state 94
@@ -1676,18 +1663,18 @@ state 95
     (6) returnblock -> LCURLY . decvars blockcontent RETURN exp SEMICOLON RCURLY
     (9) decvars -> . empty
     (10) decvars -> . VARS decvar_line
-    (119) empty -> .
+    (122) empty -> .
     VARS            shift and go to state 8
-    ID              reduce using rule 119 (empty -> .)
-    FROM            reduce using rule 119 (empty -> .)
-    DO              reduce using rule 119 (empty -> .)
-    WHILE           reduce using rule 119 (empty -> .)
-    INPUT           reduce using rule 119 (empty -> .)
-    PRINT           reduce using rule 119 (empty -> .)
-    IF              reduce using rule 119 (empty -> .)
-    RETURN          reduce using rule 119 (empty -> .)
+    ID              reduce using rule 122 (empty -> .)
+    FROM            reduce using rule 122 (empty -> .)
+    DO              reduce using rule 122 (empty -> .)
+    WHILE           reduce using rule 122 (empty -> .)
+    INPUT           reduce using rule 122 (empty -> .)
+    PRINT           reduce using rule 122 (empty -> .)
+    IF              reduce using rule 122 (empty -> .)
+    RETURN          reduce using rule 122 (empty -> .)
 
-    decvars                        shift and go to state 110
+    decvars                        shift and go to state 111
     empty                          shift and go to state 7
 
 state 96
@@ -1717,7 +1704,6 @@ state 97
     OR              reduce using rule 33 (var -> ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET .)
     AND             reduce using rule 33 (var -> ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET .)
     TO              reduce using rule 33 (var -> ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET .)
-    BY              reduce using rule 33 (var -> ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET .)
     DO              reduce using rule 33 (var -> ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET .)
 
 
@@ -1742,16 +1728,16 @@ state 100
     (46) callvalues -> . empty
     (47) callvalues -> . exp COMMA callvalues
     (48) callvalues -> . exp
-    (119) empty -> .
+    (122) empty -> .
     (67) exp -> . term exp_quadgen exp_aux
     (73) term -> . factor term_quadgen term_aux
     (77) factor -> . LPAREN fakefloor super_exp RPAREN
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -1774,12 +1760,12 @@ state 100
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    RPAREN          reduce using rule 119 (empty -> .)
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    RPAREN          reduce using rule 122 (empty -> .)
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -1799,42 +1785,49 @@ state 100
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    callvalues                     shift and go to state 113
-    empty                          shift and go to state 114
-    exp                            shift and go to state 115
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    callvalues                     shift and go to state 114
+    empty                          shift and go to state 115
+    exp                            shift and go to state 116
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 101
 
-    (82) forloop -> FROM var . ASSIGN expression TO expression BY expression DO block
-    (83) forloop -> FROM var . ASSIGN expression TO expression DO block
-    ASSIGN          shift and go to state 124
+    (82) forloop -> FROM forloopcontrolvar . assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (90) assignment_sign -> . ASSIGN
+    ASSIGN          shift and go to state 109
 
+    assignment_sign                shift and go to state 125
 
 state 102
 
-    (85) dowhileloop -> DO saveposition . block WHILE LPAREN expression RPAREN openjumpslot
-    (4) block -> . LCURLY blockcontent RCURLY
-    LCURLY          shift and go to state 126
+    (83) forloopcontrolvar -> var .
+    ASSIGN          reduce using rule 83 (forloopcontrolvar -> var .)
 
-    block                          shift and go to state 125
 
 state 103
 
-    (84) whileloop -> WHILE saveposition . LPAREN expression RPAREN openjumpslot block filljumps
-    LPAREN          shift and go to state 127
+    (88) dowhileloop -> DO saveposition . block WHILE LPAREN expression RPAREN openjumpslot
+    (4) block -> . LCURLY blockcontent RCURLY
+    LCURLY          shift and go to state 127
 
+    block                          shift and go to state 126
 
 state 104
 
-    (89) read -> INPUT LPAREN . readaux RPAREN SEMICOLON
-    (90) readaux -> . readvalue COMMA readaux
-    (91) readaux -> . readvalue
-    (92) readvalue -> . var
+    (87) whileloop -> WHILE saveposition . LPAREN expression RPAREN openjumpslot block filljumps
+    LPAREN          shift and go to state 128
+
+
+state 105
+
+    (92) read -> INPUT LPAREN . readaux RPAREN SEMICOLON
+    (93) readaux -> . readvalue COMMA readaux
+    (94) readaux -> . readvalue
+    (95) readvalue -> . var
     (15) var -> . BOOL
     (16) var -> . FLOAT
     (17) var -> . INT
@@ -1876,90 +1869,17 @@ state 104
     PROGRAM         shift and go to state 44
     ID              shift and go to state 45
 
-    readaux                        shift and go to state 128
-    readvalue                      shift and go to state 129
-    var                            shift and go to state 130
-
-state 105
-
-    (93) write -> PRINT LPAREN . writeaux RPAREN SEMICOLON
-    (94) writeaux -> . writevalues
-    (95) writeaux -> . writevalues COMMA writeaux
-    (96) writevalues -> . CTESTRING
-    (97) writevalues -> . super_exp
-    (51) super_exp -> . expression super_exp_quadgen super_exp_aux
-    (57) expression -> . exp expression_quadgen expression_aux
-    (67) exp -> . term exp_quadgen exp_aux
-    (73) term -> . factor term_quadgen term_aux
-    (77) factor -> . LPAREN fakefloor super_exp RPAREN
-    (78) factor -> . varcte
-    (79) factor -> . call
-    (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
-    (45) call -> . ID LPAREN callvalues RPAREN
-    (15) var -> . BOOL
-    (16) var -> . FLOAT
-    (17) var -> . INT
-    (18) var -> . ELSE
-    (19) var -> . IF
-    (20) var -> . PRINT
-    (21) var -> . INPUT
-    (22) var -> . WHILE
-    (23) var -> . DO
-    (24) var -> . BY
-    (25) var -> . TO
-    (26) var -> . FROM
-    (27) var -> . VOID
-    (28) var -> . RETURN
-    (29) var -> . FUNC
-    (30) var -> . MAIN
-    (31) var -> . VARS
-    (32) var -> . PROGRAM
-    (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (34) var -> . ID LBRACKET CTEINT RBRACKET
-    (35) var -> . ID
-    CTESTRING       shift and go to state 133
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
-    BOOL            shift and go to state 27
-    FLOAT           shift and go to state 28
-    INT             shift and go to state 29
-    ELSE            shift and go to state 30
-    IF              shift and go to state 31
-    PRINT           shift and go to state 32
-    INPUT           shift and go to state 33
-    WHILE           shift and go to state 34
-    DO              shift and go to state 35
-    BY              shift and go to state 36
-    TO              shift and go to state 37
-    FROM            shift and go to state 38
-    VOID            shift and go to state 39
-    RETURN          shift and go to state 40
-    FUNC            shift and go to state 41
-    MAIN            shift and go to state 42
-    VARS            shift and go to state 43
-    PROGRAM         shift and go to state 44
-
-    writeaux                       shift and go to state 131
-    writevalues                    shift and go to state 132
-    super_exp                      shift and go to state 134
-    expression                     shift and go to state 135
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    readaux                        shift and go to state 129
+    readvalue                      shift and go to state 130
+    var                            shift and go to state 131
 
 state 106
 
-    (98) condition -> IF LPAREN . super_exp RPAREN openjumpslot block filljumps
-    (99) condition -> IF LPAREN . super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    (96) write -> PRINT LPAREN . writeaux RPAREN SEMICOLON
+    (97) writeaux -> . writevalues
+    (98) writeaux -> . writevalues COMMA writeaux
+    (99) writevalues -> . CTESTRING
+    (100) writevalues -> . super_exp
     (51) super_exp -> . expression super_exp_quadgen super_exp_aux
     (57) expression -> . exp expression_quadgen expression_aux
     (67) exp -> . term exp_quadgen exp_aux
@@ -1968,9 +1888,9 @@ state 106
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -1993,11 +1913,12 @@ state 106
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    CTESTRING       shift and go to state 134
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -2017,18 +1938,22 @@ state 106
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    super_exp                      shift and go to state 137
-    expression                     shift and go to state 135
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    writeaux                       shift and go to state 132
+    writevalues                    shift and go to state 133
+    super_exp                      shift and go to state 135
+    expression                     shift and go to state 136
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 107
 
-    (86) assignment -> assignment_var assignment_sign . expression SEMICOLON
+    (101) condition -> IF LPAREN . super_exp RPAREN openjumpslot block filljumps
+    (102) condition -> IF LPAREN . super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    (51) super_exp -> . expression super_exp_quadgen super_exp_aux
     (57) expression -> . exp expression_quadgen expression_aux
     (67) exp -> . term exp_quadgen exp_aux
     (73) term -> . factor term_quadgen term_aux
@@ -2036,9 +1961,9 @@ state 107
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -2061,11 +1986,11 @@ state 107
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -2085,74 +2010,141 @@ state 107
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    expression                     shift and go to state 138
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    super_exp                      shift and go to state 138
+    expression                     shift and go to state 136
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 108
 
-    (87) assignment_sign -> ASSIGN .
-    LPAREN          reduce using rule 87 (assignment_sign -> ASSIGN .)
-    CTEBOOL         reduce using rule 87 (assignment_sign -> ASSIGN .)
-    CTEFLOAT        reduce using rule 87 (assignment_sign -> ASSIGN .)
-    CTEINT          reduce using rule 87 (assignment_sign -> ASSIGN .)
-    ID              reduce using rule 87 (assignment_sign -> ASSIGN .)
-    BOOL            reduce using rule 87 (assignment_sign -> ASSIGN .)
-    FLOAT           reduce using rule 87 (assignment_sign -> ASSIGN .)
-    INT             reduce using rule 87 (assignment_sign -> ASSIGN .)
-    ELSE            reduce using rule 87 (assignment_sign -> ASSIGN .)
-    IF              reduce using rule 87 (assignment_sign -> ASSIGN .)
-    PRINT           reduce using rule 87 (assignment_sign -> ASSIGN .)
-    INPUT           reduce using rule 87 (assignment_sign -> ASSIGN .)
-    WHILE           reduce using rule 87 (assignment_sign -> ASSIGN .)
-    DO              reduce using rule 87 (assignment_sign -> ASSIGN .)
-    BY              reduce using rule 87 (assignment_sign -> ASSIGN .)
-    TO              reduce using rule 87 (assignment_sign -> ASSIGN .)
-    FROM            reduce using rule 87 (assignment_sign -> ASSIGN .)
-    VOID            reduce using rule 87 (assignment_sign -> ASSIGN .)
-    RETURN          reduce using rule 87 (assignment_sign -> ASSIGN .)
-    FUNC            reduce using rule 87 (assignment_sign -> ASSIGN .)
-    MAIN            reduce using rule 87 (assignment_sign -> ASSIGN .)
-    VARS            reduce using rule 87 (assignment_sign -> ASSIGN .)
-    PROGRAM         reduce using rule 87 (assignment_sign -> ASSIGN .)
+    (89) assignment -> assignment_var assignment_sign . expression SEMICOLON
+    (57) expression -> . exp expression_quadgen expression_aux
+    (67) exp -> . term exp_quadgen exp_aux
+    (73) term -> . factor term_quadgen term_aux
+    (77) factor -> . LPAREN fakefloor super_exp RPAREN
+    (78) factor -> . varcte
+    (79) factor -> . call
+    (80) factor -> . var
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
+    (45) call -> . ID LPAREN callvalues RPAREN
+    (15) var -> . BOOL
+    (16) var -> . FLOAT
+    (17) var -> . INT
+    (18) var -> . ELSE
+    (19) var -> . IF
+    (20) var -> . PRINT
+    (21) var -> . INPUT
+    (22) var -> . WHILE
+    (23) var -> . DO
+    (24) var -> . BY
+    (25) var -> . TO
+    (26) var -> . FROM
+    (27) var -> . VOID
+    (28) var -> . RETURN
+    (29) var -> . FUNC
+    (30) var -> . MAIN
+    (31) var -> . VARS
+    (32) var -> . PROGRAM
+    (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
+    (34) var -> . ID LBRACKET CTEINT RBRACKET
+    (35) var -> . ID
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
+    BOOL            shift and go to state 27
+    FLOAT           shift and go to state 28
+    INT             shift and go to state 29
+    ELSE            shift and go to state 30
+    IF              shift and go to state 31
+    PRINT           shift and go to state 32
+    INPUT           shift and go to state 33
+    WHILE           shift and go to state 34
+    DO              shift and go to state 35
+    BY              shift and go to state 36
+    TO              shift and go to state 37
+    FROM            shift and go to state 38
+    VOID            shift and go to state 39
+    RETURN          shift and go to state 40
+    FUNC            shift and go to state 41
+    MAIN            shift and go to state 42
+    VARS            shift and go to state 43
+    PROGRAM         shift and go to state 44
 
+    expression                     shift and go to state 139
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 109
+
+    (90) assignment_sign -> ASSIGN .
+    LPAREN          reduce using rule 90 (assignment_sign -> ASSIGN .)
+    CTEBOOL         reduce using rule 90 (assignment_sign -> ASSIGN .)
+    CTEFLOAT        reduce using rule 90 (assignment_sign -> ASSIGN .)
+    CTEINT          reduce using rule 90 (assignment_sign -> ASSIGN .)
+    ID              reduce using rule 90 (assignment_sign -> ASSIGN .)
+    BOOL            reduce using rule 90 (assignment_sign -> ASSIGN .)
+    FLOAT           reduce using rule 90 (assignment_sign -> ASSIGN .)
+    INT             reduce using rule 90 (assignment_sign -> ASSIGN .)
+    ELSE            reduce using rule 90 (assignment_sign -> ASSIGN .)
+    IF              reduce using rule 90 (assignment_sign -> ASSIGN .)
+    PRINT           reduce using rule 90 (assignment_sign -> ASSIGN .)
+    INPUT           reduce using rule 90 (assignment_sign -> ASSIGN .)
+    WHILE           reduce using rule 90 (assignment_sign -> ASSIGN .)
+    DO              reduce using rule 90 (assignment_sign -> ASSIGN .)
+    BY              reduce using rule 90 (assignment_sign -> ASSIGN .)
+    TO              reduce using rule 90 (assignment_sign -> ASSIGN .)
+    FROM            reduce using rule 90 (assignment_sign -> ASSIGN .)
+    VOID            reduce using rule 90 (assignment_sign -> ASSIGN .)
+    RETURN          reduce using rule 90 (assignment_sign -> ASSIGN .)
+    FUNC            reduce using rule 90 (assignment_sign -> ASSIGN .)
+    MAIN            reduce using rule 90 (assignment_sign -> ASSIGN .)
+    VARS            reduce using rule 90 (assignment_sign -> ASSIGN .)
+    PROGRAM         reduce using rule 90 (assignment_sign -> ASSIGN .)
+
+
+state 110
 
     (43) params -> type ID COMMA params .
     RPAREN          reduce using rule 43 (params -> type ID COMMA params .)
 
 
-state 110
+state 111
 
     (6) returnblock -> LCURLY decvars . blockcontent RETURN exp SEMICOLON RCURLY
     (7) blockcontent -> . empty
     (8) blockcontent -> . statute blockcontent
-    (119) empty -> .
-    (109) statute -> . call
-    (110) statute -> . forloop
-    (111) statute -> . dowhileloop
-    (112) statute -> . whileloop
-    (113) statute -> . read
-    (114) statute -> . write
-    (115) statute -> . condition
-    (116) statute -> . assignment
+    (122) empty -> .
+    (112) statute -> . call
+    (113) statute -> . forloop
+    (114) statute -> . dowhileloop
+    (115) statute -> . whileloop
+    (116) statute -> . read
+    (117) statute -> . write
+    (118) statute -> . condition
+    (119) statute -> . assignment
     (45) call -> . ID LPAREN callvalues RPAREN
-    (82) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
-    (83) forloop -> . FROM var ASSIGN expression TO expression DO block
-    (85) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
-    (84) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
-    (89) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
-    (93) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
-    (98) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
-    (99) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
-    (86) assignment -> . assignment_var assignment_sign expression SEMICOLON
-    (88) assignment_var -> . ID
-    RETURN          reduce using rule 119 (empty -> .)
+    (82) forloop -> . FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (88) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
+    (87) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
+    (92) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
+    (96) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
+    (101) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
+    (102) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    (89) assignment -> . assignment_var assignment_sign expression SEMICOLON
+    (91) assignment_var -> . ID
+    RETURN          reduce using rule 122 (empty -> .)
     ID              shift and go to state 85
     FROM            shift and go to state 86
     DO              shift and go to state 87
@@ -2161,7 +2153,7 @@ state 110
     PRINT           shift and go to state 90
     IF              shift and go to state 91
 
-    blockcontent                   shift and go to state 139
+    blockcontent                   shift and go to state 140
     empty                          shift and go to state 75
     statute                        shift and go to state 76
     call                           shift and go to state 77
@@ -2174,7 +2166,7 @@ state 110
     assignment                     shift and go to state 84
     assignment_var                 shift and go to state 92
 
-state 111
+state 112
 
     (45) call -> ID . LPAREN callvalues RPAREN
     (33) var -> ID . LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
@@ -2198,11 +2190,10 @@ state 111
     AND             reduce using rule 35 (var -> ID .)
     SEMICOLON       reduce using rule 35 (var -> ID .)
     TO              reduce using rule 35 (var -> ID .)
-    BY              reduce using rule 35 (var -> ID .)
     DO              reduce using rule 35 (var -> ID .)
 
 
-state 112
+state 113
 
     (77) factor -> LPAREN . fakefloor super_exp RPAREN
     (81) fakefloor -> .
@@ -2230,29 +2221,29 @@ state 112
     VARS            reduce using rule 81 (fakefloor -> .)
     PROGRAM         reduce using rule 81 (fakefloor -> .)
 
-    fakefloor                      shift and go to state 140
-
-state 113
-
-    (45) call -> ID LPAREN callvalues . RPAREN
-    RPAREN          shift and go to state 141
-
+    fakefloor                      shift and go to state 141
 
 state 114
+
+    (45) call -> ID LPAREN callvalues . RPAREN
+    RPAREN          shift and go to state 142
+
+
+state 115
 
     (46) callvalues -> empty .
     RPAREN          reduce using rule 46 (callvalues -> empty .)
 
 
-state 115
+state 116
 
     (47) callvalues -> exp . COMMA callvalues
     (48) callvalues -> exp .
-    COMMA           shift and go to state 142
+    COMMA           shift and go to state 143
     RPAREN          reduce using rule 48 (callvalues -> exp .)
 
 
-state 116
+state 117
 
     (67) exp -> term . exp_quadgen exp_aux
     (70) exp_quadgen -> .
@@ -2270,12 +2261,11 @@ state 116
     AND             reduce using rule 70 (exp_quadgen -> .)
     SEMICOLON       reduce using rule 70 (exp_quadgen -> .)
     TO              reduce using rule 70 (exp_quadgen -> .)
-    BY              reduce using rule 70 (exp_quadgen -> .)
     DO              reduce using rule 70 (exp_quadgen -> .)
 
-    exp_quadgen                    shift and go to state 143
+    exp_quadgen                    shift and go to state 144
 
-state 117
+state 118
 
     (73) term -> factor . term_quadgen term_aux
     (76) term_quadgen -> .
@@ -2295,12 +2285,11 @@ state 117
     AND             reduce using rule 76 (term_quadgen -> .)
     SEMICOLON       reduce using rule 76 (term_quadgen -> .)
     TO              reduce using rule 76 (term_quadgen -> .)
-    BY              reduce using rule 76 (term_quadgen -> .)
     DO              reduce using rule 76 (term_quadgen -> .)
 
-    term_quadgen                   shift and go to state 144
+    term_quadgen                   shift and go to state 145
 
-state 118
+state 119
 
     (78) factor -> varcte .
     DIVIDE          reduce using rule 78 (factor -> varcte .)
@@ -2319,11 +2308,10 @@ state 118
     AND             reduce using rule 78 (factor -> varcte .)
     SEMICOLON       reduce using rule 78 (factor -> varcte .)
     TO              reduce using rule 78 (factor -> varcte .)
-    BY              reduce using rule 78 (factor -> varcte .)
     DO              reduce using rule 78 (factor -> varcte .)
 
 
-state 119
+state 120
 
     (79) factor -> call .
     DIVIDE          reduce using rule 79 (factor -> call .)
@@ -2342,11 +2330,10 @@ state 119
     AND             reduce using rule 79 (factor -> call .)
     SEMICOLON       reduce using rule 79 (factor -> call .)
     TO              reduce using rule 79 (factor -> call .)
-    BY              reduce using rule 79 (factor -> call .)
     DO              reduce using rule 79 (factor -> call .)
 
 
-state 120
+state 121
 
     (80) factor -> var .
     DIVIDE          reduce using rule 80 (factor -> var .)
@@ -2365,83 +2352,78 @@ state 120
     AND             reduce using rule 80 (factor -> var .)
     SEMICOLON       reduce using rule 80 (factor -> var .)
     TO              reduce using rule 80 (factor -> var .)
-    BY              reduce using rule 80 (factor -> var .)
     DO              reduce using rule 80 (factor -> var .)
-
-
-state 121
-
-    (103) varcte -> CTEBOOL .
-    DIVIDE          reduce using rule 103 (varcte -> CTEBOOL .)
-    TIMES           reduce using rule 103 (varcte -> CTEBOOL .)
-    MINUS           reduce using rule 103 (varcte -> CTEBOOL .)
-    PLUS            reduce using rule 103 (varcte -> CTEBOOL .)
-    COMMA           reduce using rule 103 (varcte -> CTEBOOL .)
-    RPAREN          reduce using rule 103 (varcte -> CTEBOOL .)
-    NEQ             reduce using rule 103 (varcte -> CTEBOOL .)
-    EQ              reduce using rule 103 (varcte -> CTEBOOL .)
-    LTE             reduce using rule 103 (varcte -> CTEBOOL .)
-    GTE             reduce using rule 103 (varcte -> CTEBOOL .)
-    LT              reduce using rule 103 (varcte -> CTEBOOL .)
-    GT              reduce using rule 103 (varcte -> CTEBOOL .)
-    OR              reduce using rule 103 (varcte -> CTEBOOL .)
-    AND             reduce using rule 103 (varcte -> CTEBOOL .)
-    SEMICOLON       reduce using rule 103 (varcte -> CTEBOOL .)
-    TO              reduce using rule 103 (varcte -> CTEBOOL .)
-    BY              reduce using rule 103 (varcte -> CTEBOOL .)
-    DO              reduce using rule 103 (varcte -> CTEBOOL .)
 
 
 state 122
 
-    (104) varcte -> CTEFLOAT .
-    DIVIDE          reduce using rule 104 (varcte -> CTEFLOAT .)
-    TIMES           reduce using rule 104 (varcte -> CTEFLOAT .)
-    MINUS           reduce using rule 104 (varcte -> CTEFLOAT .)
-    PLUS            reduce using rule 104 (varcte -> CTEFLOAT .)
-    COMMA           reduce using rule 104 (varcte -> CTEFLOAT .)
-    RPAREN          reduce using rule 104 (varcte -> CTEFLOAT .)
-    NEQ             reduce using rule 104 (varcte -> CTEFLOAT .)
-    EQ              reduce using rule 104 (varcte -> CTEFLOAT .)
-    LTE             reduce using rule 104 (varcte -> CTEFLOAT .)
-    GTE             reduce using rule 104 (varcte -> CTEFLOAT .)
-    LT              reduce using rule 104 (varcte -> CTEFLOAT .)
-    GT              reduce using rule 104 (varcte -> CTEFLOAT .)
-    OR              reduce using rule 104 (varcte -> CTEFLOAT .)
-    AND             reduce using rule 104 (varcte -> CTEFLOAT .)
-    SEMICOLON       reduce using rule 104 (varcte -> CTEFLOAT .)
-    TO              reduce using rule 104 (varcte -> CTEFLOAT .)
-    BY              reduce using rule 104 (varcte -> CTEFLOAT .)
-    DO              reduce using rule 104 (varcte -> CTEFLOAT .)
+    (106) varcte -> CTEBOOL .
+    DIVIDE          reduce using rule 106 (varcte -> CTEBOOL .)
+    TIMES           reduce using rule 106 (varcte -> CTEBOOL .)
+    MINUS           reduce using rule 106 (varcte -> CTEBOOL .)
+    PLUS            reduce using rule 106 (varcte -> CTEBOOL .)
+    COMMA           reduce using rule 106 (varcte -> CTEBOOL .)
+    RPAREN          reduce using rule 106 (varcte -> CTEBOOL .)
+    NEQ             reduce using rule 106 (varcte -> CTEBOOL .)
+    EQ              reduce using rule 106 (varcte -> CTEBOOL .)
+    LTE             reduce using rule 106 (varcte -> CTEBOOL .)
+    GTE             reduce using rule 106 (varcte -> CTEBOOL .)
+    LT              reduce using rule 106 (varcte -> CTEBOOL .)
+    GT              reduce using rule 106 (varcte -> CTEBOOL .)
+    OR              reduce using rule 106 (varcte -> CTEBOOL .)
+    AND             reduce using rule 106 (varcte -> CTEBOOL .)
+    SEMICOLON       reduce using rule 106 (varcte -> CTEBOOL .)
+    TO              reduce using rule 106 (varcte -> CTEBOOL .)
+    DO              reduce using rule 106 (varcte -> CTEBOOL .)
 
 
 state 123
 
-    (105) varcte -> CTEINT .
-    DIVIDE          reduce using rule 105 (varcte -> CTEINT .)
-    TIMES           reduce using rule 105 (varcte -> CTEINT .)
-    MINUS           reduce using rule 105 (varcte -> CTEINT .)
-    PLUS            reduce using rule 105 (varcte -> CTEINT .)
-    COMMA           reduce using rule 105 (varcte -> CTEINT .)
-    RPAREN          reduce using rule 105 (varcte -> CTEINT .)
-    NEQ             reduce using rule 105 (varcte -> CTEINT .)
-    EQ              reduce using rule 105 (varcte -> CTEINT .)
-    LTE             reduce using rule 105 (varcte -> CTEINT .)
-    GTE             reduce using rule 105 (varcte -> CTEINT .)
-    LT              reduce using rule 105 (varcte -> CTEINT .)
-    GT              reduce using rule 105 (varcte -> CTEINT .)
-    OR              reduce using rule 105 (varcte -> CTEINT .)
-    AND             reduce using rule 105 (varcte -> CTEINT .)
-    SEMICOLON       reduce using rule 105 (varcte -> CTEINT .)
-    TO              reduce using rule 105 (varcte -> CTEINT .)
-    BY              reduce using rule 105 (varcte -> CTEINT .)
-    DO              reduce using rule 105 (varcte -> CTEINT .)
+    (107) varcte -> CTEFLOAT .
+    DIVIDE          reduce using rule 107 (varcte -> CTEFLOAT .)
+    TIMES           reduce using rule 107 (varcte -> CTEFLOAT .)
+    MINUS           reduce using rule 107 (varcte -> CTEFLOAT .)
+    PLUS            reduce using rule 107 (varcte -> CTEFLOAT .)
+    COMMA           reduce using rule 107 (varcte -> CTEFLOAT .)
+    RPAREN          reduce using rule 107 (varcte -> CTEFLOAT .)
+    NEQ             reduce using rule 107 (varcte -> CTEFLOAT .)
+    EQ              reduce using rule 107 (varcte -> CTEFLOAT .)
+    LTE             reduce using rule 107 (varcte -> CTEFLOAT .)
+    GTE             reduce using rule 107 (varcte -> CTEFLOAT .)
+    LT              reduce using rule 107 (varcte -> CTEFLOAT .)
+    GT              reduce using rule 107 (varcte -> CTEFLOAT .)
+    OR              reduce using rule 107 (varcte -> CTEFLOAT .)
+    AND             reduce using rule 107 (varcte -> CTEFLOAT .)
+    SEMICOLON       reduce using rule 107 (varcte -> CTEFLOAT .)
+    TO              reduce using rule 107 (varcte -> CTEFLOAT .)
+    DO              reduce using rule 107 (varcte -> CTEFLOAT .)
 
 
 state 124
 
-    (82) forloop -> FROM var ASSIGN . expression TO expression BY expression DO block
-    (83) forloop -> FROM var ASSIGN . expression TO expression DO block
+    (108) varcte -> CTEINT .
+    DIVIDE          reduce using rule 108 (varcte -> CTEINT .)
+    TIMES           reduce using rule 108 (varcte -> CTEINT .)
+    MINUS           reduce using rule 108 (varcte -> CTEINT .)
+    PLUS            reduce using rule 108 (varcte -> CTEINT .)
+    COMMA           reduce using rule 108 (varcte -> CTEINT .)
+    RPAREN          reduce using rule 108 (varcte -> CTEINT .)
+    NEQ             reduce using rule 108 (varcte -> CTEINT .)
+    EQ              reduce using rule 108 (varcte -> CTEINT .)
+    LTE             reduce using rule 108 (varcte -> CTEINT .)
+    GTE             reduce using rule 108 (varcte -> CTEINT .)
+    LT              reduce using rule 108 (varcte -> CTEINT .)
+    GT              reduce using rule 108 (varcte -> CTEINT .)
+    OR              reduce using rule 108 (varcte -> CTEINT .)
+    AND             reduce using rule 108 (varcte -> CTEINT .)
+    SEMICOLON       reduce using rule 108 (varcte -> CTEINT .)
+    TO              reduce using rule 108 (varcte -> CTEINT .)
+    DO              reduce using rule 108 (varcte -> CTEINT .)
+
+
+state 125
+
+    (82) forloop -> FROM forloopcontrolvar assignment_sign . expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
     (57) expression -> . exp expression_quadgen expression_aux
     (67) exp -> . term exp_quadgen exp_aux
     (73) term -> . factor term_quadgen term_aux
@@ -2449,9 +2431,9 @@ state 124
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -2474,11 +2456,11 @@ state 124
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -2498,46 +2480,45 @@ state 124
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    var                            shift and go to state 120
-    expression                     shift and go to state 145
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-
-state 125
-
-    (85) dowhileloop -> DO saveposition block . WHILE LPAREN expression RPAREN openjumpslot
-    WHILE           shift and go to state 146
-
+    expression                     shift and go to state 146
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 126
+
+    (88) dowhileloop -> DO saveposition block . WHILE LPAREN expression RPAREN openjumpslot
+    WHILE           shift and go to state 147
+
+
+state 127
 
     (4) block -> LCURLY . blockcontent RCURLY
     (7) blockcontent -> . empty
     (8) blockcontent -> . statute blockcontent
-    (119) empty -> .
-    (109) statute -> . call
-    (110) statute -> . forloop
-    (111) statute -> . dowhileloop
-    (112) statute -> . whileloop
-    (113) statute -> . read
-    (114) statute -> . write
-    (115) statute -> . condition
-    (116) statute -> . assignment
+    (122) empty -> .
+    (112) statute -> . call
+    (113) statute -> . forloop
+    (114) statute -> . dowhileloop
+    (115) statute -> . whileloop
+    (116) statute -> . read
+    (117) statute -> . write
+    (118) statute -> . condition
+    (119) statute -> . assignment
     (45) call -> . ID LPAREN callvalues RPAREN
-    (82) forloop -> . FROM var ASSIGN expression TO expression BY expression DO block
-    (83) forloop -> . FROM var ASSIGN expression TO expression DO block
-    (85) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
-    (84) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
-    (89) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
-    (93) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
-    (98) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
-    (99) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
-    (86) assignment -> . assignment_var assignment_sign expression SEMICOLON
-    (88) assignment_var -> . ID
-    RCURLY          reduce using rule 119 (empty -> .)
+    (82) forloop -> . FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (88) dowhileloop -> . DO saveposition block WHILE LPAREN expression RPAREN openjumpslot
+    (87) whileloop -> . WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps
+    (92) read -> . INPUT LPAREN readaux RPAREN SEMICOLON
+    (96) write -> . PRINT LPAREN writeaux RPAREN SEMICOLON
+    (101) condition -> . IF LPAREN super_exp RPAREN openjumpslot block filljumps
+    (102) condition -> . IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    (89) assignment -> . assignment_var assignment_sign expression SEMICOLON
+    (91) assignment_var -> . ID
+    RCURLY          reduce using rule 122 (empty -> .)
     ID              shift and go to state 85
     FROM            shift and go to state 86
     DO              shift and go to state 87
@@ -2546,7 +2527,7 @@ state 126
     PRINT           shift and go to state 90
     IF              shift and go to state 91
 
-    blockcontent                   shift and go to state 147
+    blockcontent                   shift and go to state 148
     empty                          shift and go to state 75
     statute                        shift and go to state 76
     call                           shift and go to state 77
@@ -2559,9 +2540,9 @@ state 126
     assignment                     shift and go to state 84
     assignment_var                 shift and go to state 92
 
-state 127
+state 128
 
-    (84) whileloop -> WHILE saveposition LPAREN . expression RPAREN openjumpslot block filljumps
+    (87) whileloop -> WHILE saveposition LPAREN . expression RPAREN openjumpslot block filljumps
     (57) expression -> . exp expression_quadgen expression_aux
     (67) exp -> . term exp_quadgen exp_aux
     (73) term -> . factor term_quadgen term_aux
@@ -2569,9 +2550,9 @@ state 127
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -2594,11 +2575,11 @@ state 127
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -2618,64 +2599,64 @@ state 127
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    expression                     shift and go to state 148
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
-
-state 128
-
-    (89) read -> INPUT LPAREN readaux . RPAREN SEMICOLON
-    RPAREN          shift and go to state 149
-
+    expression                     shift and go to state 149
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 129
 
-    (90) readaux -> readvalue . COMMA readaux
-    (91) readaux -> readvalue .
-    COMMA           shift and go to state 150
-    RPAREN          reduce using rule 91 (readaux -> readvalue .)
+    (92) read -> INPUT LPAREN readaux . RPAREN SEMICOLON
+    RPAREN          shift and go to state 150
 
 
 state 130
 
-    (92) readvalue -> var .
-    COMMA           reduce using rule 92 (readvalue -> var .)
-    RPAREN          reduce using rule 92 (readvalue -> var .)
+    (93) readaux -> readvalue . COMMA readaux
+    (94) readaux -> readvalue .
+    COMMA           shift and go to state 151
+    RPAREN          reduce using rule 94 (readaux -> readvalue .)
 
 
 state 131
 
-    (93) write -> PRINT LPAREN writeaux . RPAREN SEMICOLON
-    RPAREN          shift and go to state 151
+    (95) readvalue -> var .
+    COMMA           reduce using rule 95 (readvalue -> var .)
+    RPAREN          reduce using rule 95 (readvalue -> var .)
 
 
 state 132
 
-    (94) writeaux -> writevalues .
-    (95) writeaux -> writevalues . COMMA writeaux
-    RPAREN          reduce using rule 94 (writeaux -> writevalues .)
-    COMMA           shift and go to state 152
+    (96) write -> PRINT LPAREN writeaux . RPAREN SEMICOLON
+    RPAREN          shift and go to state 152
 
 
 state 133
 
-    (96) writevalues -> CTESTRING .
-    COMMA           reduce using rule 96 (writevalues -> CTESTRING .)
-    RPAREN          reduce using rule 96 (writevalues -> CTESTRING .)
+    (97) writeaux -> writevalues .
+    (98) writeaux -> writevalues . COMMA writeaux
+    RPAREN          reduce using rule 97 (writeaux -> writevalues .)
+    COMMA           shift and go to state 153
 
 
 state 134
 
-    (97) writevalues -> super_exp .
-    COMMA           reduce using rule 97 (writevalues -> super_exp .)
-    RPAREN          reduce using rule 97 (writevalues -> super_exp .)
+    (99) writevalues -> CTESTRING .
+    COMMA           reduce using rule 99 (writevalues -> CTESTRING .)
+    RPAREN          reduce using rule 99 (writevalues -> CTESTRING .)
 
 
 state 135
+
+    (100) writevalues -> super_exp .
+    COMMA           reduce using rule 100 (writevalues -> super_exp .)
+    RPAREN          reduce using rule 100 (writevalues -> super_exp .)
+
+
+state 136
 
     (51) super_exp -> expression . super_exp_quadgen super_exp_aux
     (54) super_exp_quadgen -> .
@@ -2684,9 +2665,9 @@ state 135
     COMMA           reduce using rule 54 (super_exp_quadgen -> .)
     RPAREN          reduce using rule 54 (super_exp_quadgen -> .)
 
-    super_exp_quadgen              shift and go to state 153
+    super_exp_quadgen              shift and go to state 154
 
-state 136
+state 137
 
     (57) expression -> exp . expression_quadgen expression_aux
     (64) expression_quadgen -> .
@@ -2702,31 +2683,30 @@ state 136
     RPAREN          reduce using rule 64 (expression_quadgen -> .)
     SEMICOLON       reduce using rule 64 (expression_quadgen -> .)
     TO              reduce using rule 64 (expression_quadgen -> .)
-    BY              reduce using rule 64 (expression_quadgen -> .)
     DO              reduce using rule 64 (expression_quadgen -> .)
 
-    expression_quadgen             shift and go to state 154
-
-state 137
-
-    (98) condition -> IF LPAREN super_exp . RPAREN openjumpslot block filljumps
-    (99) condition -> IF LPAREN super_exp . RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
-    RPAREN          shift and go to state 155
-
+    expression_quadgen             shift and go to state 155
 
 state 138
 
-    (86) assignment -> assignment_var assignment_sign expression . SEMICOLON
-    SEMICOLON       shift and go to state 156
+    (101) condition -> IF LPAREN super_exp . RPAREN openjumpslot block filljumps
+    (102) condition -> IF LPAREN super_exp . RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps
+    RPAREN          shift and go to state 156
 
 
 state 139
 
-    (6) returnblock -> LCURLY decvars blockcontent . RETURN exp SEMICOLON RCURLY
-    RETURN          shift and go to state 157
+    (89) assignment -> assignment_var assignment_sign expression . SEMICOLON
+    SEMICOLON       shift and go to state 157
 
 
 state 140
+
+    (6) returnblock -> LCURLY decvars blockcontent . RETURN exp SEMICOLON RCURLY
+    RETURN          shift and go to state 158
+
+
+state 141
 
     (77) factor -> LPAREN fakefloor . super_exp RPAREN
     (51) super_exp -> . expression super_exp_quadgen super_exp_aux
@@ -2737,9 +2717,9 @@ state 140
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -2762,11 +2742,11 @@ state 140
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -2786,16 +2766,16 @@ state 140
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    super_exp                      shift and go to state 158
-    expression                     shift and go to state 135
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    super_exp                      shift and go to state 159
+    expression                     shift and go to state 136
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 141
+state 142
 
     (45) call -> ID LPAREN callvalues RPAREN .
     ID              reduce using rule 45 (call -> ID LPAREN callvalues RPAREN .)
@@ -2823,25 +2803,24 @@ state 141
     AND             reduce using rule 45 (call -> ID LPAREN callvalues RPAREN .)
     SEMICOLON       reduce using rule 45 (call -> ID LPAREN callvalues RPAREN .)
     TO              reduce using rule 45 (call -> ID LPAREN callvalues RPAREN .)
-    BY              reduce using rule 45 (call -> ID LPAREN callvalues RPAREN .)
 
 
-state 142
+state 143
 
     (47) callvalues -> exp COMMA . callvalues
     (46) callvalues -> . empty
     (47) callvalues -> . exp COMMA callvalues
     (48) callvalues -> . exp
-    (119) empty -> .
+    (122) empty -> .
     (67) exp -> . term exp_quadgen exp_aux
     (73) term -> . factor term_quadgen term_aux
     (77) factor -> . LPAREN fakefloor super_exp RPAREN
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -2864,12 +2843,12 @@ state 142
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    RPAREN          reduce using rule 119 (empty -> .)
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    RPAREN          reduce using rule 122 (empty -> .)
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -2889,112 +2868,111 @@ state 142
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    exp                            shift and go to state 115
-    callvalues                     shift and go to state 159
-    empty                          shift and go to state 114
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    exp                            shift and go to state 116
+    callvalues                     shift and go to state 160
+    empty                          shift and go to state 115
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 143
+state 144
 
     (67) exp -> term exp_quadgen . exp_aux
     (65) exp_aux -> . exp_sign exp
     (66) exp_aux -> . empty
     (68) exp_sign -> . MINUS
     (69) exp_sign -> . PLUS
-    (119) empty -> .
-    MINUS           shift and go to state 163
-    PLUS            shift and go to state 164
-    COMMA           reduce using rule 119 (empty -> .)
-    RPAREN          reduce using rule 119 (empty -> .)
-    NEQ             reduce using rule 119 (empty -> .)
-    EQ              reduce using rule 119 (empty -> .)
-    LTE             reduce using rule 119 (empty -> .)
-    GTE             reduce using rule 119 (empty -> .)
-    LT              reduce using rule 119 (empty -> .)
-    GT              reduce using rule 119 (empty -> .)
-    OR              reduce using rule 119 (empty -> .)
-    AND             reduce using rule 119 (empty -> .)
-    SEMICOLON       reduce using rule 119 (empty -> .)
-    TO              reduce using rule 119 (empty -> .)
-    BY              reduce using rule 119 (empty -> .)
-    DO              reduce using rule 119 (empty -> .)
+    (122) empty -> .
+    MINUS           shift and go to state 164
+    PLUS            shift and go to state 165
+    COMMA           reduce using rule 122 (empty -> .)
+    RPAREN          reduce using rule 122 (empty -> .)
+    NEQ             reduce using rule 122 (empty -> .)
+    EQ              reduce using rule 122 (empty -> .)
+    LTE             reduce using rule 122 (empty -> .)
+    GTE             reduce using rule 122 (empty -> .)
+    LT              reduce using rule 122 (empty -> .)
+    GT              reduce using rule 122 (empty -> .)
+    OR              reduce using rule 122 (empty -> .)
+    AND             reduce using rule 122 (empty -> .)
+    SEMICOLON       reduce using rule 122 (empty -> .)
+    TO              reduce using rule 122 (empty -> .)
+    DO              reduce using rule 122 (empty -> .)
 
-    exp_aux                        shift and go to state 160
-    exp_sign                       shift and go to state 161
-    empty                          shift and go to state 162
+    exp_aux                        shift and go to state 161
+    exp_sign                       shift and go to state 162
+    empty                          shift and go to state 163
 
-state 144
+state 145
 
     (73) term -> factor term_quadgen . term_aux
     (71) term_aux -> . term_sign term
     (72) term_aux -> . empty
     (74) term_sign -> . DIVIDE
     (75) term_sign -> . TIMES
-    (119) empty -> .
-    DIVIDE          shift and go to state 168
-    TIMES           shift and go to state 169
-    MINUS           reduce using rule 119 (empty -> .)
-    PLUS            reduce using rule 119 (empty -> .)
-    COMMA           reduce using rule 119 (empty -> .)
-    RPAREN          reduce using rule 119 (empty -> .)
-    NEQ             reduce using rule 119 (empty -> .)
-    EQ              reduce using rule 119 (empty -> .)
-    LTE             reduce using rule 119 (empty -> .)
-    GTE             reduce using rule 119 (empty -> .)
-    LT              reduce using rule 119 (empty -> .)
-    GT              reduce using rule 119 (empty -> .)
-    OR              reduce using rule 119 (empty -> .)
-    AND             reduce using rule 119 (empty -> .)
-    SEMICOLON       reduce using rule 119 (empty -> .)
-    TO              reduce using rule 119 (empty -> .)
-    BY              reduce using rule 119 (empty -> .)
-    DO              reduce using rule 119 (empty -> .)
+    (122) empty -> .
+    DIVIDE          shift and go to state 169
+    TIMES           shift and go to state 170
+    MINUS           reduce using rule 122 (empty -> .)
+    PLUS            reduce using rule 122 (empty -> .)
+    COMMA           reduce using rule 122 (empty -> .)
+    RPAREN          reduce using rule 122 (empty -> .)
+    NEQ             reduce using rule 122 (empty -> .)
+    EQ              reduce using rule 122 (empty -> .)
+    LTE             reduce using rule 122 (empty -> .)
+    GTE             reduce using rule 122 (empty -> .)
+    LT              reduce using rule 122 (empty -> .)
+    GT              reduce using rule 122 (empty -> .)
+    OR              reduce using rule 122 (empty -> .)
+    AND             reduce using rule 122 (empty -> .)
+    SEMICOLON       reduce using rule 122 (empty -> .)
+    TO              reduce using rule 122 (empty -> .)
+    DO              reduce using rule 122 (empty -> .)
 
-    term_aux                       shift and go to state 165
-    term_sign                      shift and go to state 166
-    empty                          shift and go to state 167
-
-state 145
-
-    (82) forloop -> FROM var ASSIGN expression . TO expression BY expression DO block
-    (83) forloop -> FROM var ASSIGN expression . TO expression DO block
-    TO              shift and go to state 170
-
+    term_aux                       shift and go to state 166
+    term_sign                      shift and go to state 167
+    empty                          shift and go to state 168
 
 state 146
 
-    (85) dowhileloop -> DO saveposition block WHILE . LPAREN expression RPAREN openjumpslot
-    LPAREN          shift and go to state 171
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression . validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (84) validatecontrolvar -> .
+    TO              reduce using rule 84 (validatecontrolvar -> .)
 
+    validatecontrolvar             shift and go to state 171
 
 state 147
 
-    (4) block -> LCURLY blockcontent . RCURLY
-    RCURLY          shift and go to state 172
+    (88) dowhileloop -> DO saveposition block WHILE . LPAREN expression RPAREN openjumpslot
+    LPAREN          shift and go to state 172
 
 
 state 148
 
-    (84) whileloop -> WHILE saveposition LPAREN expression . RPAREN openjumpslot block filljumps
-    RPAREN          shift and go to state 173
+    (4) block -> LCURLY blockcontent . RCURLY
+    RCURLY          shift and go to state 173
 
 
 state 149
 
-    (89) read -> INPUT LPAREN readaux RPAREN . SEMICOLON
-    SEMICOLON       shift and go to state 174
+    (87) whileloop -> WHILE saveposition LPAREN expression . RPAREN openjumpslot block filljumps
+    RPAREN          shift and go to state 174
 
 
 state 150
 
-    (90) readaux -> readvalue COMMA . readaux
-    (90) readaux -> . readvalue COMMA readaux
-    (91) readaux -> . readvalue
-    (92) readvalue -> . var
+    (92) read -> INPUT LPAREN readaux RPAREN . SEMICOLON
+    SEMICOLON       shift and go to state 175
+
+
+state 151
+
+    (93) readaux -> readvalue COMMA . readaux
+    (93) readaux -> . readvalue COMMA readaux
+    (94) readaux -> . readvalue
+    (95) readvalue -> . var
     (15) var -> . BOOL
     (16) var -> . FLOAT
     (17) var -> . INT
@@ -3036,23 +3014,23 @@ state 150
     PROGRAM         shift and go to state 44
     ID              shift and go to state 45
 
-    readvalue                      shift and go to state 129
-    readaux                        shift and go to state 175
-    var                            shift and go to state 130
-
-state 151
-
-    (93) write -> PRINT LPAREN writeaux RPAREN . SEMICOLON
-    SEMICOLON       shift and go to state 176
-
+    readvalue                      shift and go to state 130
+    readaux                        shift and go to state 176
+    var                            shift and go to state 131
 
 state 152
 
-    (95) writeaux -> writevalues COMMA . writeaux
-    (94) writeaux -> . writevalues
-    (95) writeaux -> . writevalues COMMA writeaux
-    (96) writevalues -> . CTESTRING
-    (97) writevalues -> . super_exp
+    (96) write -> PRINT LPAREN writeaux RPAREN . SEMICOLON
+    SEMICOLON       shift and go to state 177
+
+
+state 153
+
+    (98) writeaux -> writevalues COMMA . writeaux
+    (97) writeaux -> . writevalues
+    (98) writeaux -> . writevalues COMMA writeaux
+    (99) writevalues -> . CTESTRING
+    (100) writevalues -> . super_exp
     (51) super_exp -> . expression super_exp_quadgen super_exp_aux
     (57) expression -> . exp expression_quadgen expression_aux
     (67) exp -> . term exp_quadgen exp_aux
@@ -3061,9 +3039,9 @@ state 152
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -3086,12 +3064,12 @@ state 152
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    CTESTRING       shift and go to state 133
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    CTESTRING       shift and go to state 134
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -3111,35 +3089,35 @@ state 152
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    writevalues                    shift and go to state 132
-    writeaux                       shift and go to state 177
-    super_exp                      shift and go to state 134
-    expression                     shift and go to state 135
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    writevalues                    shift and go to state 133
+    writeaux                       shift and go to state 178
+    super_exp                      shift and go to state 135
+    expression                     shift and go to state 136
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 153
+state 154
 
     (51) super_exp -> expression super_exp_quadgen . super_exp_aux
     (49) super_exp_aux -> . logic super_exp
     (50) super_exp_aux -> . empty
     (52) logic -> . OR
     (53) logic -> . AND
-    (119) empty -> .
-    OR              shift and go to state 181
-    AND             shift and go to state 182
-    COMMA           reduce using rule 119 (empty -> .)
-    RPAREN          reduce using rule 119 (empty -> .)
+    (122) empty -> .
+    OR              shift and go to state 182
+    AND             shift and go to state 183
+    COMMA           reduce using rule 122 (empty -> .)
+    RPAREN          reduce using rule 122 (empty -> .)
 
-    super_exp_aux                  shift and go to state 178
-    logic                          shift and go to state 179
-    empty                          shift and go to state 180
+    super_exp_aux                  shift and go to state 179
+    logic                          shift and go to state 180
+    empty                          shift and go to state 181
 
-state 154
+state 155
 
     (57) expression -> exp expression_quadgen . expression_aux
     (55) expression_aux -> . relation expression
@@ -3150,50 +3128,49 @@ state 154
     (61) relation -> . GTE
     (62) relation -> . LT
     (63) relation -> . GT
-    (119) empty -> .
-    NEQ             shift and go to state 186
-    EQ              shift and go to state 187
-    LTE             shift and go to state 188
-    GTE             shift and go to state 189
-    LT              shift and go to state 190
-    GT              shift and go to state 191
-    OR              reduce using rule 119 (empty -> .)
-    AND             reduce using rule 119 (empty -> .)
-    COMMA           reduce using rule 119 (empty -> .)
-    RPAREN          reduce using rule 119 (empty -> .)
-    SEMICOLON       reduce using rule 119 (empty -> .)
-    TO              reduce using rule 119 (empty -> .)
-    BY              reduce using rule 119 (empty -> .)
-    DO              reduce using rule 119 (empty -> .)
+    (122) empty -> .
+    NEQ             shift and go to state 187
+    EQ              shift and go to state 188
+    LTE             shift and go to state 189
+    GTE             shift and go to state 190
+    LT              shift and go to state 191
+    GT              shift and go to state 192
+    OR              reduce using rule 122 (empty -> .)
+    AND             reduce using rule 122 (empty -> .)
+    COMMA           reduce using rule 122 (empty -> .)
+    RPAREN          reduce using rule 122 (empty -> .)
+    SEMICOLON       reduce using rule 122 (empty -> .)
+    TO              reduce using rule 122 (empty -> .)
+    DO              reduce using rule 122 (empty -> .)
 
-    expression_aux                 shift and go to state 183
-    relation                       shift and go to state 184
-    empty                          shift and go to state 185
-
-state 155
-
-    (98) condition -> IF LPAREN super_exp RPAREN . openjumpslot block filljumps
-    (99) condition -> IF LPAREN super_exp RPAREN . openjumpslot block ELSE filljumps openjumpslot block filljumps
-    (100) openjumpslot -> .
-    LCURLY          reduce using rule 100 (openjumpslot -> .)
-
-    openjumpslot                   shift and go to state 192
+    expression_aux                 shift and go to state 184
+    relation                       shift and go to state 185
+    empty                          shift and go to state 186
 
 state 156
 
-    (86) assignment -> assignment_var assignment_sign expression SEMICOLON .
-    ID              reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    FROM            reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    DO              reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    WHILE           reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    INPUT           reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    PRINT           reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    IF              reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    RCURLY          reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
-    RETURN          reduce using rule 86 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    (101) condition -> IF LPAREN super_exp RPAREN . openjumpslot block filljumps
+    (102) condition -> IF LPAREN super_exp RPAREN . openjumpslot block ELSE filljumps openjumpslot block filljumps
+    (103) openjumpslot -> .
+    LCURLY          reduce using rule 103 (openjumpslot -> .)
 
+    openjumpslot                   shift and go to state 193
 
 state 157
+
+    (89) assignment -> assignment_var assignment_sign expression SEMICOLON .
+    ID              reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    FROM            reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    DO              reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    WHILE           reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    INPUT           reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    PRINT           reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    IF              reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    RCURLY          reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+    RETURN          reduce using rule 89 (assignment -> assignment_var assignment_sign expression SEMICOLON .)
+
+
+state 158
 
     (6) returnblock -> LCURLY decvars blockcontent RETURN . exp SEMICOLON RCURLY
     (67) exp -> . term exp_quadgen exp_aux
@@ -3202,9 +3179,9 @@ state 157
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -3227,11 +3204,11 @@ state 157
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -3251,26 +3228,26 @@ state 157
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    exp                            shift and go to state 193
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
-
-state 158
-
-    (77) factor -> LPAREN fakefloor super_exp . RPAREN
-    RPAREN          shift and go to state 194
-
+    exp                            shift and go to state 194
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 159
+
+    (77) factor -> LPAREN fakefloor super_exp . RPAREN
+    RPAREN          shift and go to state 195
+
+
+state 160
 
     (47) callvalues -> exp COMMA callvalues .
     RPAREN          reduce using rule 47 (callvalues -> exp COMMA callvalues .)
 
 
-state 160
+state 161
 
     (67) exp -> term exp_quadgen exp_aux .
     COMMA           reduce using rule 67 (exp -> term exp_quadgen exp_aux .)
@@ -3285,11 +3262,10 @@ state 160
     AND             reduce using rule 67 (exp -> term exp_quadgen exp_aux .)
     SEMICOLON       reduce using rule 67 (exp -> term exp_quadgen exp_aux .)
     TO              reduce using rule 67 (exp -> term exp_quadgen exp_aux .)
-    BY              reduce using rule 67 (exp -> term exp_quadgen exp_aux .)
     DO              reduce using rule 67 (exp -> term exp_quadgen exp_aux .)
 
 
-state 161
+state 162
 
     (65) exp_aux -> exp_sign . exp
     (67) exp -> . term exp_quadgen exp_aux
@@ -3298,9 +3274,9 @@ state 161
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -3323,11 +3299,11 @@ state 161
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -3347,14 +3323,14 @@ state 161
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    exp                            shift and go to state 195
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    exp                            shift and go to state 196
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 162
+state 163
 
     (66) exp_aux -> empty .
     COMMA           reduce using rule 66 (exp_aux -> empty .)
@@ -3369,11 +3345,10 @@ state 162
     AND             reduce using rule 66 (exp_aux -> empty .)
     SEMICOLON       reduce using rule 66 (exp_aux -> empty .)
     TO              reduce using rule 66 (exp_aux -> empty .)
-    BY              reduce using rule 66 (exp_aux -> empty .)
     DO              reduce using rule 66 (exp_aux -> empty .)
 
 
-state 163
+state 164
 
     (68) exp_sign -> MINUS .
     LPAREN          reduce using rule 68 (exp_sign -> MINUS .)
@@ -3401,7 +3376,7 @@ state 163
     PROGRAM         reduce using rule 68 (exp_sign -> MINUS .)
 
 
-state 164
+state 165
 
     (69) exp_sign -> PLUS .
     LPAREN          reduce using rule 69 (exp_sign -> PLUS .)
@@ -3429,7 +3404,7 @@ state 164
     PROGRAM         reduce using rule 69 (exp_sign -> PLUS .)
 
 
-state 165
+state 166
 
     (73) term -> factor term_quadgen term_aux .
     MINUS           reduce using rule 73 (term -> factor term_quadgen term_aux .)
@@ -3446,11 +3421,10 @@ state 165
     AND             reduce using rule 73 (term -> factor term_quadgen term_aux .)
     SEMICOLON       reduce using rule 73 (term -> factor term_quadgen term_aux .)
     TO              reduce using rule 73 (term -> factor term_quadgen term_aux .)
-    BY              reduce using rule 73 (term -> factor term_quadgen term_aux .)
     DO              reduce using rule 73 (term -> factor term_quadgen term_aux .)
 
 
-state 166
+state 167
 
     (71) term_aux -> term_sign . term
     (73) term -> . factor term_quadgen term_aux
@@ -3458,9 +3432,9 @@ state 166
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -3483,11 +3457,11 @@ state 166
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -3507,13 +3481,13 @@ state 166
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    term                           shift and go to state 196
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    term                           shift and go to state 197
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 167
+state 168
 
     (72) term_aux -> empty .
     MINUS           reduce using rule 72 (term_aux -> empty .)
@@ -3530,11 +3504,10 @@ state 167
     AND             reduce using rule 72 (term_aux -> empty .)
     SEMICOLON       reduce using rule 72 (term_aux -> empty .)
     TO              reduce using rule 72 (term_aux -> empty .)
-    BY              reduce using rule 72 (term_aux -> empty .)
     DO              reduce using rule 72 (term_aux -> empty .)
 
 
-state 168
+state 169
 
     (74) term_sign -> DIVIDE .
     LPAREN          reduce using rule 74 (term_sign -> DIVIDE .)
@@ -3562,7 +3535,7 @@ state 168
     PROGRAM         reduce using rule 74 (term_sign -> DIVIDE .)
 
 
-state 169
+state 170
 
     (75) term_sign -> TIMES .
     LPAREN          reduce using rule 75 (term_sign -> TIMES .)
@@ -3590,77 +3563,15 @@ state 169
     PROGRAM         reduce using rule 75 (term_sign -> TIMES .)
 
 
-state 170
-
-    (82) forloop -> FROM var ASSIGN expression TO . expression BY expression DO block
-    (83) forloop -> FROM var ASSIGN expression TO . expression DO block
-    (57) expression -> . exp expression_quadgen expression_aux
-    (67) exp -> . term exp_quadgen exp_aux
-    (73) term -> . factor term_quadgen term_aux
-    (77) factor -> . LPAREN fakefloor super_exp RPAREN
-    (78) factor -> . varcte
-    (79) factor -> . call
-    (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
-    (45) call -> . ID LPAREN callvalues RPAREN
-    (15) var -> . BOOL
-    (16) var -> . FLOAT
-    (17) var -> . INT
-    (18) var -> . ELSE
-    (19) var -> . IF
-    (20) var -> . PRINT
-    (21) var -> . INPUT
-    (22) var -> . WHILE
-    (23) var -> . DO
-    (24) var -> . BY
-    (25) var -> . TO
-    (26) var -> . FROM
-    (27) var -> . VOID
-    (28) var -> . RETURN
-    (29) var -> . FUNC
-    (30) var -> . MAIN
-    (31) var -> . VARS
-    (32) var -> . PROGRAM
-    (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
-    (34) var -> . ID LBRACKET CTEINT RBRACKET
-    (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
-    BOOL            shift and go to state 27
-    FLOAT           shift and go to state 28
-    INT             shift and go to state 29
-    ELSE            shift and go to state 30
-    IF              shift and go to state 31
-    PRINT           shift and go to state 32
-    INPUT           shift and go to state 33
-    WHILE           shift and go to state 34
-    DO              shift and go to state 35
-    BY              shift and go to state 36
-    TO              shift and go to state 37
-    FROM            shift and go to state 38
-    VOID            shift and go to state 39
-    RETURN          shift and go to state 40
-    FUNC            shift and go to state 41
-    MAIN            shift and go to state 42
-    VARS            shift and go to state 43
-    PROGRAM         shift and go to state 44
-
-    var                            shift and go to state 120
-    expression                     shift and go to state 197
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-
 state 171
 
-    (85) dowhileloop -> DO saveposition block WHILE LPAREN . expression RPAREN openjumpslot
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar . TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    TO              shift and go to state 198
+
+
+state 172
+
+    (88) dowhileloop -> DO saveposition block WHILE LPAREN . expression RPAREN openjumpslot
     (57) expression -> . exp expression_quadgen expression_aux
     (67) exp -> . term exp_quadgen exp_aux
     (73) term -> . factor term_quadgen term_aux
@@ -3668,9 +3579,9 @@ state 171
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -3693,11 +3604,11 @@ state 171
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -3717,15 +3628,15 @@ state 171
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    expression                     shift and go to state 198
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    expression                     shift and go to state 199
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 172
+state 173
 
     (4) block -> LCURLY blockcontent RCURLY .
     WHILE           reduce using rule 4 (block -> LCURLY blockcontent RCURLY .)
@@ -3740,62 +3651,62 @@ state 172
     RETURN          reduce using rule 4 (block -> LCURLY blockcontent RCURLY .)
 
 
-state 173
-
-    (84) whileloop -> WHILE saveposition LPAREN expression RPAREN . openjumpslot block filljumps
-    (100) openjumpslot -> .
-    LCURLY          reduce using rule 100 (openjumpslot -> .)
-
-    openjumpslot                   shift and go to state 199
-
 state 174
 
-    (89) read -> INPUT LPAREN readaux RPAREN SEMICOLON .
-    ID              reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    FROM            reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    DO              reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    WHILE           reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    INPUT           reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    PRINT           reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    IF              reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    RCURLY          reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
-    RETURN          reduce using rule 89 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    (87) whileloop -> WHILE saveposition LPAREN expression RPAREN . openjumpslot block filljumps
+    (103) openjumpslot -> .
+    LCURLY          reduce using rule 103 (openjumpslot -> .)
 
+    openjumpslot                   shift and go to state 200
 
 state 175
 
-    (90) readaux -> readvalue COMMA readaux .
-    RPAREN          reduce using rule 90 (readaux -> readvalue COMMA readaux .)
+    (92) read -> INPUT LPAREN readaux RPAREN SEMICOLON .
+    ID              reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    FROM            reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    DO              reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    WHILE           reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    INPUT           reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    PRINT           reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    IF              reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    RCURLY          reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
+    RETURN          reduce using rule 92 (read -> INPUT LPAREN readaux RPAREN SEMICOLON .)
 
 
 state 176
 
-    (93) write -> PRINT LPAREN writeaux RPAREN SEMICOLON .
-    ID              reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    FROM            reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    DO              reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    WHILE           reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    INPUT           reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    PRINT           reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    IF              reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    RCURLY          reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
-    RETURN          reduce using rule 93 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    (93) readaux -> readvalue COMMA readaux .
+    RPAREN          reduce using rule 93 (readaux -> readvalue COMMA readaux .)
 
 
 state 177
 
-    (95) writeaux -> writevalues COMMA writeaux .
-    RPAREN          reduce using rule 95 (writeaux -> writevalues COMMA writeaux .)
+    (96) write -> PRINT LPAREN writeaux RPAREN SEMICOLON .
+    ID              reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    FROM            reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    DO              reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    WHILE           reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    INPUT           reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    PRINT           reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    IF              reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    RCURLY          reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
+    RETURN          reduce using rule 96 (write -> PRINT LPAREN writeaux RPAREN SEMICOLON .)
 
 
 state 178
+
+    (98) writeaux -> writevalues COMMA writeaux .
+    RPAREN          reduce using rule 98 (writeaux -> writevalues COMMA writeaux .)
+
+
+state 179
 
     (51) super_exp -> expression super_exp_quadgen super_exp_aux .
     COMMA           reduce using rule 51 (super_exp -> expression super_exp_quadgen super_exp_aux .)
     RPAREN          reduce using rule 51 (super_exp -> expression super_exp_quadgen super_exp_aux .)
 
 
-state 179
+state 180
 
     (49) super_exp_aux -> logic . super_exp
     (51) super_exp -> . expression super_exp_quadgen super_exp_aux
@@ -3806,9 +3717,9 @@ state 179
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -3831,11 +3742,11 @@ state 179
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -3855,23 +3766,23 @@ state 179
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    super_exp                      shift and go to state 200
-    expression                     shift and go to state 135
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    super_exp                      shift and go to state 201
+    expression                     shift and go to state 136
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 180
+state 181
 
     (50) super_exp_aux -> empty .
     COMMA           reduce using rule 50 (super_exp_aux -> empty .)
     RPAREN          reduce using rule 50 (super_exp_aux -> empty .)
 
 
-state 181
+state 182
 
     (52) logic -> OR .
     LPAREN          reduce using rule 52 (logic -> OR .)
@@ -3899,7 +3810,7 @@ state 181
     PROGRAM         reduce using rule 52 (logic -> OR .)
 
 
-state 182
+state 183
 
     (53) logic -> AND .
     LPAREN          reduce using rule 53 (logic -> AND .)
@@ -3927,7 +3838,7 @@ state 182
     PROGRAM         reduce using rule 53 (logic -> AND .)
 
 
-state 183
+state 184
 
     (57) expression -> exp expression_quadgen expression_aux .
     OR              reduce using rule 57 (expression -> exp expression_quadgen expression_aux .)
@@ -3936,11 +3847,10 @@ state 183
     RPAREN          reduce using rule 57 (expression -> exp expression_quadgen expression_aux .)
     SEMICOLON       reduce using rule 57 (expression -> exp expression_quadgen expression_aux .)
     TO              reduce using rule 57 (expression -> exp expression_quadgen expression_aux .)
-    BY              reduce using rule 57 (expression -> exp expression_quadgen expression_aux .)
     DO              reduce using rule 57 (expression -> exp expression_quadgen expression_aux .)
 
 
-state 184
+state 185
 
     (55) expression_aux -> relation . expression
     (57) expression -> . exp expression_quadgen expression_aux
@@ -3950,9 +3860,9 @@ state 184
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -3975,11 +3885,11 @@ state 184
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -3999,15 +3909,15 @@ state 184
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    expression                     shift and go to state 201
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-    var                            shift and go to state 120
+    expression                     shift and go to state 202
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
-state 185
+state 186
 
     (56) expression_aux -> empty .
     OR              reduce using rule 56 (expression_aux -> empty .)
@@ -4016,11 +3926,10 @@ state 185
     RPAREN          reduce using rule 56 (expression_aux -> empty .)
     SEMICOLON       reduce using rule 56 (expression_aux -> empty .)
     TO              reduce using rule 56 (expression_aux -> empty .)
-    BY              reduce using rule 56 (expression_aux -> empty .)
     DO              reduce using rule 56 (expression_aux -> empty .)
 
 
-state 186
+state 187
 
     (58) relation -> NEQ .
     LPAREN          reduce using rule 58 (relation -> NEQ .)
@@ -4048,7 +3957,7 @@ state 186
     PROGRAM         reduce using rule 58 (relation -> NEQ .)
 
 
-state 187
+state 188
 
     (59) relation -> EQ .
     LPAREN          reduce using rule 59 (relation -> EQ .)
@@ -4076,7 +3985,7 @@ state 187
     PROGRAM         reduce using rule 59 (relation -> EQ .)
 
 
-state 188
+state 189
 
     (60) relation -> LTE .
     LPAREN          reduce using rule 60 (relation -> LTE .)
@@ -4104,7 +4013,7 @@ state 188
     PROGRAM         reduce using rule 60 (relation -> LTE .)
 
 
-state 189
+state 190
 
     (61) relation -> GTE .
     LPAREN          reduce using rule 61 (relation -> GTE .)
@@ -4132,7 +4041,7 @@ state 189
     PROGRAM         reduce using rule 61 (relation -> GTE .)
 
 
-state 190
+state 191
 
     (62) relation -> LT .
     LPAREN          reduce using rule 62 (relation -> LT .)
@@ -4160,7 +4069,7 @@ state 190
     PROGRAM         reduce using rule 62 (relation -> LT .)
 
 
-state 191
+state 192
 
     (63) relation -> GT .
     LPAREN          reduce using rule 63 (relation -> GT .)
@@ -4188,22 +4097,22 @@ state 191
     PROGRAM         reduce using rule 63 (relation -> GT .)
 
 
-state 192
-
-    (98) condition -> IF LPAREN super_exp RPAREN openjumpslot . block filljumps
-    (99) condition -> IF LPAREN super_exp RPAREN openjumpslot . block ELSE filljumps openjumpslot block filljumps
-    (4) block -> . LCURLY blockcontent RCURLY
-    LCURLY          shift and go to state 126
-
-    block                          shift and go to state 202
-
 state 193
 
-    (6) returnblock -> LCURLY decvars blockcontent RETURN exp . SEMICOLON RCURLY
-    SEMICOLON       shift and go to state 203
+    (101) condition -> IF LPAREN super_exp RPAREN openjumpslot . block filljumps
+    (102) condition -> IF LPAREN super_exp RPAREN openjumpslot . block ELSE filljumps openjumpslot block filljumps
+    (4) block -> . LCURLY blockcontent RCURLY
+    LCURLY          shift and go to state 127
 
+    block                          shift and go to state 203
 
 state 194
+
+    (6) returnblock -> LCURLY decvars blockcontent RETURN exp . SEMICOLON RCURLY
+    SEMICOLON       shift and go to state 204
+
+
+state 195
 
     (77) factor -> LPAREN fakefloor super_exp RPAREN .
     DIVIDE          reduce using rule 77 (factor -> LPAREN fakefloor super_exp RPAREN .)
@@ -4222,11 +4131,10 @@ state 194
     AND             reduce using rule 77 (factor -> LPAREN fakefloor super_exp RPAREN .)
     SEMICOLON       reduce using rule 77 (factor -> LPAREN fakefloor super_exp RPAREN .)
     TO              reduce using rule 77 (factor -> LPAREN fakefloor super_exp RPAREN .)
-    BY              reduce using rule 77 (factor -> LPAREN fakefloor super_exp RPAREN .)
     DO              reduce using rule 77 (factor -> LPAREN fakefloor super_exp RPAREN .)
 
 
-state 195
+state 196
 
     (65) exp_aux -> exp_sign exp .
     COMMA           reduce using rule 65 (exp_aux -> exp_sign exp .)
@@ -4241,11 +4149,10 @@ state 195
     AND             reduce using rule 65 (exp_aux -> exp_sign exp .)
     SEMICOLON       reduce using rule 65 (exp_aux -> exp_sign exp .)
     TO              reduce using rule 65 (exp_aux -> exp_sign exp .)
-    BY              reduce using rule 65 (exp_aux -> exp_sign exp .)
     DO              reduce using rule 65 (exp_aux -> exp_sign exp .)
 
 
-state 196
+state 197
 
     (71) term_aux -> term_sign term .
     MINUS           reduce using rule 71 (term_aux -> term_sign term .)
@@ -4262,40 +4169,61 @@ state 196
     AND             reduce using rule 71 (term_aux -> term_sign term .)
     SEMICOLON       reduce using rule 71 (term_aux -> term_sign term .)
     TO              reduce using rule 71 (term_aux -> term_sign term .)
-    BY              reduce using rule 71 (term_aux -> term_sign term .)
     DO              reduce using rule 71 (term_aux -> term_sign term .)
-
-
-state 197
-
-    (82) forloop -> FROM var ASSIGN expression TO expression . BY expression DO block
-    (83) forloop -> FROM var ASSIGN expression TO expression . DO block
-    BY              shift and go to state 204
-    DO              shift and go to state 205
 
 
 state 198
 
-    (85) dowhileloop -> DO saveposition block WHILE LPAREN expression . RPAREN openjumpslot
-    RPAREN          shift and go to state 206
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO . createfinaltempvar expression validateloopend DO openjumpslot block filljumps
+    (85) createfinaltempvar -> .
+    LPAREN          reduce using rule 85 (createfinaltempvar -> .)
+    CTEBOOL         reduce using rule 85 (createfinaltempvar -> .)
+    CTEFLOAT        reduce using rule 85 (createfinaltempvar -> .)
+    CTEINT          reduce using rule 85 (createfinaltempvar -> .)
+    ID              reduce using rule 85 (createfinaltempvar -> .)
+    BOOL            reduce using rule 85 (createfinaltempvar -> .)
+    FLOAT           reduce using rule 85 (createfinaltempvar -> .)
+    INT             reduce using rule 85 (createfinaltempvar -> .)
+    ELSE            reduce using rule 85 (createfinaltempvar -> .)
+    IF              reduce using rule 85 (createfinaltempvar -> .)
+    PRINT           reduce using rule 85 (createfinaltempvar -> .)
+    INPUT           reduce using rule 85 (createfinaltempvar -> .)
+    WHILE           reduce using rule 85 (createfinaltempvar -> .)
+    DO              reduce using rule 85 (createfinaltempvar -> .)
+    BY              reduce using rule 85 (createfinaltempvar -> .)
+    TO              reduce using rule 85 (createfinaltempvar -> .)
+    FROM            reduce using rule 85 (createfinaltempvar -> .)
+    VOID            reduce using rule 85 (createfinaltempvar -> .)
+    RETURN          reduce using rule 85 (createfinaltempvar -> .)
+    FUNC            reduce using rule 85 (createfinaltempvar -> .)
+    MAIN            reduce using rule 85 (createfinaltempvar -> .)
+    VARS            reduce using rule 85 (createfinaltempvar -> .)
+    PROGRAM         reduce using rule 85 (createfinaltempvar -> .)
 
+    createfinaltempvar             shift and go to state 205
 
 state 199
 
-    (84) whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot . block filljumps
+    (88) dowhileloop -> DO saveposition block WHILE LPAREN expression . RPAREN openjumpslot
+    RPAREN          shift and go to state 206
+
+
+state 200
+
+    (87) whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot . block filljumps
     (4) block -> . LCURLY blockcontent RCURLY
-    LCURLY          shift and go to state 126
+    LCURLY          shift and go to state 127
 
     block                          shift and go to state 207
 
-state 200
+state 201
 
     (49) super_exp_aux -> logic super_exp .
     COMMA           reduce using rule 49 (super_exp_aux -> logic super_exp .)
     RPAREN          reduce using rule 49 (super_exp_aux -> logic super_exp .)
 
 
-state 201
+state 202
 
     (55) expression_aux -> relation expression .
     OR              reduce using rule 55 (expression_aux -> relation expression .)
@@ -4304,37 +4232,36 @@ state 201
     RPAREN          reduce using rule 55 (expression_aux -> relation expression .)
     SEMICOLON       reduce using rule 55 (expression_aux -> relation expression .)
     TO              reduce using rule 55 (expression_aux -> relation expression .)
-    BY              reduce using rule 55 (expression_aux -> relation expression .)
     DO              reduce using rule 55 (expression_aux -> relation expression .)
 
 
-state 202
+state 203
 
-    (98) condition -> IF LPAREN super_exp RPAREN openjumpslot block . filljumps
-    (99) condition -> IF LPAREN super_exp RPAREN openjumpslot block . ELSE filljumps openjumpslot block filljumps
-    (102) filljumps -> .
+    (101) condition -> IF LPAREN super_exp RPAREN openjumpslot block . filljumps
+    (102) condition -> IF LPAREN super_exp RPAREN openjumpslot block . ELSE filljumps openjumpslot block filljumps
+    (105) filljumps -> .
     ELSE            shift and go to state 209
-    ID              reduce using rule 102 (filljumps -> .)
-    FROM            reduce using rule 102 (filljumps -> .)
-    DO              reduce using rule 102 (filljumps -> .)
-    WHILE           reduce using rule 102 (filljumps -> .)
-    INPUT           reduce using rule 102 (filljumps -> .)
-    PRINT           reduce using rule 102 (filljumps -> .)
-    IF              reduce using rule 102 (filljumps -> .)
-    RCURLY          reduce using rule 102 (filljumps -> .)
-    RETURN          reduce using rule 102 (filljumps -> .)
+    ID              reduce using rule 105 (filljumps -> .)
+    FROM            reduce using rule 105 (filljumps -> .)
+    DO              reduce using rule 105 (filljumps -> .)
+    WHILE           reduce using rule 105 (filljumps -> .)
+    INPUT           reduce using rule 105 (filljumps -> .)
+    PRINT           reduce using rule 105 (filljumps -> .)
+    IF              reduce using rule 105 (filljumps -> .)
+    RCURLY          reduce using rule 105 (filljumps -> .)
+    RETURN          reduce using rule 105 (filljumps -> .)
 
     filljumps                      shift and go to state 208
 
-state 203
+state 204
 
     (6) returnblock -> LCURLY decvars blockcontent RETURN exp SEMICOLON . RCURLY
     RCURLY          shift and go to state 210
 
 
-state 204
+state 205
 
-    (82) forloop -> FROM var ASSIGN expression TO expression BY . expression DO block
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar . expression validateloopend DO openjumpslot block filljumps
     (57) expression -> . exp expression_quadgen expression_aux
     (67) exp -> . term exp_quadgen exp_aux
     (73) term -> . factor term_quadgen term_aux
@@ -4342,9 +4269,9 @@ state 204
     (78) factor -> . varcte
     (79) factor -> . call
     (80) factor -> . var
-    (103) varcte -> . CTEBOOL
-    (104) varcte -> . CTEFLOAT
-    (105) varcte -> . CTEINT
+    (106) varcte -> . CTEBOOL
+    (107) varcte -> . CTEFLOAT
+    (108) varcte -> . CTEINT
     (45) call -> . ID LPAREN callvalues RPAREN
     (15) var -> . BOOL
     (16) var -> . FLOAT
@@ -4367,11 +4294,11 @@ state 204
     (33) var -> . ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET
     (34) var -> . ID LBRACKET CTEINT RBRACKET
     (35) var -> . ID
-    LPAREN          shift and go to state 112
-    CTEBOOL         shift and go to state 121
-    CTEFLOAT        shift and go to state 122
-    CTEINT          shift and go to state 123
-    ID              shift and go to state 111
+    LPAREN          shift and go to state 113
+    CTEBOOL         shift and go to state 122
+    CTEFLOAT        shift and go to state 123
+    CTEINT          shift and go to state 124
+    ID              shift and go to state 112
     BOOL            shift and go to state 27
     FLOAT           shift and go to state 28
     INT             shift and go to state 29
@@ -4391,75 +4318,67 @@ state 204
     VARS            shift and go to state 43
     PROGRAM         shift and go to state 44
 
-    var                            shift and go to state 120
     expression                     shift and go to state 211
-    exp                            shift and go to state 136
-    term                           shift and go to state 116
-    factor                         shift and go to state 117
-    varcte                         shift and go to state 118
-    call                           shift and go to state 119
-
-state 205
-
-    (83) forloop -> FROM var ASSIGN expression TO expression DO . block
-    (4) block -> . LCURLY blockcontent RCURLY
-    LCURLY          shift and go to state 126
-
-    block                          shift and go to state 212
+    exp                            shift and go to state 137
+    term                           shift and go to state 117
+    factor                         shift and go to state 118
+    varcte                         shift and go to state 119
+    call                           shift and go to state 120
+    var                            shift and go to state 121
 
 state 206
 
-    (85) dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN . openjumpslot
-    (100) openjumpslot -> .
-    ID              reduce using rule 100 (openjumpslot -> .)
-    FROM            reduce using rule 100 (openjumpslot -> .)
-    DO              reduce using rule 100 (openjumpslot -> .)
-    WHILE           reduce using rule 100 (openjumpslot -> .)
-    INPUT           reduce using rule 100 (openjumpslot -> .)
-    PRINT           reduce using rule 100 (openjumpslot -> .)
-    IF              reduce using rule 100 (openjumpslot -> .)
-    RCURLY          reduce using rule 100 (openjumpslot -> .)
-    RETURN          reduce using rule 100 (openjumpslot -> .)
+    (88) dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN . openjumpslot
+    (103) openjumpslot -> .
+    ID              reduce using rule 103 (openjumpslot -> .)
+    FROM            reduce using rule 103 (openjumpslot -> .)
+    DO              reduce using rule 103 (openjumpslot -> .)
+    WHILE           reduce using rule 103 (openjumpslot -> .)
+    INPUT           reduce using rule 103 (openjumpslot -> .)
+    PRINT           reduce using rule 103 (openjumpslot -> .)
+    IF              reduce using rule 103 (openjumpslot -> .)
+    RCURLY          reduce using rule 103 (openjumpslot -> .)
+    RETURN          reduce using rule 103 (openjumpslot -> .)
 
-    openjumpslot                   shift and go to state 213
+    openjumpslot                   shift and go to state 212
 
 state 207
 
-    (84) whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block . filljumps
-    (102) filljumps -> .
-    ID              reduce using rule 102 (filljumps -> .)
-    FROM            reduce using rule 102 (filljumps -> .)
-    DO              reduce using rule 102 (filljumps -> .)
-    WHILE           reduce using rule 102 (filljumps -> .)
-    INPUT           reduce using rule 102 (filljumps -> .)
-    PRINT           reduce using rule 102 (filljumps -> .)
-    IF              reduce using rule 102 (filljumps -> .)
-    RCURLY          reduce using rule 102 (filljumps -> .)
-    RETURN          reduce using rule 102 (filljumps -> .)
+    (87) whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block . filljumps
+    (105) filljumps -> .
+    ID              reduce using rule 105 (filljumps -> .)
+    FROM            reduce using rule 105 (filljumps -> .)
+    DO              reduce using rule 105 (filljumps -> .)
+    WHILE           reduce using rule 105 (filljumps -> .)
+    INPUT           reduce using rule 105 (filljumps -> .)
+    PRINT           reduce using rule 105 (filljumps -> .)
+    IF              reduce using rule 105 (filljumps -> .)
+    RCURLY          reduce using rule 105 (filljumps -> .)
+    RETURN          reduce using rule 105 (filljumps -> .)
 
-    filljumps                      shift and go to state 214
+    filljumps                      shift and go to state 213
 
 state 208
 
-    (98) condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .
-    ID              reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    FROM            reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    DO              reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    WHILE           reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    INPUT           reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    PRINT           reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    IF              reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    RCURLY          reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
-    RETURN          reduce using rule 98 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    (101) condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .
+    ID              reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    FROM            reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    DO              reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    WHILE           reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    INPUT           reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    PRINT           reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    IF              reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    RCURLY          reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
+    RETURN          reduce using rule 101 (condition -> IF LPAREN super_exp RPAREN openjumpslot block filljumps .)
 
 
 state 209
 
-    (99) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE . filljumps openjumpslot block filljumps
-    (102) filljumps -> .
-    LCURLY          reduce using rule 102 (filljumps -> .)
+    (102) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE . filljumps openjumpslot block filljumps
+    (105) filljumps -> .
+    LCURLY          reduce using rule 105 (filljumps -> .)
 
-    filljumps                      shift and go to state 215
+    filljumps                      shift and go to state 214
 
 state 210
 
@@ -4470,115 +4389,133 @@ state 210
 
 state 211
 
-    (82) forloop -> FROM var ASSIGN expression TO expression BY expression . DO block
-    DO              shift and go to state 216
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression . validateloopend DO openjumpslot block filljumps
+    (86) validateloopend -> .
+    DO              reduce using rule 86 (validateloopend -> .)
 
+    validateloopend                shift and go to state 215
 
 state 212
 
-    (83) forloop -> FROM var ASSIGN expression TO expression DO block .
-    ID              reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    FROM            reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    DO              reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    WHILE           reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    INPUT           reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    PRINT           reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    IF              reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    RCURLY          reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
-    RETURN          reduce using rule 83 (forloop -> FROM var ASSIGN expression TO expression DO block .)
+    (88) dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .
+    ID              reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    FROM            reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    DO              reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    WHILE           reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    INPUT           reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    PRINT           reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    IF              reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    RCURLY          reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    RETURN          reduce using rule 88 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
 
 
 state 213
 
-    (85) dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .
-    ID              reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    FROM            reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    DO              reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    WHILE           reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    INPUT           reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    PRINT           reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    IF              reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    RCURLY          reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
-    RETURN          reduce using rule 85 (dowhileloop -> DO saveposition block WHILE LPAREN expression RPAREN openjumpslot .)
+    (87) whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .
+    ID              reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    FROM            reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    DO              reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    WHILE           reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    INPUT           reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    PRINT           reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    IF              reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    RCURLY          reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    RETURN          reduce using rule 87 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
 
 
 state 214
 
-    (84) whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .
-    ID              reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    FROM            reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    DO              reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    WHILE           reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    INPUT           reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    PRINT           reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    IF              reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    RCURLY          reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
-    RETURN          reduce using rule 84 (whileloop -> WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps .)
+    (102) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps . openjumpslot block filljumps
+    (103) openjumpslot -> .
+    LCURLY          reduce using rule 103 (openjumpslot -> .)
 
+    openjumpslot                   shift and go to state 216
 
 state 215
 
-    (99) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps . openjumpslot block filljumps
-    (100) openjumpslot -> .
-    LCURLY          reduce using rule 100 (openjumpslot -> .)
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend . DO openjumpslot block filljumps
+    DO              shift and go to state 217
 
-    openjumpslot                   shift and go to state 217
 
 state 216
 
-    (82) forloop -> FROM var ASSIGN expression TO expression BY expression DO . block
+    (102) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot . block filljumps
     (4) block -> . LCURLY blockcontent RCURLY
-    LCURLY          shift and go to state 126
+    LCURLY          shift and go to state 127
 
     block                          shift and go to state 218
 
 state 217
 
-    (99) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot . block filljumps
-    (4) block -> . LCURLY blockcontent RCURLY
-    LCURLY          shift and go to state 126
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO . openjumpslot block filljumps
+    (103) openjumpslot -> .
+    LCURLY          reduce using rule 103 (openjumpslot -> .)
 
-    block                          shift and go to state 219
+    openjumpslot                   shift and go to state 219
 
 state 218
 
-    (82) forloop -> FROM var ASSIGN expression TO expression BY expression DO block .
-    ID              reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    FROM            reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    DO              reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    WHILE           reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    INPUT           reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    PRINT           reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    IF              reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    RCURLY          reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-    RETURN          reduce using rule 82 (forloop -> FROM var ASSIGN expression TO expression BY expression DO block .)
-
-
-state 219
-
-    (99) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block . filljumps
-    (102) filljumps -> .
-    ID              reduce using rule 102 (filljumps -> .)
-    FROM            reduce using rule 102 (filljumps -> .)
-    DO              reduce using rule 102 (filljumps -> .)
-    WHILE           reduce using rule 102 (filljumps -> .)
-    INPUT           reduce using rule 102 (filljumps -> .)
-    PRINT           reduce using rule 102 (filljumps -> .)
-    IF              reduce using rule 102 (filljumps -> .)
-    RCURLY          reduce using rule 102 (filljumps -> .)
-    RETURN          reduce using rule 102 (filljumps -> .)
+    (102) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block . filljumps
+    (105) filljumps -> .
+    ID              reduce using rule 105 (filljumps -> .)
+    FROM            reduce using rule 105 (filljumps -> .)
+    DO              reduce using rule 105 (filljumps -> .)
+    WHILE           reduce using rule 105 (filljumps -> .)
+    INPUT           reduce using rule 105 (filljumps -> .)
+    PRINT           reduce using rule 105 (filljumps -> .)
+    IF              reduce using rule 105 (filljumps -> .)
+    RCURLY          reduce using rule 105 (filljumps -> .)
+    RETURN          reduce using rule 105 (filljumps -> .)
 
     filljumps                      shift and go to state 220
 
+state 219
+
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot . block filljumps
+    (4) block -> . LCURLY blockcontent RCURLY
+    LCURLY          shift and go to state 127
+
+    block                          shift and go to state 221
+
 state 220
 
-    (99) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .
-    ID              reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    FROM            reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    DO              reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    WHILE           reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    INPUT           reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    PRINT           reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    IF              reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    RCURLY          reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
-    RETURN          reduce using rule 99 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    (102) condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .
+    ID              reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    FROM            reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    DO              reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    WHILE           reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    INPUT           reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    PRINT           reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    IF              reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    RCURLY          reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+    RETURN          reduce using rule 102 (condition -> IF LPAREN super_exp RPAREN openjumpslot block ELSE filljumps openjumpslot block filljumps .)
+
+
+state 221
+
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block . filljumps
+    (105) filljumps -> .
+    ID              reduce using rule 105 (filljumps -> .)
+    FROM            reduce using rule 105 (filljumps -> .)
+    DO              reduce using rule 105 (filljumps -> .)
+    WHILE           reduce using rule 105 (filljumps -> .)
+    INPUT           reduce using rule 105 (filljumps -> .)
+    PRINT           reduce using rule 105 (filljumps -> .)
+    IF              reduce using rule 105 (filljumps -> .)
+    RCURLY          reduce using rule 105 (filljumps -> .)
+    RETURN          reduce using rule 105 (filljumps -> .)
+
+    filljumps                      shift and go to state 222
+
+state 222
+
+    (82) forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .
+    ID              reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    FROM            reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    DO              reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    WHILE           reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    INPUT           reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    PRINT           reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    IF              reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    RCURLY          reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)
+    RETURN          reduce using rule 82 (forloop -> FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps .)

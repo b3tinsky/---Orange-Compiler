@@ -183,3 +183,21 @@ __Expected LEX status__:    '✅'
 __Expected SYNTAX status__: '✅'
 __Expected SEM status__: '✅'
 Do while loop must generate correct quadruples in the correct order. This test focuses on the GOTOT, GOTOF and GOTO a do while loop must generate. It also has nested conditions, while and do-while loops.
+
+### Input_25
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '❌'
+Arithmetic expressions must be of correct type. For example: An integer and a boolean should result in an error.
+
+### Input_26
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '❌'
+Relational expressions must be of correct type. For example: An integer and a boolean should result in an error.
+
+### Input_27
+__Expected LEX status__:    '✅'
+__Expected SYNTAX status__: '✅'
+__Expected SEM status__: '✅'
+IF statement inside a FOR LOOP. Quadruples must be created correctly and its jumps must be in the correct order.

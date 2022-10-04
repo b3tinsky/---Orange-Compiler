@@ -8,7 +8,7 @@ from Components.scanner import OrangeLexer
 # from copy import deepcopy as COPY
 from Components.funcdir import OrangeFuncDir
 from Components.vartable import OrangeVarTable
-from Components.status import syntacticalError
+from Components.status import semanticError, syntacticalError
 from Components.semcube import OrangeCube
 from Components.quadmachine import OrangeQuadMachine
 
@@ -340,14 +340,70 @@ class OrangeParser(Parser):
         
     # For loop definition
         # Without step increments
-    @_('FROM var ASSIGN expression TO expression DO block')
+    @_('FROM forloopcontrolvar assignment_sign expression validatecontrolvar TO createfinaltempvar expression validateloopend DO openjumpslot block filljumps')
     def forloop(self, p):
         return p
+ 
+    @_('var')
+    def forloopcontrolvar(self, p):
+        # p[0]    -> ('var', 'tmp_1')
+        # p[0][1] -> 'tmp_1'
+        id = p[0][1]
         
-        # With step increments
-    @_('FROM var ASSIGN expression TO expression BY expression DO block')
-    def forloop(self, p):
+        # Add var name and type to operand stack in the Quadruple Machine
+        varName, varType = self.OFD.checkVar(id)
+        if varType == 'int':
+            self.QM.addOperand(id)
+
+        else:
+            raise semanticError('❌ Type mismatch | Control variable in FOR loop must be an integer')
+            
         return p
+    
+    @_('')
+    def validatecontrolvar(self, p):
+        self.QM.generateQuadruple()
+        return p
+
+    @_('')
+    def createfinaltempvar(self, p):
+        vfinalName = (self.QM.generateTempVar(), 'int')
+        self.QM.addOperand(vfinalName)
+        return p
+
+
+
+    @_('')
+    def validateloopend(self, p):
+        if self.QM.operands[-1][1] == 'int':
+            # Assign expression to tempfinalvar
+            self.QM.addOperator('=')
+            self.QM.generateQuadruple()
+
+            # Create comparison quadruple
+            controlVariable = (self.QM.quadruples[self.QM.QuadrupleNumber-2][3], 'int')
+            endVariable     = (self.QM.quadruples[self.QM.QuadrupleNumber-1][3], 'int')
+            self.QM.addOperator('<')
+            self.QM.addOperand(controlVariable)
+            self.QM.addOperand(endVariable)
+            self.QM.generateQuadruple()
+            self.QM.jumps.append(self.QM.QuadrupleNumber)
+
+
+        else:
+            raise semanticError('❌ Type mismatch | FOR loop ending must be an integer')
+        return p
+    
+
+
+
+
+    
+    # HACK: Add a custom increment
+        # With step increments
+    # @_('FROM var ASSIGN expression TO expression BY expression DO block')
+    # def forloop(self, p):
+    #     return p
 
     # While loop definition
     @_('WHILE saveposition LPAREN expression RPAREN openjumpslot block filljumps')
@@ -436,14 +492,14 @@ class OrangeParser(Parser):
     @_('')
     def openjumpslot(self, p):
         # Opening slot for a DO WHILE 
-        if p[-7] == 'do':   # DO saveposition block WHILE LPAREN expression RPAREN <WE ARE HERE> filljumps
+        if p[-7] == 'do' and p[-4] == 'while':   # DO saveposition block WHILE LPAREN expression RPAREN <WE ARE HERE> filljumps
             self.QM.addOperator('GOTOT')
             self.QM.addOperand(('', ''))
             self.QM.generateQuadruple()
 
 
         # Opening slot for an IF
-        elif p[-1] == ')':    # if (condition) <WE ARE HERE> {statements}
+        elif p[-1] == ')' or p[-10] == 'from':    # if (condition) <WE ARE HERE> {statements}
             self.QM.addOperator('GOTOF')
             self.QM.addOperand(('', ''))
             self.QM.generateQuadruple()
@@ -495,7 +551,31 @@ class OrangeParser(Parser):
             currentQuadruple = self.QM.QuadrupleNumber          # Immediately fill the GOTO we just created
             self.QM.fillJumps(currentQuadruple, whileStartPosition)
 
+        # HACK: Customize increments (instead of only 1 by 1)
+        elif p[-12] == 'from':
+            # Get jumps in correct order
+            loopEnd = self.QM.jumps.pop()    # 4
+            loopReturn = self.QM.jumps.pop() # 3
 
+            # Loop increment quadruple
+            controlVariable = (self.QM.quadruples[loopReturn-1][1], 'int') # self.QM.quadruples[loopReturn] is the comparison quadruple -> ('<', VControl, VFinal, Temp)
+            self.QM.addOperator('++')
+            self.QM.addOperand(controlVariable)
+            self.QM.addOperand((1, 'int'))
+            self.QM.generateQuadruple()
+
+            # Unfilled return quadruple
+            self.QM.addOperator('GOTO')
+            self.QM.addOperand(('', ''))
+            self.QM.addOperand(('', ''))
+            self.QM.generateQuadruple()
+
+            # Fill GOTOF quadruple
+            self.QM.fillJumps(loopEnd, self.QM.QuadrupleNumber+1)
+            
+            # Fill GOTO quadruple
+            self.QM.fillJumps(self.QM.QuadrupleNumber, loopReturn)
+            
 
         # Filling a normal IF statement <- GOTOF
         else:

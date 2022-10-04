@@ -1,0 +1,9 @@
+program test_26
+    vars 
+        int a, b, c, d, e, f, g, h, i;
+        bool x, y, z;
+
+main()
+{
+    print(5 > False);
+}

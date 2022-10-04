@@ -45,87 +45,97 @@ class OrangeQuadMachine():
         leftOperand = self.operands.pop()     # ('name', 'type')
         operator = self.operators[-1].pop()   # '+' <- [['+']] // Get from latest 'fake floor'
 
-        # Try catch because if the semantic cube doesn't have [type][operator][type]
-        # the error should be catched and a semantic error should be raised
-        try:
-            mismatchErrorMessage = f'❌ Type mismatch. Condition must result in a boolean.'
-            # Assignment
-            if operator == '=':
+        # Assignment
+        if operator == '=':
+            try:
+                resultType = self.SC[leftOperand[1]][operator][rightOperand[1]]
                 self.quadruples.append( (operator, rightOperand[0], '', leftOperand[0]) ) 
-                return
-            
-            # Print
-            elif operator == 'P':
-                # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
-                # so constant strings are added the same way to keep consistency
-                self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
-                return
+                # self.operands.append( (leftOperand[0], resultType) )
 
-            # Input
-            elif operator == 'R':
-                # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
-                # so constant strings are added the same way to keep consistency
-                self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
-                return
+            except:
+                raise semanticError(f'❌ Type mismatch | Value for <{leftOperand[0]}> should be of type <{leftOperand[1]}> and instead got <{rightOperand[0]}> with type <{rightOperand[1]}>')
             
-            # Conditional
-            # IF
-            elif operator == 'GOTOF':
-                # Validates that contiion results in a boolean <- if (a + b > c * d)
-                if leftOperand[1] == 'bool':
-                    # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-                    self.quadruples.append( (operator, leftOperand[0], '', '?') ) 
-                    
-                    # Store quadruple number to later fill
-                    # self.jumps.append(self.QuadrupleNumber)
-                
-                # If condition does not result in a boolean, a special mismatch error is raised
-                else:
-                    mismatchErrorMessage = '❌ Type mismatch. Condition must result in a boolean value.'
-                
-                return
-            
-            # DO WHILE
-            elif operator == 'GOTOT':
-                # Validates that contiion results in a boolean <- if (a + b > c * d)
-                if leftOperand[1] == 'bool':
-                    jumpToPosition = self.jumps.pop()
-                    # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-                    self.quadruples.append( (operator, leftOperand[0], '', jumpToPosition) ) 
-                    
-                    # Store quadruple number to later fill
-                    # self.jumps.append(self.QuadrupleNumber)
-                
-                # If condition does not result in a boolean, a special mismatch error is raised
-                else:
-                    mismatchErrorMessage = '❌ Type mismatch. Condition must result in a boolean value.'
-                
-                return
+            return
+        
+        # Print
+        elif operator == 'P':
+            # TODO: Add a custom error message
+            # TODO: Add tests about printing weird stuff that shouldn't be allowed
+            # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
+            # so constant strings are added the same way to keep consistency
+            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+            return
 
-            # ELSE
-            elif operator == 'GOTO':
+        # Input
+        elif operator == 'R':
+            # TODO: Add a custom error message
+            # TODO: Add tests about reading weird stuff that shouldn't be allowed
+            # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
+            # so constant strings are added the same way to keep consistency
+            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+            return
+        
+        # Conditional
+        # IF
+        elif operator == 'GOTOF':
+            # Validates that contiion results in a boolean <- if (a + b > c * d)
+            if leftOperand[1] == 'bool':
                 # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-                self.quadruples.append( (operator, '', '', '?') ) 
-                return
-
+                self.quadruples.append( (operator, leftOperand[0], '', '?') ) 
             
-            # If there is a type mismatch:
-                # A key won't be found, causing an error
-            resultType = self.SC[leftOperand[1]][operator][rightOperand[1]]
-        except:
-            raise semanticError(mismatchErrorMessage)
+            # If condition does not result in a boolean, a special mismatch error is raised
+            else:
+                raise semanticError(f'❌ Type mismatch | Condition must result in a boolean value')
+            
+            return
+        
+        # DO WHILE
+        elif operator == 'GOTOT':
+            # Validates that contiion results in a boolean <- if (a + b > c * d)
+            if leftOperand[1] == 'bool':
+                jumpToPosition = self.jumps.pop()
+                # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+                self.quadruples.append( (operator, leftOperand[0], '', jumpToPosition) ) 
+            
+            # If condition does not result in a boolean, a special mismatch error is raised
+            else:
+                raise semanticError('❌ Type mismatch. Condition must result in a boolean value.')
+            
+            return
 
-        tmpVar = self.generateTempVar()
+        # ELSE
+        elif operator == 'GOTO':
+            # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+            self.quadruples.append( (operator, '', '', '?') ) 
+            return
 
+        elif operator == '++':
+            self.quadruples.append( (operator, leftOperand[0], rightOperand[0], leftOperand[0]) ) 
 
-        # FIXME: Include following section in a continuous function, only 1 return, etc.
+        # SUM, MULT, DIV, SUB, GT, GTE, LT, LTE, EQ, NEQ
+        else:
+        # If there is a type mismatch:
+            # A key won't be found, causing an error
+            try:
+                resultType = self.SC[leftOperand[1]][operator][rightOperand[1]]
 
-        # Add the quadruple to quadruple list
-        self.quadruples.append( (operator, leftOperand[0], rightOperand[0], tmpVar) ) 
+                tmpVar = self.generateTempVar()
 
-        # Return the temporary variable to operands
-        # TODO: Change temp var names (strings) to memory spaces
-        self.operands.append( (tmpVar, resultType) )
+                # Add the quadruple to quadruple list
+                self.quadruples.append( (operator, leftOperand[0], rightOperand[0], tmpVar) ) 
+
+                # Return the temporary variable to operands
+                # TODO: Change temp var names (strings) to memory spaces
+                self.operands.append( (tmpVar, resultType) )
+            except:
+                arithmetic = ['+', '-', '*', '/']
+                relational = ['>', '>=', '<', '<=', '==', '!=']
+                
+                if operator in arithmetic:
+                    raise semanticError(f'❌ Type mismatch | Value for <{leftOperand[0]}> should be of type {leftOperand[1]}> and instead got <{rightOperand[0]}> with type <{rightOperand[1]}>')
+                
+                elif operator in relational:
+                    raise semanticError(f'❌ Type mismatch | Relations must be numeric and instead tried to compare <{leftOperand[0]}> of type <{leftOperand[1]}> with <{rightOperand[0]}> of type <{rightOperand[1]}>')
     
     
     def fillJumps(self, quadrupleToFill, jumpToPosition):
@@ -146,3 +156,7 @@ class OrangeQuadMachine():
         for quad in self.quadruples:
             print(f'{str(counter):2s} | {str(quad[0]):10s} {str(quad[1]):10s} {str(quad[2]):10s} {str(quad[3]):10s} |')
             counter+=1
+        
+        # For testing purposes
+        # print()
+        # print(self.quadruples)
