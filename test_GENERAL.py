@@ -41,6 +41,26 @@ class TestInput03:
             'main': {
                 'name': 'main', 
                 'type': 'main', 
+                'quadruple': 1,
+                'params':{},
+                'signature':'',
+                'size':{
+                    'local':{
+                        'bool': 0,
+                        'float': 0,
+                        'int': 3
+                    },
+                    'params':{
+                        'bool': 0,
+                        'float': 0,
+                        'int': 0
+                    },
+                    'temp':{
+                        'bool': 0,
+                        'float': 0,
+                        'int': 2
+                    }
+                },
                 'table': {
                     'y': {
                         'name': 'y', 
@@ -59,12 +79,33 @@ class TestInput03:
                         }
                     }
                 },
+
             'test_03': {
                 'name': 'test_03', 
                 'type': 'prog', 
-                'table': {}
+                'table': {},
+                'quadruple': 1,
+                'params':{},
+                'signature':'',
+                'size':{
+                    'local':{
+                        'bool': 0,
+                        'float': 0,
+                        'int': 0
+                    },
+                    'params':{
+                        'bool': 0,
+                        'float': 0,
+                        'int': 0
+                    },
+                    'temp':{
+                        'bool': 0,
+                        'float': 0,
+                        'int': 0
+                    }
                 }
             }
+        }
         assert self.parser.OFD.dir == dir
 
 # DOC: In the testing document, add the expected directory
@@ -77,6 +118,9 @@ class TestInput04:
             'test_4': {
                 'name': 'test_4', 
                 'type': 'prog', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'x': {
                         'name': 'x', 
@@ -129,13 +173,16 @@ class TestInput04:
                         'type': 'int', 
                         'scope': 'main'
                         }
-                    }
+                    },
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 }
             }
 
         assert self.parser.OFD.dir == dir
 
-# DOC: In the testing document, add the expected directory
+# # DOC: In the testing document, add the expected directory
 class TestInput05:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_05.txt')
@@ -144,7 +191,10 @@ class TestInput05:
         dir = {
             'sum': {
                 'name': 'sum', 
-                'type': 'void', 
+                'type': 'void',
+                'quadruple': 0,
+                'params':{},
+                'signature':'', 
                 'table': {
                     'result': {
                         'name': 'result', 
@@ -166,6 +216,9 @@ class TestInput05:
             'main': {
                 'name': 'main', 
                 'type': 'main', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'test': {
                         'name': 'test', 
@@ -177,7 +230,10 @@ class TestInput05:
             'test_05': {
                 'name': 'test_05', 
                 'type': 'prog', 
-                'table': {}
+                'table': {},
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 }
             }
 
@@ -193,6 +249,9 @@ class TestInput06:
             'test_06': {
                 'name': 'test_06', 
                 'type': 'prog', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'x': {
                         'name': 'x', 
@@ -234,6 +293,9 @@ class TestInput06:
             'sum': {
                 'name': 'sum', 
                 'type': 'void', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'result': {
                         'name': 'result', 
@@ -255,6 +317,9 @@ class TestInput06:
             'main': {
                 'name': 'main', 
                 'type': 'main', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'test': {
                         'name': 'test', 
@@ -266,6 +331,9 @@ class TestInput06:
             'test_06': {
                 'name': 'test_06', 
                 'type': 'prog', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'x': {
                         'name': 'x', 
@@ -329,6 +397,9 @@ class TestInput08:
             'test_08': {
                 'name': 'test_08', 
                 'type': 'prog', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'a': {
                         'name': 'a', 
@@ -350,6 +421,9 @@ class TestInput08:
             'sum': {
                 'name': 'sum', 
                 'type': 'int', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'a': {
                         'name': 'a', 
@@ -371,6 +445,9 @@ class TestInput08:
             'main': {
                 'name': 'main', 
                 'type': 'main', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'a': {
                         'name': 'a', 
@@ -408,6 +485,9 @@ class TestInput10:
             'test_10': {
                 'name': 'test_10', 
                 'type': 'prog', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'test_10': {
                         'name': 'test_10', 
@@ -434,6 +514,9 @@ class TestInput10:
             'sum': {
                 'name': 'sum', 
                 'type': 'int', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'sum': {
                         'name': 'sum', 
@@ -460,6 +543,9 @@ class TestInput10:
             'main': {
                 'name': 'main', 
                 'type': 'main', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'test_10': {
                         'name': 'test_10', 
@@ -501,6 +587,9 @@ class TestInput12:
             'test_12': {
                 'name': 'test_12', 
                 'type': 'prog', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'a': {
                         'name': 'a', 
@@ -522,11 +611,17 @@ class TestInput12:
                 'sum': {
                     'name': 'sum', 
                     'type': 'int', 
+                    'quadruple': 0,
+                    'params':{},
+                    'signature':'',
                     'table': {}
                 }, 
                 'main': {
                     'name': 'main', 
                     'type': 'main', 
+                    'quadruple': 0,
+                    'params':{},
+                    'signature':'',
                     'table': {
                         'x': {
                             'name': 'x', 
@@ -564,6 +659,9 @@ class TestInput14:
             'test_14': {
                 'name': 'test_14', 
                 'type': 'prog', 
+                'quadruple': 0,
+                'params':{},
+                'signature':'',
                 'table': {
                     'x': {
                         'name': 'x', 
@@ -585,6 +683,9 @@ class TestInput14:
                 'sum': {
                     'name': 'sum', 
                     'type': 'int', 
+                    'quadruple': 0,
+                    'params':{},
+                    'signature':'',
                     'table': {
                         'a': {
                             'name': 'a', 
@@ -601,6 +702,9 @@ class TestInput14:
                 'main': {
                     'name': 'main', 
                     'type': 'main', 
+                    'quadruple': 0,
+                    'params':{},
+                    'signature':'',
                     'table': {}
                     }
                 }
@@ -857,6 +961,67 @@ class TestInput27:
             ('=', 'T7', '', 'b'), 
             ('++', 'i', 1, 'i'), 
             ('GOTO', '', '', 3)
+            ]
+
+        assert self.parser.QM.quadruples == quads
+
+class TestInput28:
+    # Initialize a different compiler with the needed file
+    status, lexer, parser = initializeCompiler('input_28.txt')
+
+    def test_QUADGENERATION(self):
+        quads = [
+            ('GOTO', '', '', 31), 
+            ('>', 'a', 0, 'T1'), 
+            ('GOTOF', 'T1', '', 11), 
+            ('*', 'b', 'j', 'T2'), 
+            ('+', 'a', 'T2', 'T3'), 
+            ('+', 'T3', 'i', 'T4'), 
+            ('=', 'T4', '', 'i'), 
+            ('+', 'i', 'j', 'T5'), 
+            ('P', '', '', 'T5'), 
+            ('GOTO', '', '', 13), 
+            ('+', 'a', 'b', 'T6'), 
+            ('P', '', '', 'T6'), 
+            ('ENDFUNC', '', '', ''), 
+            ('=', 'a', '', 'i'), 
+            ('>', 'a', 0, 'T7'), 
+            ('GOTOF', 'T7', '', 30), 
+            ('*', 'k', 'j', 'T8'), 
+            ('-', 'a', 'T8', 'T9'), 
+            ('=', 'T9', '', 'a'), 
+            ('ERA', '', '', 'uno'), 
+            ('*', 'a', 2, 'T10'), 
+            ('PARAM', 'T10', '', 'P1'), 
+            ('+', 'a', 'k', 'T11'), 
+            ('PARAM', 'T11', '', 'P2'), 
+            ('GOSUB', '', '', 'uno'), 
+            ('*', 'g', 'j', 'T12'), 
+            ('-', 'T12', 'k', 'T13'), 
+            ('=', 'T13', '', 'g'), 
+            ('GOTO', '', '', 15), 
+            ('ENDFUNC', '', '', ''), 
+            ('=', 2, '', 'i'), 
+            ('+', 'i', 1, 'T14'), 
+            ('=', 'T14', '', 'k'), 
+            ('=', 3.14, '', 'f'), 
+            ('ERA', '', '', 'dos'), 
+            ('+', 'i', 'k', 'T15'), 
+            ('PARAM', 'T15', '', 'P1'), 
+            ('*', 'f', 3, 'T16'), 
+            ('PARAM', 'T16', '', 'P2'), 
+            ('GOSUB', '', '', 'dos'), 
+            ('P', '', '', 'i'), 
+            ('*', 'j', 2, 'T17'), 
+            ('P', '', '', 'T17'), 
+            ('*', 'f', 2, 'T18'), 
+            ('+', 'T18', 1.5, 'T19'), 
+            ('P', '', '', 'T19'), 
+            ('/', 'k', 2, 'T20'), 
+            ('-', 'i', 'T20', 'T21'), 
+            ('=', 'T21', '', 'i'), 
+            ('>', 'i', 0, 'T22'), 
+            ('GOTOT', 'T22', '', 35)
             ]
 
         assert self.parser.QM.quadruples == quads

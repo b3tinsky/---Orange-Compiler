@@ -5,6 +5,7 @@ class OrangeVarTable():
     def __init__(self, status):
         self.StatusChecker = status
         self.table = {}
+        self.varType = ''
 
     def checkvar(self, var, currentFuncDir):
         
@@ -33,7 +34,11 @@ class OrangeVarTable():
 
         else:
             # print(f'✅ Variable < {id} > successfully added')
-            self.table[id] = {'name': id, 'type': type, 'scope': scope}
+            self.table[id] = {
+                'name': id, 
+                'type': type, 
+                'scope': scope,
+                }
 
     '''
     Tokenstream is the complete token stream provided by the rules:

@@ -9,7 +9,7 @@ class OrangeFuncDir():
         self.dir = {}
         
         # DOC: Start with a global context. As functions and main() are declared, the context changes
-        self.context = 'global'
+        self.context = ''
         
         # Helps looking for global variables
         self.programName = ''
@@ -31,14 +31,20 @@ class OrangeFuncDir():
     '''
     Adds function to the function directory
     '''
-    def addfunc(self, id, type, table):
+    def addfunc(self, id, type, table, quadrupleNumber, params, signature, size):
         if self.checkfunc(id):
-            # self.StatusChecker.semanticError()
             raise semanticError(f'🚫 Function < {id} > already exists')
 
         else:
-            # print(f'✅ Function < {id} > successfully added')
-            self.dir[id] = {'name': id, 'type': type, 'table': table}
+            self.dir[id] = {
+                'name': id, 
+                'type': type, 
+                'table': table, 
+                'quadruple': quadrupleNumber,
+                'params': params,
+                'signature': signature,
+                'size': size
+                }
 
     # DOC: Use PEP standard for this docstring
     '''
@@ -55,19 +61,19 @@ class OrangeFuncDir():
         # Look for var in the current scope
         if var_id in self.dir[self.context]['table']:
             # TODO: Return memory address
-            # print(f'✅ Local < {var_id} > to < {self.context} >')
-
             varName = self.dir[self.context]['table'][var_id]['name']
             varType = self.dir[self.context]['table'][var_id]['type']
+            return varName, varType
+        
+        elif var_id in self.dir[self.context]['params']:
+            # TODO: Return memory address
+            varName = self.dir[self.context]['params'][var_id]['name']
+            varType = self.dir[self.context]['params'][var_id]['type']
             return varName, varType
         
         # Look for var in the global scope
         elif var_id in self.dir[self.programName]['table']:
             # TODO: Return memory address
-            # print(f'✅ Global < {var_id} > from < {self.programName} >')
-            # print('NAME: ', self.dir[self.programName]['table'][var_id]['name'])
-            # print('TYPE: ', self.dir[self.programName]['table'][var_id]['type'])
-            
             varName = self.dir[self.programName]['table'][var_id]['name']
             varType = self.dir[self.programName]['table'][var_id]['type']
             return varName, varType
@@ -76,6 +82,22 @@ class OrangeFuncDir():
         else:
             raise semanticError(f'❌ Undeclared variable < {var_id} > in scope < {self.context} >')
 
+
+    def addParam(self, pName, pType):
+        # Add parameter to parameters dictionary
+        self.dir[self.context]['params'][pName] = {'name': pName, 'type': pType, 'scope': self.context}
+
+        # Add parameter type to signature
+        if pType == 'int':
+            self.dir[self.context]['signature'] += 'i'
+            self.dir[self.context]['size']['params']['int'] += 1
+        elif pType == 'float':
+            self.dir[self.context]['signature'] += 'f'
+            self.dir[self.context]['size']['params']['float'] += 1
+        elif pType == 'bool':
+            self.dir[self.context]['signature'] += 'b'
+            self.dir[self.context]['size']['params']['bool'] += 1
+        # self.dir[self.context]['signature'].append(pType)
 
     '''
     Prettifies printing the data for the variable table by turning it to YAML
@@ -95,4 +117,4 @@ class OrangeFuncDir():
         print(yaml.dump(self.dir, default_flow_style=False))
         
         # PRINT DICT - To copy and paste for tests
-        print(self.dir)
+        # print(self.dir)

@@ -37,6 +37,7 @@ class OrangeLexer(Lexer):
         FROM,
         TO,
         BY,
+        ID,
         DO,
         WHILE,
         INPUT,
@@ -46,7 +47,6 @@ class OrangeLexer(Lexer):
         INT,
         FLOAT,
         BOOL,
-        ID,
         SEMICOLON,
         COMMA,
         LPAREN,
@@ -73,26 +73,6 @@ class OrangeLexer(Lexer):
         CTEFLOAT,
         CTESTRING,
     }
-
-    # Reserved Words
-    PROGRAM = 'program'
-    VARS = 'vars'
-    MAIN = 'main'
-    FUNC = 'func'
-    RETURN = 'return'
-    VOID = 'void'
-    FROM = 'from'
-    TO = 'to'
-    BY = 'by'
-    DO = 'do'
-    WHILE = 'while'
-    INPUT = 'input'
-    PRINT = 'print'
-    IF = 'if'
-    ELSE = 'else'
-    INT = 'int'
-    FLOAT = 'float'
-    BOOL = 'bool'
 
     # Regular expression rules for tokens
     SEMICOLON = r'\;'
@@ -121,15 +101,13 @@ class OrangeLexer(Lexer):
     ignore         = ' \t'
     ignore_comment = r'\#.*'
     
+    # Rule definitions
     @_('True', 'False')
     def CTEBOOL(self,t):
         # t.value = bool(t.value)
         return t
 
-    # Rule definitions
-    @_(r'[a-zA-Z_][a-zA-Z_0-9]*')
-    def ID(self, t):
-        return t
+    ID = r'[a-zA-Z_][a-zA-Z_0-9]*'
 
     @_(r'\-?\d*\.\d+')
     def CTEFLOAT(self,t):
@@ -147,6 +125,26 @@ class OrangeLexer(Lexer):
         t.value = str(t.value[1:-1]) # Returns string without quotation marks
         return t
 
+    # Reserved words
+    ID['program'] = PROGRAM
+    ID['vars']    = VARS
+    ID['main']    = MAIN
+    ID['func']    = FUNC
+    ID['return']  = RETURN
+    ID['void']    = VOID
+    ID['from']    = FROM
+    ID['to']      = TO
+    ID['by']      = BY
+    ID['do']      = DO
+    ID['while']   = WHILE
+    ID['input']   = INPUT
+    ID['print']   = PRINT
+    ID['if']      = IF
+    ID['else']    = ELSE
+    ID['int']     = INT
+    ID['float']   = FLOAT
+    ID['bool']    = BOOL
+    
     # Define a rule so we can track line numbers
     @_(r'\n+')
     def ignore_newline(self, t):

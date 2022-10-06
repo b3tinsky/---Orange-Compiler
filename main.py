@@ -50,7 +50,7 @@ def orange_juice(test_name, test_data):
     except Exception as err:
         print(str(err))
 
-    # parser.OFD.printdata()
+    parser.OFD.printdata()
     print('JUMPS: ', parser.QM.jumps)
     print('OPERANDS: ', parser.QM.operands)
     print('OPERATORS: ', parser.QM.operators)

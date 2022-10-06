@@ -9,13 +9,19 @@ class OrangeQuadMachine():
         self.quadruples  = []       # ('+', 'c', 'd', 'T1') <- Quadruple structure
         self.jumps       = []       # Pending jump instructions
         self.TempNumber      = 0    # Number to track temp variables
+        self.ParameterNumber = 0    # Number to track temp variables
         self.QuadrupleNumber = 0    # Number to track quadruple numbers (helps with GOTOs)
     
     # HACK: Morph into memory management/tracking
     # Keeps track of temporary variable names
-    def generateTempVar(self):
+    def generateTempVar(self, resultType):
         self.TempNumber += 1
+        self.OFD.dir[self.OFD.context]['size']['temp'][resultType] += 1
         return f'T{self.TempNumber}'
+
+    def generateParameter(self):
+        self.ParameterNumber += 1
+        return f'P{self.ParameterNumber}'
 
     def addOperand(self, operand):
         # Constants <- 5 | 12.3 | "name"
@@ -76,7 +82,7 @@ class OrangeQuadMachine():
             return
         
         # Conditional
-        # IF
+            # IF
         elif operator == 'GOTOF':
             # Validates that contiion results in a boolean <- if (a + b > c * d)
             if leftOperand[1] == 'bool':
@@ -89,7 +95,7 @@ class OrangeQuadMachine():
             
             return
         
-        # DO WHILE
+            # DO WHILE
         elif operator == 'GOTOT':
             # Validates that contiion results in a boolean <- if (a + b > c * d)
             if leftOperand[1] == 'bool':
@@ -103,10 +109,34 @@ class OrangeQuadMachine():
             
             return
 
-        # ELSE
+            # ELSE
         elif operator == 'GOTO':
             # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
             self.quadruples.append( (operator, '', '', '?') ) 
+            return
+        
+        # ENDFUNC
+        elif operator == 'ENDFUNC':
+            # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+            self.quadruples.append( (operator, '', '', '') ) 
+            return
+
+        # ERA
+        elif operator == 'ERA':
+            # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+            return
+
+        # ERA
+        elif operator == 'PARAM':
+            # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+            self.quadruples.append( (operator, leftOperand[0], '', rightOperand[0]) ) 
+            return
+
+        # GOSUB
+        elif operator == 'GOSUB':
+            # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
             return
 
         elif operator == '++':
@@ -119,7 +149,7 @@ class OrangeQuadMachine():
             try:
                 resultType = self.SC[leftOperand[1]][operator][rightOperand[1]]
 
-                tmpVar = self.generateTempVar()
+                tmpVar = self.generateTempVar(resultType)
 
                 # Add the quadruple to quadruple list
                 self.quadruples.append( (operator, leftOperand[0], rightOperand[0], tmpVar) ) 
@@ -158,5 +188,5 @@ class OrangeQuadMachine():
             counter+=1
         
         # For testing purposes
-        # print()
-        # print(self.quadruples)
+        print()
+        print(self.quadruples)

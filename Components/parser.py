@@ -36,7 +36,6 @@ class OrangeParser(Parser):
         return p
 
     # Declaration blocks (global variables & functions)
-    # @_('decvars saveglobalvars decfuncs main_block')
     @_('decvars decfuncs main_block')
     def declare(self, p):
         return p
@@ -74,38 +73,27 @@ class OrangeParser(Parser):
     # Variable declaration block
     @_('VARS decvar_line')
     def decvars(self, p):
-        if self.OFD.context == 'global':
-            self.OFD.addfunc(self.programName, 'prog', self.OVT.table)
+        if self.OFD.context == self.programName:
+            self.OFD.dir[self.programName]['table'] = self.OVT.table
 
         elif self.OFD.context == 'main':
-            self.OFD.addfunc('main', 'main', self.OVT.table)
+            self.OFD.dir['main']['table'] = self.OVT.table
+        
         else:
-            # If its a typed function it returns a tuple like ('type', 'int')
-            if isinstance(p[-9], tuple):
-                functionType = p[-9][1]
-            
-            # Otherwise it only returns a 'VOID' string
-            else:
-                functionType = p[-9]
+            self.OFD.dir[self.OFD.context]['table'] = self.OVT.table
 
-            self.OFD.addfunc(self.OFD.context, functionType, self.OVT.table)
+        # When variable declaration ends, add quadruple number to function
+        self.OFD.dir[self.OFD.context]['quadruple'] = self.QM.QuadrupleNumber
+
         return p
 
     @_('empty')
     def decvars(self, p):
-        # DOC: Explain why an empty dictionary must be added if no variables are declared
-        if (self.OFD.context == 'global'):
-            self.OFD.addfunc(self.programName, 'prog', {})
-        elif (self.OFD.context == 'main'):
-            self.OFD.addfunc('main', 'main', {})
-        else:
-            functionType = p[-8][1]
-            self.OFD.addfunc(self.OFD.context, functionType, {})
         return p
 
     # Individual variable declaration line
         # int variable ;
-    @_('type decvar SEMICOLON')
+    @_('decvar_type decvar SEMICOLON')
     def decvar_line(self, p):
         self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
@@ -113,21 +101,60 @@ class OrangeParser(Parser):
     # Multiple variable declaration line
         # int variable ;
         # float x, y, z ;
-    @_('type decvar SEMICOLON decvar_line')
+    @_('decvar_type decvar SEMICOLON decvar_line')
     def decvar_line(self, p):
         self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
     
+    @_('type')
+    def decvar_type(self, p):
+        self.OVT.varType = p[0][1]
+        return p[0]
+
     # Individual variable
         # x
     @_('var')
     def decvar(self, p):
+        # Keep track of size needed for local variables
+        if self.OFD.context == self.programName:
+            functionName = self.programName
+        else:
+            functionName = self.OFD.context
+        
+            # print('🥑 0: ', p[0])
+            # print(self.OFD.checkVar(p[0]))
+
+        # if p[-2] == ',' and isinstance(p[-4], tuple):
+        #     print('🥑 1: ', p[-1])
+        #     print('🥑 2: ', p[-2])
+        #     print('🥑 3: ', p[-3])
+        #     print('🥑 4: ', p[-4])
+        #     print('🥑 5: ', p[-5])
+        #     print('🥑 6: ', p[-6])
+        #     print('🥑 7: ', p[-7])
+        #     print('🥑 8: ', p[-8])
+        #     self.OFD.dir[functionName]['size']['local'][p[-4][1]] += 1
+
+        # else:
+        #     print('🍬: ', p[-2])
+        #     self.OFD.dir[functionName]['size']['local'][p[-2][1]] += 1
+
+        self.OFD.dir[functionName]['size']['local'][self.OVT.varType] += 1
+
         return p
     
     # Multiple variables
         # x, y, z
     @_('var COMMA decvar')
     def decvar(self, p):
+        if self.OFD.context == self.programName:
+            functionName = self.programName
+        else:
+            functionName = self.OFD.context
+        
+        # Keep track of size needed for local variables
+        self.OFD.dir[functionName]['size']['local'][self.OVT.varType] += 1
+
         return p
     
     # Normal variable
@@ -163,6 +190,10 @@ class OrangeParser(Parser):
         # }
     @_('VOID ID changecontext LPAREN params RPAREN declareblock')
     def voidfunc(self, p):
+        self.QM.addOperator('ENDFUNC')
+        self.QM.addOperand(('',''))
+        self.QM.addOperand(('',''))
+        self.QM.generateQuadruple()
         return p
 
     # Function with a return value
@@ -173,29 +204,76 @@ class OrangeParser(Parser):
     def typefunc(self, p):
         # In second argument add p[0] -> whatever < type > returns
         # Add p[0][1] to get the second element -> < type > returns tuples like ('type', 'int')
+        self.QM.addOperator('ENDFUNC')
+        self.QM.addOperand(('',''))
+        self.QM.addOperand(('',''))
+        self.QM.generateQuadruple()
         return p
 
     # Parameter declaration
         # Function()
         # Function(parameter)
         # Function(param1, param2, param3)
-    @_('type ID', 'type ID COMMA params', 'empty')
+    # @_('type ID', 'type ID COMMA params', 'empty')
+    # def params(self, p):
+    #     return p
+    
+    
+    @_('param params_aux', 'empty')
     def params(self, p):
+        return p
+
+    @_('type ID')
+    def param(self, p):
+        paramType = p[0][1]
+        paramName = p[1]
+        self.OFD.addParam(paramName, paramType)
+
+        return p
+    @_('COMMA params','empty')
+    def params_aux(self, p):
         return p
 
     # Function call
         # sum(2, 2)
         # fullname("Beto", "Rendon")
-    @_('ID LPAREN callvalues RPAREN')
+    @_('ID generate_era LPAREN callvalues RPAREN')
     def call(self, p):
+        # Generate GOSUB quadruple
+        self.QM.addOperator('GOSUB')
+        self.QM.addOperand((p[0], 'func'))
+        self.QM.addOperand(('',''))
+        self.QM.generateQuadruple()
+
+        # Reset parameter counter
+        self.QM.ParameterNumber = 0
+        return p
+    
+    @_('')
+    def generate_era(self, p):
+        self.QM.addOperator('ERA')
+        self.QM.addOperand((p[-1], 'func'))
+        self.QM.addOperand(('', ''))
+        self.QM.generateQuadruple()
         return p
     
     # Call values
         # func(2)
         # func(2, a + 1)
         # func()
-    @_('exp', 'exp COMMA callvalues', 'empty')
+    @_('empty', 'COMMA callvalues')
+    def callvalues_aux(self, p):
+        return p
+
+    @_('exp generate_param callvalues_aux')
     def callvalues(self, p):
+        return p
+    
+    @_('')
+    def generate_param(self, p):
+        self.QM.addOperator('PARAM')
+        self.QM.addOperand((self.QM.generateParameter(),'param'))
+        self.QM.generateQuadruple()
         return p
 
     # Super Expression (logical)
@@ -367,11 +445,9 @@ class OrangeParser(Parser):
 
     @_('')
     def createfinaltempvar(self, p):
-        vfinalName = (self.QM.generateTempVar(), 'int')
+        vfinalName = (self.QM.generateTempVar('int'), 'int')
         self.QM.addOperand(vfinalName)
         return p
-
-
 
     @_('')
     def validateloopend(self, p):
@@ -618,9 +694,77 @@ class OrangeParser(Parser):
     @_('')
     def changecontext(self, p):
         self.OVT.cleartable()
+
         if (p[-2] == 'program'):
-            self.OFD.changeContext('global')
+            self.OFD.changeContext(self.programName)
+        
+        elif (p[-1]) == 'main':
+            # Define function data in a readable way
+            functionName   = 'main'
+            functionType   = 'main'
+            variableTable  = {}
+            startQuadruple = self.QM.QuadrupleNumber + 1
+            parameterTable = {}
+            signature      = ''
+            size           = {
+                'params':{'int':0, 'float':0, 'bool':0},
+                'local' :{'int':0, 'float':0, 'bool':0},
+                'temp'  :{'int':0, 'float':0, 'bool':0}
+                }
+        
+            # Pack data ina tuple
+            functionData   = (
+                functionName, 
+                functionType, 
+                variableTable, 
+                startQuadruple, 
+                parameterTable, 
+                signature,
+                size
+            )
+            
+            # Unpack data and add function to directory
+            self.OFD.addfunc(*functionData)
+            self.OFD.changeContext(p[-1])
+            
+            # Fill jump to main
+            quadrupleToFill = self.QM.jumps.pop()
+            jumpToPosition = self.QM.QuadrupleNumber + 1
+            self.QM.fillJumps(quadrupleToFill, jumpToPosition)
+
         else:
+            # If its a typed function it returns a tuple like ('type', 'int')
+            if isinstance(p[-2], tuple):
+                functionType = p[-2][1]
+            
+            # Otherwise it only returns a 'VOID' string        
+            else:
+                functionType = p[-2]
+
+            # Define function data in a readable way
+            functionName = p[-1]
+            variableTable  = {}
+            startQuadruple = self.QM.QuadrupleNumber + 1
+            parameterTable = {}
+            signature      = ''
+            size           = {
+                'params':{'int':0, 'float':0, 'bool':0},
+                'local' :{'int':0, 'float':0, 'bool':0},
+                'temp'  :{'int':0, 'float':0, 'bool':0}
+                }
+            # Pack data ina tuple
+            functionData   = (
+                functionName, 
+                functionType, 
+                variableTable, 
+                startQuadruple, 
+                parameterTable, 
+                signature,
+                size
+            )
+            
+            # Unpack data and add function to directory
+            self.OFD.addfunc(*functionData)
             self.OFD.changeContext(p[-1])
     
     # DOC: Save the program name ASAP to identify repeated variable & function names
@@ -628,8 +772,44 @@ class OrangeParser(Parser):
     def saveprogramname(self, p):
         # Save program name to check for global variables later
         Pname = p[-1]
+        
+        # Define function data in a readable way
         self.programName = Pname
         self.OFD.programName = Pname
+        self.OFD.context = Pname
+        functionName   = self.programName
+        functionType   = 'prog'
+        variableTable  = {}
+        startQuadruple = self.QM.QuadrupleNumber + 1
+        parameterTable = {}
+        signature      = ''
+        size           = {
+                'params':{'int':0, 'float':0, 'bool':0},
+                'local' :{'int':0, 'float':0, 'bool':0},
+                'temp'  :{'int':0, 'float':0, 'bool':0}
+                }
+        
+        # Pack data ina tuple
+        functionData   = (
+            functionName, 
+            functionType, 
+            variableTable, 
+            startQuadruple, 
+            parameterTable, 
+            signature,
+            size
+        )
+        
+        # Unpack data and add function to directory
+        self.OFD.addfunc(*functionData)
+        
+        # Generate GOTO MAIN quadruple
+        self.QM.addOperator('GOTO')
+        self.QM.addOperand(('', ''))
+        self.QM.addOperand(('', ''))
+        self.QM.generateQuadruple()
+        self.QM.jumps.append(self.QM.QuadrupleNumber)
+
         # Return the ID again so that global declare block can have a name
             # If not returned, the declare block takes p[-1], which would be 
             # whatever we return here (or not)
@@ -640,8 +820,6 @@ class OrangeParser(Parser):
         pass
 
     def error(self, p):
-        # print("Whoa. You are seriously hosed.")
-        
         if not p:
             raise syntacticalError("❌ End of File!")
             # return

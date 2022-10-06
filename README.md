@@ -23,14 +23,18 @@ Checkpoints are given by our professor, although they can change during the seme
 - ~~Write~~
 - Etc.
 
-### ⚠️ Checkpoint \#4: Code generation for conditional statutes
+### ✅ Checkpoint \#4: Code generation for conditional statutes
 - ~~Decisions~~
-- Cycles
+- ~~Cycles~~
     - ~~WHILE~~
     - ~~DO WHILE~~
-    - FOR
+    - ~~FOR~~
 
-### ❌ Checkpoint \#5: Code generation for functions
+### ⚠️ Checkpoint \#5: Code generation for functions
+- Function definition
+    - ~~VOID~~
+    - TYPED
+- Function call
 
 ### ❌ Checkpoint \#6: Memory map for virtual machine
 - Execution of arithmetic expressions
@@ -325,6 +329,22 @@ __Inputs__
 - Added input_25
 - Added input_26
 - Added input_27
+
+---
+
+### 📆 October 06 🕓 00:29
+- Watched class recording of October 21. The teacher talked about memory management, virtual memory allocation for functions and quadruple generation for function definition.
+- Watched class recording of November 01. The teacher talked about memory management, virtual memory allocation for functions and quadruple generation for function definition (with examples).
+- Function directory's directory now stores a functions "address" (at what quadruple the function starts), another table for parameters, a string that represents it's signature, and a structure to keep track of size needed (it tracks amount of variable scopes and types)
+- Variable checking in the function directory now takes into account checking parameters too
+- Adding parameters now works and also updates the functions signature (only when declared)
+- Refactored scanner by "eliminating" reserved words, and merging them into the ID token. Now everything is read as a token, but if said ID matches a reserved word, its type is changed to that reserved word. This prevents the regular expression from matching prefixes (ex. can't have a variable named 'doppler' because it starts with 'do').
+- Added a varType to VarTable that keeps track of a variable type for a variable declaration line.
+- Refactored parser rules for function and variable definition
+- Added many mid point instructions in parser (for quadruple generation, type tracking, etc.)
+- Restructured several rules (broke recursion into a single variable rule for easier data extraction)
+- Added quadruples for function calls and definition (ERA, GOSUB, PARAM, ENDFUNC)
+- Fixed/updated a couple of tests, but I still have to update almost half (because previously tests didn't have the 'params' table, the signature, quadruple number, etc.)
 
 # Reference
 
