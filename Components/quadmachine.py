@@ -9,7 +9,8 @@ class OrangeQuadMachine():
         self.quadruples  = []       # ('+', 'c', 'd', 'T1') <- Quadruple structure
         self.jumps       = []       # Pending jump instructions
         self.TempNumber      = 0    # Number to track temp variables
-        self.ParameterNumber = 0    # Number to track temp variables
+        self.ParameterNumber = 0    # Number to track parameters
+        self.CallSignature   = ''   # Recreated a signature for a function
         self.QuadrupleNumber = 0    # Number to track quadruple numbers (helps with GOTOs)
     
     # HACK: Morph into memory management/tracking
@@ -188,5 +189,5 @@ class OrangeQuadMachine():
             counter+=1
         
         # For testing purposes
-        print()
-        print(self.quadruples)
+        # print()
+        # print(self.quadruples)

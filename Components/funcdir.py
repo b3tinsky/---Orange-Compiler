@@ -33,7 +33,7 @@ class OrangeFuncDir():
     '''
     def addfunc(self, id, type, table, quadrupleNumber, params, signature, size):
         if self.checkfunc(id):
-            raise semanticError(f'🚫 Function < {id} > already exists')
+            raise semanticError(f'❌ Function < {id} > already exists')
 
         else:
             self.dir[id] = {

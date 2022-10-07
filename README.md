@@ -34,9 +34,9 @@ Checkpoints are given by our professor, although they can change during the seme
 - Function definition
     - ~~VOID~~
     - TYPED
-- Function call
+- ~~Function call~~
 
-### ❌ Checkpoint \#6: Memory map for virtual machine
+### ⚠️ Checkpoint \#6: Memory map for virtual machine
 - Execution of arithmetic expressions
 - Secuential statutes
 
@@ -345,6 +345,13 @@ __Inputs__
 - Restructured several rules (broke recursion into a single variable rule for easier data extraction)
 - Added quadruples for function calls and definition (ERA, GOSUB, PARAM, ENDFUNC)
 - Fixed/updated a couple of tests, but I still have to update almost half (because previously tests didn't have the 'params' table, the signature, quadruple number, etc.)
+
+---
+
+### 📆 October 07 🕓 14:44
+- Added some actions in between grammar rules for function calling (things like checking the function signature is the same as the function calling it,- checking that the function being called exists, etc.)
+- Fixed tests
+- Added input_28
 
 # Reference
 

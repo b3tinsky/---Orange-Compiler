@@ -50,12 +50,12 @@ def orange_juice(test_name, test_data):
     except Exception as err:
         print(str(err))
 
-    parser.OFD.printdata()
+    # parser.OFD.printdata()
     print('JUMPS: ', parser.QM.jumps)
     print('OPERANDS: ', parser.QM.operands)
     print('OPERATORS: ', parser.QM.operators)
     print(f'-'*50)
-    parser.QM.printQuads()
+    # parser.QM.printQuads()
     print(f'-'*50)
     # print(f'Lexical   Status:  {StatusChecker.lexStatus} |')
     # print(f'Syntax    Status:  {StatusChecker.syntaxStatus} |')

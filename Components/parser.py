@@ -239,6 +239,11 @@ class OrangeParser(Parser):
         # fullname("Beto", "Rendon")
     @_('ID generate_era LPAREN callvalues RPAREN')
     def call(self, p):
+        print('🍓: ', self.QM.CallSignature)
+        print('🍇: ', self.OFD.dir[p[0]]['signature'])
+        if self.QM.CallSignature != self.OFD.dir[p[0]]['signature']:
+            raise semanticError(f"❌ Function signature mismatch | Arguments given for < {self.OFD.dir[p[0]]['name']} > do not match the function's signature")
+
         # Generate GOSUB quadruple
         self.QM.addOperator('GOSUB')
         self.QM.addOperand((p[0], 'func'))
@@ -251,10 +256,23 @@ class OrangeParser(Parser):
     
     @_('')
     def generate_era(self, p):
-        self.QM.addOperator('ERA')
-        self.QM.addOperand((p[-1], 'func'))
-        self.QM.addOperand(('', ''))
-        self.QM.generateQuadruple()
+        # Reset parameter counter and signature
+        self.QM.ParameterNumber = 0
+        self.QM.CallSignature   = ''
+
+        # Check if function exists
+        if self.OFD.checkfunc(p[-1]):
+
+            # Generate Activation Record Expansion -new- size quadruple
+            self.QM.addOperator('ERA')
+            self.QM.addOperand((p[-1], 'func'))
+            self.QM.addOperand(('', ''))
+            self.QM.generateQuadruple()
+        
+        # Raise error if function doesn't exist
+        else:
+            raise semanticError(f'❌ Function < {p[-1]} > does not exist')
+
         return p
     
     # Call values
@@ -267,10 +285,14 @@ class OrangeParser(Parser):
 
     @_('exp generate_param callvalues_aux')
     def callvalues(self, p):
+
         return p
     
     @_('')
     def generate_param(self, p):
+        print('🍌 Operands: ', self.QM.operands)
+        print('🍌 ParamNumber: ', self.QM.ParameterNumber)
+        self.QM.CallSignature += self.QM.operands[-1][1][0]
         self.QM.addOperator('PARAM')
         self.QM.addOperand((self.QM.generateParameter(),'param'))
         self.QM.generateQuadruple()
