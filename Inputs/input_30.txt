@@ -9,6 +9,7 @@ func void uno(int a, int b)
     {
         i = a + b * j + i;
         print( i + j );
+        uno(a-i, i)
     }
     else
     {
@@ -25,6 +26,7 @@ func void dos(int a, float g)
         uno(a * 2, a + k)
         g = g * j - k;
     }
+    return (i+k*j)
 }
 
 main()
@@ -34,9 +36,9 @@ main()
     f = 3.14;
     do
     {
-        dos(i + k, f*3)
+        print( dos(i + k, f*3) + 3);
         print(i, j*2, f*2+1.5);
-        i = i - k / 2;
+        i = i - k;
     } while (i > 0)
 
 }

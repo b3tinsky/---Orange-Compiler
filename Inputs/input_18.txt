@@ -5,6 +5,5 @@ program test_18
 
 main()
 {
-    z = a * b / (c + d * f / g + h) - i > (a + b) * c - d;
-    
+    z = a * b / (c + d * f / g + h) - i > (a + b) * c - d;    
 }

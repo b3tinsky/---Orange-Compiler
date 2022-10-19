@@ -2,8 +2,10 @@ import yaml
 from Components.status import semanticError
 
 class OrangeVarTable():
-    def __init__(self, status):
+    def __init__(self, status, memory):
         self.StatusChecker = status
+        self.MemoryManager = memory
+        self.programName = '' # Global scope
         self.table = {}
         self.varType = ''
 
@@ -34,10 +36,13 @@ class OrangeVarTable():
 
         else:
             # print(f'✅ Variable < {id} > successfully added')
+            # TODO: Generate virtual address depending on type & scope
+            address = self.MemoryManager.buildAddress(type, 'global' if scope == self.programName else 'local')
             self.table[id] = {
                 'name': id, 
                 'type': type, 
                 'scope': scope,
+                'address': address
                 }
 
     '''
@@ -52,7 +57,6 @@ class OrangeVarTable():
         ('decvar', ('var', 'x'), ',', ('decvar', ('var', 'y'), ',', ('decvar', ('var', 'z'))))
     '''
     def addvartokenstream(self, tokenstream, scope, currentFuncDir):
-        # print('🍇: ', currentFuncDir)
         # Variable type
         varType = tokenstream[0][1]
 

@@ -30,13 +30,14 @@ Checkpoints are given by our professor, although they can change during the seme
     - ~~DO WHILE~~
     - ~~FOR~~
 
-### ⚠️ Checkpoint \#5: Code generation for functions
+### ✅ Checkpoint \#5: Code generation for functions
 - Function definition
     - ~~VOID~~
-    - TYPED
+    - ~~TYPED~~
 - ~~Function call~~
 
 ### ⚠️ Checkpoint \#6: Memory map for virtual machine
+- ~~Memory management~~
 - Execution of arithmetic expressions
 - Secuential statutes
 
@@ -353,6 +354,21 @@ __Inputs__
 - Fixed tests
 - Added input_28
 
+---
+
+### 📆 October 07 🕓 15:17
+- Watched class recording for November 04. In this class the teacher explained more in depth memory management and gave some tips about how we could design a structure for memory and a virtual machine. The teacher also explained how to store in memory structured data like arrays and matrices.
+
+---
+
+### 📆 October 18 🕓 23:08
+- Refactored everything to work with a memory address instead of a variable name
+- Memory management
+- Added constant table to store constants
+- Refactored tests
+- Executed tests by hand to confirm everything works (some bugs were found and fixed). Did not execute test 28 yet.
+
+
 # Reference
 
 ## Official Documentation
@@ -383,6 +399,8 @@ __Inputs__
 [Note.nkmk.me - Python unpack values](https://note.nkmk.me/en/python-argument-expand/)
 
 [Splunk Tool - Python evenly space output data with varying string lengths](https://splunktool.com/python-evenly-space-output-data-with-varying-string-lengths)
+
+[El Libro de Python - Switch en Python](https://ellibrodepython.com/switch-python)
 
 
 ## StackOverflow

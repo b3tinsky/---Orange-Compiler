@@ -1,9 +1,10 @@
 from Components.status import semanticError
 
 class OrangeQuadMachine():
-    def __init__(self, OFD, SC) -> None:
+    def __init__(self, OFD, SC, MM) -> None:
         self.OFD = OFD              # Orange Function Directory 
         self.SC = SC.cube           # Semantic Cube
+        self.MM = MM                # Memory Manager
         self.operators  = [[]]      # [] are added to simulate parenthesis priority
         self.operands    = []       # ('name', 'type')      <- Operand structure
         self.quadruples  = []       # ('+', 'c', 'd', 'T1') <- Quadruple structure
@@ -16,27 +17,55 @@ class OrangeQuadMachine():
     # HACK: Morph into memory management/tracking
     # Keeps track of temporary variable names
     def generateTempVar(self, resultType):
-        self.TempNumber += 1
+        address = self.MM.buildAddress(resultType, 'temp')
+        # self.TempNumber += 1
         self.OFD.dir[self.OFD.context]['size']['temp'][resultType] += 1
-        return f'T{self.TempNumber}'
+        # return f'T{self.TempNumber}'
+        return address
 
     def generateParameter(self):
         self.ParameterNumber += 1
-        return f'P{self.ParameterNumber}'
+        return self.ParameterNumber
 
     def addOperand(self, operand):
         # Constants <- 5 | 12.3 | "name"
             # Passed as tuples (constant, type)
-        if isinstance(operand, tuple):
-            operandName = operand[0]
-            operandType = operand[1]
-            self.operands.append((operandName, operandType))
+        
+        # Filler operands
+        if operand == (-1, -1):
+            self.operands.append(operand)
+        
+        # HACK: Convert to a dictionary type switch to make it faster
+        # Constants, Functions, Parameters & Returns
+        elif isinstance(operand, tuple):
+            # Functions
+            if operand[1] == 'func':
+                self.operands.append(operand)
             
+            # Parameters
+            elif operand[1] == 'param':
+                self.operands.append(operand)
+            
+            # HACK: Instead of constantly fetching programName from OFD, fetch it once and call it from QM
+            # Return
+            elif operand[1] == 'return':
+                returnAddress = self.OFD.dir[self.OFD.programName]['table'][operand[0]]['address']
+                returnType    = self.OFD.dir[self.OFD.programName]['table'][operand[0]]['type']
+                self.operands.append( (returnAddress, returnType) )
 
+            # Constants
+            else:
+                constant     = operand[0]
+                constantType = operand[1]
+                constantAddress = self.OFD.checkConst(constant, constantType)
+                self.operands.append((constantAddress, constantType))
+
+        
         # Variables <- (id, type)
         else:
-            operandName, operandType = self.OFD.checkVar(operand)
-            self.operands.append((operandName, operandType))
+            
+            operandAddress, operandType = self.OFD.checkVar(operand)
+            self.operands.append((operandAddress, operandType))
     
     
     def addOperator(self, operator):
@@ -56,7 +85,7 @@ class OrangeQuadMachine():
         if operator == '=':
             try:
                 resultType = self.SC[leftOperand[1]][operator][rightOperand[1]]
-                self.quadruples.append( (operator, rightOperand[0], '', leftOperand[0]) ) 
+                self.quadruples.append( (operator, rightOperand[0], -1, leftOperand[0]) ) 
                 # self.operands.append( (leftOperand[0], resultType) )
 
             except:
@@ -70,7 +99,7 @@ class OrangeQuadMachine():
             # TODO: Add tests about printing weird stuff that shouldn't be allowed
             # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
             # so constant strings are added the same way to keep consistency
-            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+            self.quadruples.append( (operator, -1, -1, leftOperand[0]) ) 
             return
 
         # Input
@@ -79,7 +108,7 @@ class OrangeQuadMachine():
             # TODO: Add tests about reading weird stuff that shouldn't be allowed
             # Prints the leftOperand because when printing expressions, the operand is added before the blank ('')
             # so constant strings are added the same way to keep consistency
-            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+            self.quadruples.append( (operator, -1, -1, leftOperand[0]) ) 
             return
         
         # Conditional
@@ -88,7 +117,7 @@ class OrangeQuadMachine():
             # Validates that contiion results in a boolean <- if (a + b > c * d)
             if leftOperand[1] == 'bool':
                 # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-                self.quadruples.append( (operator, leftOperand[0], '', '?') ) 
+                self.quadruples.append( (operator, leftOperand[0], -1, '?') ) 
             
             # If condition does not result in a boolean, a special mismatch error is raised
             else:
@@ -102,7 +131,7 @@ class OrangeQuadMachine():
             if leftOperand[1] == 'bool':
                 jumpToPosition = self.jumps.pop()
                 # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-                self.quadruples.append( (operator, leftOperand[0], '', jumpToPosition) ) 
+                self.quadruples.append( (operator, leftOperand[0], -1, jumpToPosition) ) 
             
             # If condition does not result in a boolean, a special mismatch error is raised
             else:
@@ -113,31 +142,31 @@ class OrangeQuadMachine():
             # ELSE
         elif operator == 'GOTO':
             # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-            self.quadruples.append( (operator, '', '', '?') ) 
+            self.quadruples.append( (operator, -1, -1, '?') ) 
             return
         
         # ENDFUNC
         elif operator == 'ENDFUNC':
             # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-            self.quadruples.append( (operator, '', '', '') ) 
+            self.quadruples.append( (operator, -1, -1, -1) ) 
             return
 
         # ERA
         elif operator == 'ERA':
             # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+            self.quadruples.append( (operator, -1, -1, leftOperand[0]) ) 
             return
 
         # ERA
         elif operator == 'PARAM':
             # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-            self.quadruples.append( (operator, leftOperand[0], '', rightOperand[0]) ) 
+            self.quadruples.append( (operator, leftOperand[0], -1, rightOperand[0]) ) 
             return
 
         # GOSUB
         elif operator == 'GOSUB':
             # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
-            self.quadruples.append( (operator, '', '', leftOperand[0]) ) 
+            self.quadruples.append( (operator, -1, -1, leftOperand[0]) ) 
             return
 
         elif operator == '++':
@@ -156,7 +185,6 @@ class OrangeQuadMachine():
                 self.quadruples.append( (operator, leftOperand[0], rightOperand[0], tmpVar) ) 
 
                 # Return the temporary variable to operands
-                # TODO: Change temp var names (strings) to memory spaces
                 self.operands.append( (tmpVar, resultType) )
             except:
                 arithmetic = ['+', '-', '*', '/']

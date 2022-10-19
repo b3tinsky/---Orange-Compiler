@@ -5,6 +5,7 @@ from pathlib import Path
 from Components.scanner import OrangeLexer
 from Components.parser import OrangeParser
 from Components.status import OrangeStatus, lexicalError, syntacticalError, semanticError
+from Components.memory import MemoryManager
 
 def initializeCompiler(test_file):
     testing_dir_path = str(Path.cwd() / Path('Inputs'))
@@ -14,8 +15,9 @@ def initializeCompiler(test_file):
     data = file.read()
     file.close()
     status = OrangeStatus()
+    memory = MemoryManager()
     lexer = OrangeLexer(status)
-    parser = OrangeParser(status)
+    parser = OrangeParser(status, memory)
     parser.parse(lexer.tokenize(data))
     return status, lexer, parser
 
@@ -36,13 +38,13 @@ class TestInput03:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_03.txt')
 
-    def test_VARDECLARATION(self):
+    def test_functionDirectory(self):
         dir = {
             'main': {
                 'name': 'main', 
+                'params':{},
                 'type': 'main', 
                 'quadruple': 1,
-                'params':{},
                 'signature':'',
                 'size':{
                     'local':{
@@ -62,30 +64,31 @@ class TestInput03:
                     }
                 },
                 'table': {
+                    'x': {
+                        'address': 20002,
+                        'name': 'x', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        },
                     'y': {
+                        'address': 20000, 
                         'name': 'y', 
                         'type': 'int', 
                         'scope': 'main'
                         }, 
                     'z': {
+                        'address': 20001, 
                         'name': 'z', 
                         'type': 'int', 
                         'scope': 'main'
                         }, 
-                    'x': {
-                        'name': 'x', 
-                        'type': 'int', 
-                        'scope': 'main'
-                        }
                     }
                 },
 
             'test_03': {
                 'name': 'test_03', 
-                'type': 'prog', 
-                'table': {},
-                'quadruple': 1,
                 'params':{},
+                'quadruple': 1,
                 'signature':'',
                 'size':{
                     'local':{
@@ -103,10 +106,29 @@ class TestInput03:
                         'float': 0,
                         'int': 0
                     }
-                }
+                },
+                'type': 'prog', 
+                'table': {},
             }
         }
         assert self.parser.OFD.dir == dir
+
+    def test_constantsTable(self):
+        constantsTable = {
+            'bool': {},
+            'float': {},
+            'int': {
+                1: 40000,
+                2: 40001,
+                11: 40002
+            },
+            'string':{
+                'Your result: ': 47500
+            }
+}
+
+        assert self.parser.OFD.constants == constantsTable
+
 
 # DOC: In the testing document, add the expected directory
 class TestInput04:
@@ -116,53 +138,10 @@ class TestInput04:
     def test_VARDECLARATION(self):
         dir = {
             'test_4': {
-                'name': 'test_4', 
-                'type': 'prog', 
-                'quadruple': 1,
+                'name': 'test_4',
                 'params':{},
+                'quadruple': 1,
                 'signature':'',
-                'table': {
-                    'x': {
-                        'name': 'x', 
-                        'type': 'float', 
-                        'scope': 'test_4'
-                        }, 
-                    'y': {
-                        'name': 'y', 
-                        'type': 'float', 
-                        'scope': 'test_4'
-                        }, 
-                    'z': {
-                        'name': 'z', 
-                        'type': 'float', 
-                        'scope': 'test_4'
-                        }, 
-                    'i': {
-                        'name': 'i', 
-                        'type': 'int', 
-                        'scope': 'test_4'
-                        }, 
-                    'a': {
-                        'name': 'a', 
-                        'type': 'int', 
-                        'scope': 'test_4'
-                        }, 
-                    'b': {
-                        'name': 'b', 
-                        'type': 'int', 
-                        'scope': 'test_4'
-                        }, 
-                    'c': {
-                        'name': 'c', 
-                        'type': 'int', 
-                        'scope': 'test_4'
-                        }, 
-                    'd': {
-                        'name': 'd', 
-                        'type': 'int', 
-                        'scope': 'test_4'
-                        }
-                    },
                 'size':{
                     'local':{
                         'bool': 0,
@@ -180,19 +159,62 @@ class TestInput04:
                         'int': 0
                     }
                 },
+                'table': {
+                    'x': {
+                        'address': 14000,
+                        'name': 'x', 
+                        'scope': 'test_4',
+                        'type': 'float', 
+                        }, 
+                    'y': {
+                        'address': 14001,
+                        'name': 'y', 
+                        'scope': 'test_4',
+                        'type': 'float', 
+                        }, 
+                    'z': {
+                        'address': 14002,
+                        'name': 'z', 
+                        'scope': 'test_4',
+                        'type': 'float', 
+                        }, 
+                    'i': {
+                        'address': 10000,
+                        'name': 'i', 
+                        'scope': 'test_4',
+                        'type': 'int', 
+                        }, 
+                    'a': {
+                        'address': 10001,
+                        'name': 'a',
+                        'scope': 'test_4',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 10002,
+                        'name': 'b', 
+                        'scope': 'test_4',
+                        'type': 'int', 
+                        }, 
+                    'c': {
+                        'address': 10003,
+                        'name': 'c', 
+                        'scope': 'test_4',
+                        'type': 'int', 
+                        }, 
+                    'd': {
+                        'address': 10004,
+                        'name': 'd', 
+                        'scope': 'test_4',
+                        'type': 'int', 
+                        }
+                    },
+                'type': 'prog',
                 }, 
             'main': {
                 'name': 'main', 
-                'type': 'main', 
-                'table': {
-                    'test': {
-                        'name': 'test', 
-                        'type': 'int', 
-                        'scope': 'main'
-                        }
-                    },
-                'quadruple': 1,
                 'params':{},
+                'quadruple': 1,
                 'signature':'',
                 'size':{
                     'local':{
@@ -211,18 +233,145 @@ class TestInput04:
                         'int': 2
                     }
                 },
+                'table': {
+                    'test': {
+                        'address': 20000, 
+                        'name': 'test', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        }
+                    },
+                'type': 'main', 
                 }
             }
 
         assert self.parser.OFD.dir == dir
 
-# # DOC: In the testing document, add the expected directory
+    def test_constantsTable(self):
+        constantsTable = {
+            'bool': {},
+            'float': {},
+            'int': {
+                1: 40000,
+                2: 40001,
+            },
+            'string':{
+                'Your result: ': 47500
+            }
+}
+
+        assert self.parser.OFD.constants == constantsTable
+
+
+# DOC: In the testing document, add the expected directory
 class TestInput05:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_05.txt')
 
     def test_VARDECLARATION(self):
-        dir = {'test_05': {'name': 'test_05', 'type': 'prog', 'table': {}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 0, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'sum': {'name': 'sum', 'type': 'void', 'table': {'result': {'name': 'result', 'type': 'int', 'scope': 'sum'}, 'sum_a': {'name': 'sum_a', 'type': 'int', 'scope': 'sum'}, 'sum_b': {'name': 'sum_b', 'type': 'int', 'scope': 'sum'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 3, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'main': {'name': 'main', 'type': 'main', 'table': {'test': {'name': 'test', 'type': 'int', 'scope': 'main'}}, 'quadruple': 4, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 1, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}}
+        dir = {
+            'test_05': {
+                'name': 'test_05', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'int': 0, 
+                        'float': 0, 
+                        'bool': 0
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {}, 
+                'type': 'prog', 
+                }, 
+            'sum': {
+                'name': 'sum', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '',
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 3, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'result': {
+                        'address': 20000, 
+                        'name': 'result', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'sum_a': {
+                        'address': 20001, 
+                        'name': 'sum_a', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'sum_b': {
+                        'address': 20002, 
+                        'name': 'sum_b', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'void',
+                }, 
+            'main': {
+                'name': 'main', 
+                'params': {}, 
+                'quadruple': 4, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'test': {
+                        'address': 20003, 
+                        'name': 'test', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'main',
+                }
+            }
 
         assert self.parser.OFD.dir == dir
 
@@ -232,7 +381,158 @@ class TestInput06:
     status, lexer, parser = initializeCompiler('input_06.txt')
 
     def test_VARDECLARATION(self):
-        dir = {'test_06': {'name': 'test_06', 'type': 'prog', 'table': {'x': {'name': 'x', 'type': 'float', 'scope': 'test_06'}, 'y': {'name': 'y', 'type': 'float', 'scope': 'test_06'}, 'z': {'name': 'z', 'type': 'float', 'scope': 'test_06'}, 'i': {'name': 'i', 'type': 'int', 'scope': 'test_06'}, 'a': {'name': 'a', 'type': 'int', 'scope': 'test_06'}, 'b': {'name': 'b', 'type': 'int', 'scope': 'test_06'}, 'c': {'name': 'c', 'type': 'int', 'scope': 'test_06'}, 'd': {'name': 'd', 'type': 'int', 'scope': 'test_06'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 5, 'float': 3, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'sum': {'name': 'sum', 'type': 'void', 'table': {'result': {'name': 'result', 'type': 'int', 'scope': 'sum'}, 'sum_a': {'name': 'sum_a', 'type': 'int', 'scope': 'sum'}, 'sum_b': {'name': 'sum_b', 'type': 'int', 'scope': 'sum'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 3, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'main': {'name': 'main', 'type': 'main', 'table': {'test': {'name': 'test', 'type': 'int', 'scope': 'main'}}, 'quadruple': 3, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 1, 'float': 0, 'bool': 0}, 'temp': {'int': 1, 'float': 0, 'bool': 0}}}}
+        dir = {
+            'test_06': {
+                'name': 'test_06', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 3, 
+                        'int': 5, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'x': {
+                        'address': 14000, 
+                        'name': 'x', 
+                        'scope': 'test_06',
+                        'type': 'float', 
+                        }, 
+                    'y': {
+                        'address': 14001, 
+                        'name': 'y', 
+                        'scope': 'test_06',
+                        'type': 'float', 
+                        }, 
+                    'z': {
+                        'address': 14002, 
+                        'name': 'z', 
+                        'scope': 'test_06',
+                        'type': 'float', 
+                        }, 
+                    'i': {
+                        'address': 10000, 
+                        'name': 'i', 
+                        'scope': 'test_06',
+                        'type': 'int', 
+                        }, 
+                    'a': {
+                        'address': 10001, 
+                        'name': 'a', 
+                        'scope': 'test_06',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 10002, 
+                        'name': 'b', 
+                        'scope': 'test_06',
+                        'type': 'int', 
+                        }, 
+                    'c': {
+                        'address': 10003, 
+                        'name': 'c', 
+                        'type': 'int', 
+                        'scope': 'test_06'
+                        }, 
+                    'd': {
+                        'address': 10004, 
+                        'name': 'd', 
+                        'type': 'int', 
+                        'scope': 'test_06'
+                        }
+                    }, 
+                'type': 'prog', 
+                }, 
+            'sum': {
+                'name': 'sum',
+                'params': {},
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 3, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'result': {
+                        'address': 20000, 
+                        'name': 'result', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'sum_a': {
+                        'address': 20001, 
+                        'name': 'sum_a', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'sum_b': {
+                        'address': 20002, 
+                        'name': 'sum_b', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'void', 
+                }, 
+            'main': {
+                'name': 'main',
+                'params': {},
+                'quadruple': 3,
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 2, 
+                        }
+                    },
+                'table': {
+                    'test': {
+                        'address': 20003, 
+                        'name': 'test', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        }
+                    },
+                'type': 'main',
+                }
+            }
         assert self.parser.OFD.dir == dir
 
 # DOC: In the testing document, add the expected directory
@@ -248,7 +548,147 @@ class TestInput08:
     status, lexer, parser = initializeCompiler('input_08.txt')
 
     def test_VARDECLARATION(self):
-        dir = {'test_08': {'name': 'test_08', 'type': 'prog', 'table': {'a': {'name': 'a', 'type': 'int', 'scope': 'test_08'}, 'b': {'name': 'b', 'type': 'int', 'scope': 'test_08'}, 'c': {'name': 'c', 'type': 'int', 'scope': 'test_08'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 3, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'sum': {'name': 'sum', 'type': 'int', 'table': {'a': {'name': 'a', 'type': 'int', 'scope': 'sum'}, 'b': {'name': 'b', 'type': 'int', 'scope': 'sum'}, 'c': {'name': 'c', 'type': 'int', 'scope': 'sum'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 3, 'float': 0, 'bool': 0}, 'temp': {'int': 1, 'float': 0, 'bool': 0}}}, 'main': {'name': 'main', 'type': 'main', 'table': {'a': {'name': 'a', 'type': 'float', 'scope': 'main'}, 'b': {'name': 'b', 'type': 'float', 'scope': 'main'}, 'c': {'name': 'c', 'type': 'float', 'scope': 'main'}}, 'quadruple': 5, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 0, 'float': 3, 'bool': 0}, 'temp': {'int': 0, 'float': 1, 'bool': 0}}}}
+        dir = {
+            'test_08': {
+                'name': 'test_08', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 3, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'a': {
+                        'address': 10000, 
+                        'name': 'a', 
+                        'scope': 'test_08',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 10001, 
+                        'name': 'b', 
+                        'scope': 'test_08',
+                        'type': 'int', 
+                        }, 
+                    'c': {
+                        'address': 10002, 
+                        'name': 'c', 
+                        'scope': 'test_08',
+                        'type': 'int', 
+                        },
+                    'sum': {
+                        'address': 10003, 
+                        'name': 'sum', 
+                        'scope': 'test_08',
+                        'type': 'int', 
+                        },
+                    }, 
+                'type': 'prog'
+                }, 
+            'sum': {
+                'name': 'sum', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 3, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }
+                    },
+                'table': {
+                    'a': {
+                        'address': 20000, 
+                        'name': 'a', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 20001, 
+                        'name': 'b', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'c': {
+                        'address': 20002, 
+                        'name': 'c', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'int', 
+
+                }, 
+            'main': {
+                'name': 'main', 
+                'params': {}, 
+                'quadruple': 7, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 3, 
+                        'int': 0, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 1, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'a': {
+                        'address': 24000, 
+                        'name': 'a', 
+                        'scope': 'main',
+                        'type': 'float', 
+                        }, 
+                    'b': {
+                        'address': 24001, 
+                        'name': 'b', 
+                        'scope': 'main',
+                        'type': 'float', 
+                        }, 
+                    'c': {
+                        'address': 24002, 
+                        'name': 'c', 
+                        'scope': 'main',
+                        'type': 'float', 
+                        }
+                    }, 
+                'type': 'main', 
+                }
+            }
         assert self.parser.OFD.dir == dir
 
 class TestInput09:
@@ -263,7 +703,165 @@ class TestInput10:
     status, lexer, parser = initializeCompiler('input_10.txt')
 
     def test_VARDECLARATION(self):
-        dir = {'test_10': {'name': 'test_10', 'type': 'prog', 'table': {'test_10': {'name': 'test_10', 'type': 'int', 'scope': 'test_10'}, 'a': {'name': 'a', 'type': 'int', 'scope': 'test_10'}, 'b': {'name': 'b', 'type': 'int', 'scope': 'test_10'}, 'c': {'name': 'c', 'type': 'int', 'scope': 'test_10'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 4, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'sum': {'name': 'sum', 'type': 'int', 'table': {'sum': {'name': 'sum', 'type': 'int', 'scope': 'sum'}, 'a': {'name': 'a', 'type': 'int', 'scope': 'sum'}, 'b': {'name': 'b', 'type': 'int', 'scope': 'sum'}, 'c': {'name': 'c', 'type': 'int', 'scope': 'sum'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 4, 'float': 0, 'bool': 0}, 'temp': {'int': 1, 'float': 0, 'bool': 0}}}, 'main': {'name': 'main', 'type': 'main', 'table': {'test_10': {'name': 'test_10', 'type': 'int', 'scope': 'main'}, 'a': {'name': 'a', 'type': 'float', 'scope': 'main'}, 'b': {'name': 'b', 'type': 'float', 'scope': 'main'}, 'c': {'name': 'c', 'type': 'float', 'scope': 'main'}}, 'quadruple': 5, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 1, 'float': 3, 'bool': 0}, 'temp': {'int': 0, 'float': 1, 'bool': 0}}}}
+        dir = {
+            'test_10': {
+                'name': 'test_10', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 4, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'test_10': {
+                        'address': 10000, 
+                        'name': 'test_10', 
+                        'scope': 'test_10',
+                        'type': 'int', 
+                        }, 
+                    'a': {
+                        'address': 10001, 
+                        'name': 'a', 
+                        'scope': 'test_10',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 10002, 
+                        'name': 'b', 
+                        'scope': 'test_10',
+                        'type': 'int', 
+                        }, 
+                    'c': {
+                        'address': 10003, 
+                        'name': 'c', 
+                        'scope': 'test_10',
+                        'type': 'int', 
+                        },
+                    'sum': {
+                        'address': 10004, 
+                        'name': 'sum', 
+                        'scope': 'test_10',
+                        'type': 'int', 
+                        },
+                    }, 
+                'type': 'prog', 
+                }, 
+            'sum': {
+                'name': 'sum', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 4, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }
+                    },
+                'table': {
+                    'sum': {
+                        'address': 20000, 
+                        'name': 'sum', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'a': {
+                        'address': 20001, 
+                        'name': 'a', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 20002, 
+                        'name': 'b', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'c': {
+                        'address': 20003, 
+                        'name': 'c', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'int', 
+                }, 
+            'main': {
+                'name': 'main', 
+                'params': {}, 
+                'quadruple': 7, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 3, 
+                        'int': 1, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 1, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'test_10': {
+                        'address': 20004, 
+                        'name': 'test_10', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        }, 
+                    'a': {
+                        'address': 24000, 
+                        'name': 'a', 
+                        'scope': 'main',
+                        'type': 'float', 
+                        }, 
+                    'b': {
+                        'address': 24001, 
+                        'name': 'b', 
+                        'scope': 'main',
+                        'type': 'float', 
+                        }, 
+                    'c': {
+                        'address': 24002, 
+                        'name': 'c', 
+                        'scope': 'main',
+                        'type': 'float', 
+                        }
+                    }, 
+
+                'type': 'main'
+                }
+            }
         assert self.parser.OFD.dir == dir
 
 class TestInput11:
@@ -272,12 +870,133 @@ class TestInput11:
             # Initialize a different compiler with the needed file
             status, lexer, parser = initializeCompiler('input_11.txt')
 
+# DOC: In the testing document, add the expected directory
 class TestInput12:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_12.txt')
 
     def test_VARDECLARATION(self):
-        dir = {'test_12': {'name': 'test_12', 'type': 'prog', 'table': {'a': {'name': 'a', 'type': 'int', 'scope': 'test_12'}, 'b': {'name': 'b', 'type': 'int', 'scope': 'test_12'}, 'c': {'name': 'c', 'type': 'int', 'scope': 'test_12'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 3, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'sum': {'name': 'sum', 'type': 'int', 'table': {}, 'quadruple': 2, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 0, 'float': 0, 'bool': 0}, 'temp': {'int': 1, 'float': 0, 'bool': 0}}}, 'main': {'name': 'main', 'type': 'main', 'table': {'x': {'name': 'x', 'type': 'int', 'scope': 'main'}, 'y': {'name': 'y', 'type': 'int', 'scope': 'main'}, 'z': {'name': 'z', 'type': 'int', 'scope': 'main'}}, 'quadruple': 5, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 3, 'float': 0, 'bool': 0}, 'temp': {'int': 1, 'float': 0, 'bool': 0}}}}
+        dir = {
+            'test_12': {
+                'name': 'test_12', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 3, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'a': {
+                        'address': 10000, 
+                        'name': 'a', 
+                        'scope': 'test_12',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 10001, 
+                        'name': 'b', 
+                        'scope': 'test_12',
+                        'type': 'int', 
+                        }, 
+                    'c': {
+                        'address': 10002, 
+                        'name': 'c', 
+                        'scope': 'test_12',
+                        'type': 'int', 
+                        },
+                    'sum': {
+                        'address': 10003, 
+                        'name': 'sum', 
+                        'scope': 'test_12',
+                        'type': 'int', 
+                        },
+                    }, 
+                'type': 'prog', 
+                }, 
+            'sum': {
+                'name': 'sum', 
+                'params': {}, 
+                'quadruple': 2, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }
+                    },
+                'table': {}, 
+                'type': 'int', 
+                }, 
+            'main': {
+                'name': 'main', 
+                'params': {}, 
+                'quadruple': 7, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 3, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }
+                    },
+                'table': {
+                    'x': {
+                        'address': 20000, 
+                        'name': 'x', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        }, 
+                    'y': {
+                        'address': 20001, 
+                        'name': 'y', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        }, 
+                    'z': {
+                        'address': 20002, 
+                        'name': 'z', 
+                        'scope': 'main',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'main', 
+                }
+            }
 
         assert self.parser.OFD.dir == dir
 
@@ -287,12 +1006,127 @@ class TestInput13:
             # Initialize a different compiler with the needed file
             status, lexer, parser = initializeCompiler('input_13.txt')
 
+# DOC: In the testing document, add the expected directory
 class TestInput14:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_14.txt')
 
     def test_VARDECLARATION(self):
-        dir = {'test_14': {'name': 'test_14', 'type': 'prog', 'table': {'x': {'name': 'x', 'type': 'int', 'scope': 'test_14'}, 'y': {'name': 'y', 'type': 'int', 'scope': 'test_14'}, 'z': {'name': 'z', 'type': 'int', 'scope': 'test_14'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 3, 'float': 0, 'bool': 0}, 'temp': {'int': 0, 'float': 0, 'bool': 0}}}, 'sum': {'name': 'sum', 'type': 'int', 'table': {'a': {'name': 'a', 'type': 'int', 'scope': 'sum'}, 'b': {'name': 'b', 'type': 'int', 'scope': 'sum'}}, 'quadruple': 1, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 2, 'float': 0, 'bool': 0}, 'temp': {'int': 1, 'float': 0, 'bool': 0}}}, 'main': {'name': 'main', 'type': 'main', 'table': {}, 'quadruple': 6, 'params': {}, 'signature': '', 'size': {'params': {'int': 0, 'float': 0, 'bool': 0}, 'local': {'int': 0, 'float': 0, 'bool': 0}, 'temp': {'int': 1, 'float': 0, 'bool': 0}}}}
+        dir = {
+            'test_14': {
+                'name': 'test_14', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 3, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }
+                    },
+                'table': {
+                    'sum': {
+                        'address': 10003, 
+                        'name': 'sum', 
+                        'scope': 'test_14',
+                        'type': 'int', 
+                        }, 
+                    'x': {
+                        'address': 10000, 
+                        'name': 'x', 
+                        'scope': 'test_14',
+                        'type': 'int', 
+                        }, 
+                    'y': {
+                        'address': 10001, 
+                        'name': 'y', 
+                        'scope': 'test_14',
+                        'type': 'int', 
+                        }, 
+                    'z': {
+                        'address': 10002, 
+                        'name': 'z', 
+                        'scope': 'test_14',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'prog', 
+                }, 
+            'sum': {
+                'name': 'sum', 
+                'params': {}, 
+                'quadruple': 1, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 2, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }
+                    },
+                'table': {
+                    'a': {
+                        'address': 20000, 
+                        'name': 'a', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }, 
+                    'b': {
+                        'address': 20001, 
+                        'name': 'b', 
+                        'scope': 'sum',
+                        'type': 'int', 
+                        }
+                    }, 
+                'type': 'int', 
+                }, 
+            'main': {
+                'name': 'main', 
+                'params': {}, 
+                'quadruple': 8, 
+                'signature': '', 
+                'size': {
+                    'local': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'params': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 0, 
+                        }, 
+                    'temp': {
+                        'bool': 0,
+                        'float': 0, 
+                        'int': 1, 
+                        }
+                    },
+                'table': {}, 
+                'type': 'main', 
+                }
+            }
 
         assert self.parser.OFD.dir == dir
 
@@ -314,16 +1148,16 @@ class TestInput17:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('*', 'c', 'd', 'T1'), 
-            ('+', 'b', 'T1', 'T2'), 
-            ('-', 'T2', 'e', 'T3'),
-            ('*', 'a', 'T3', 'T4'),
-            ('*', 'c', 'd', 'T5'),
-            ('-', 'T5', 'e', 'T6'),
-            ('+', 'b', 'T6', 'T7'),
-            ('>', 'T4', 'T7', 'T8'),
-            ('=', 'T8', '', 'z')
+            ('GOTO',    -1,    -1,     2),
+            ('*'   , 10002, 10003, 30000), 
+            ('+'   , 10001, 30000, 30001), 
+            ('-'   , 30001, 10004, 30002),
+            ('*'   , 10000, 30002, 30003),
+            ('*'   , 10002, 10003, 30004),
+            ('-'   , 30004, 10004, 30005),
+            ('+'   , 10001, 30005, 30006),
+            ('>'   , 30003, 30006, 38000),
+            ('='   , 38000,    -1, 18000)
         ]
         assert self.parser.QM.quadruples == quads
 
@@ -333,19 +1167,19 @@ class TestInput18:
 
     def test_QUADGENERATION(self):
         quads = [
-           ('GOTO', '', '', 2),
-           ('*', 'a', 'b', 'T1'),
-           ('*', 'd', 'f', 'T2'),
-           ('/', 'T2', 'g', 'T3'),
-           ('+', 'c', 'T3', 'T4'),
-           ('+', 'T4', 'h', 'T5'),
-           ('/', 'T1', 'T5', 'T6'),
-           ('-', 'T6', 'i', 'T7'),
-           ('+', 'a', 'b', 'T8'),
-           ('*', 'T8', 'c', 'T9'),
-           ('-', 'T9', 'd', 'T10'),
-           ('>', 'T7', 'T10', 'T11'),
-           ('=', 'T11', '', 'z')
+            ('GOTO',    -1,    -1,     2),
+            ('*'   , 10000, 10001, 30000),
+            ('*'   , 10003, 10005, 30001),
+            ('/'   , 30001, 10006, 34000),
+            ('+'   , 10002, 34000, 34001),
+            ('+'   , 34001, 10007, 34002),
+            ('/'   , 30000, 34002, 34003),
+            ('-'   , 34003, 10008, 34004),
+            ('+'   , 10000, 10001, 30002),
+            ('*'   , 30002, 10002, 30003),
+            ('-'   , 30003, 10003, 30004),
+            ('>'   , 34004, 30004, 38000),
+            ('='   , 38000,    -1, 18000),
         ]
 
         assert self.parser.QM.quadruples == quads
@@ -356,34 +1190,34 @@ class TestInput19:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('=', 1, '', 'a'),
-            ('P', '', '', 'a'),
-            ('=', 2, '', 'b'),
-            ('P', '', '', 'b: '),
-            ('P', '', '', 'b'),
-            ('+', 'a', 'b', 'T1'),
-            ('=', 'T1', '', 'c'),
-            ('R', '', '', 'd'),
-            ('R', '', '', 'e'),
-            ('R', '', '', 'f'),
-            ('=', 7, '', 'g'),
-            ('=', 8, '', 'h'),
-            ('=', 9, '', 'i'),
-            ('*', 'a', 'b', 'T2'),
-            ('*', 'd', 'f', 'T3'),
-            ('/', 'T3', 'g', 'T4'),
-            ('+', 'c', 'T4', 'T5'),
-            ('+', 'T5', 'h', 'T6'),
-            ('/', 'T2', 'T6', 'T7'),
-            ('-', 'T7', 'i', 'T8'),
-            ('+', 'a', 'b', 'T9'),
-            ('*', 'T9', 'c', 'T10'),
-            ('-', 'T10', 'd', 'T11'),
-            ('>', 'T8', 'T11', 'T12'),
-            ('=', 'T12', '', 'z'),
-            ('P', '', '', 'Z: '),
-            ('P', '', '', 'z')
+            ('GOTO',    -1,    -1,     2),
+            ('='   , 40000,    -1, 10000),
+            ('P'   ,    -1,    -1, 10000),
+            ('='   , 40001,    -1, 10001),
+            ('P'   ,    -1,    -1, 47500),
+            ('P'   ,    -1,    -1, 10001),
+            ('+'   , 10000, 10001, 30000),
+            ('='   , 30000,    -1, 10002),
+            ('R'   ,    -1,    -1, 10003),
+            ('R'   ,    -1,    -1, 10004),
+            ('R'   ,    -1,    -1, 10005),
+            ('='   , 40002,    -1, 10006),
+            ('='   , 40003,    -1, 10007),
+            ('='   , 40004,    -1, 10008),
+            ('*'   , 10000, 10001, 30001),
+            ('*'   , 10003, 10005, 30002),
+            ('/'   , 30002, 10006, 34000),
+            ('+'   , 10002, 34000, 34001),
+            ('+'   , 34001, 10007, 34002),
+            ('/'   , 30001, 34002, 34003),
+            ('-'   , 34003, 10008, 34004),
+            ('+'   , 10000, 10001, 30003),
+            ('*'   , 30003, 10002, 30004),
+            ('-'   , 30004, 10003, 30005),
+            ('>'   , 34004, 30005, 38000),
+            ('='   , 38000,    -1, 18000),
+            ('P'   ,    -1,    -1, 47501),
+            ('P'   ,    -1,    -1, 18000),
         ]
 
         assert self.parser.QM.quadruples == quads
@@ -394,15 +1228,15 @@ class TestInput20:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('+', 'a', 'b', 'T1'),
-            ('*', 'c', 'd', 'T2'),
-            ('>', 'T1', 'T2', 'T3'),
-            ('GOTOF', 'T3', '', 8),
-            ('+', 'b', 'd', 'T4'),
-            ('=', 'T4', '', 'a'),
-            ('*', 'a', 'c', 'T5'),
-            ('=', 'T5', '', 'b'),
+            ('GOTO' ,    -1,    -1,     2),
+            ('+'    , 10000, 10001, 30000),
+            ('*'    , 10002, 10003, 30001),
+            ('>'    , 30000, 30001, 38000),
+            ('GOTOF', 38000,    -1,     8),
+            ('+'    , 10001, 10003, 30002),
+            ('='    , 30002,    -1, 10000),
+            ('*'    , 10000, 10002, 30003),
+            ('='    , 30003,    -1, 10001),
         ]
 
         assert self.parser.QM.quadruples == quads
@@ -413,19 +1247,19 @@ class TestInput21:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('+', 'a', 'b', 'T1'),
-            ('*', 'c', 'd', 'T2'),
-            ('>', 'T1', 'T2', 'T3'),
-            ('GOTOF', 'T3', '', 9),
-            ('+', 'b', 'd', 'T4'),
-            ('=', 'T4', '', 'a'),
-            ('GOTO', '', '', 11),
-            ('-', 'd', 'c', 'T5'),
-            ('=', 'T5', '', 'a'),
-            ('*', 'a', 'c', 'T6'),
-            ('+', 'T6', 'd', 'T7'),
-            ('=', 'T7', '', 'b'),
+            ('GOTO' ,    -1,    -1,     2),
+            ('+'    , 10000, 10001, 30000),
+            ('*'    , 10002, 10003, 30001),
+            ('>'    , 30000, 30001, 38000),
+            ('GOTOF', 38000,    -1,     9),
+            ('+'    , 10001, 10003, 30002),
+            ('='    , 30002,    -1, 10000),
+            ('GOTO' ,    -1,    -1,    11),
+            ('-'    , 10003, 10002, 30003),
+            ('='    , 30003,    -1, 10000),
+            ('*'    , 10000, 10002, 30004),
+            ('+'    , 30004, 10003, 30005),
+            ('='    , 30005,    -1, 10001),
         ]
 
         assert self.parser.QM.quadruples == quads
@@ -436,28 +1270,28 @@ class TestInput22:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('*', 'a', 'b', 'T1'),
-            ('+', 'T1', 'c', 'T2'),
-            ('-', 'd', 'e', 'T3'),
-            ('>', 'T2', 'T3', 'T4'),
-            ('GOTOF', 'T4', '', 18),
-            ('*', 'd', 'c', 'T5'),
-            ('+', 'c', 'T5', 'T6'),
-            ('=', 'T6', '', 'b'),
-            ('P', '', '', 'b'),
-            ('+', 'a', 'b', 'T7'),
-            ('P', '', '', 'T7'),
-            ('>', 'a', 'b', 'T8'),
-            ('GOTOF', 'T8', '', 17),
-            ('+', 'd', 'e', 'T9'),
-            ('=', 'T9', '', 'c'),
-            ('GOTO', '', '', 21),
-            ('+', 'b', 'c', 'T10'),
-            ('=', 'T10', '', 'a'),
-            ('P', '', '', 'a'),
-            ('*', 'd', 'e', 'T11'),
-            ('=', 'T11', '', 'c'),
+            ('GOTO' ,    -1,    -1,     2),
+            ('*'    , 10000, 10001, 30000),
+            ('+'    , 30000, 10002, 30001),
+            ('-'    , 10003, 10004, 30002),
+            ('>'    , 30001, 30002, 38000),
+            ('GOTOF', 38000,    -1,    18),
+            ('*'    , 10003, 10002, 30003),
+            ('+'    , 10002, 30003, 30004),
+            ('='    , 30004,    -1, 10001),
+            ('P'    ,    -1,    -1, 10001),
+            ('+'    , 10000, 10001, 30005),
+            ('P'    ,    -1,    -1, 30005),
+            ('>'    , 10000, 10001, 38001),
+            ('GOTOF', 38001,    -1,    17),
+            ('+'    , 10003, 10004, 30006),
+            ('='    , 30006,    -1, 10002),
+            ('GOTO' ,    -1,    -1,    21),
+            ('+'    , 10001, 10002, 30007),
+            ('='    , 30007,    -1, 10000),
+            ('P'    ,    -1,    -1, 10000),
+            ('*'    , 10003, 10004, 30008),
+            ('='    , 30008,    -1, 10002),
         ]
 
         assert self.parser.QM.quadruples == quads
@@ -468,16 +1302,16 @@ class TestInput23:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('*', 'b', 'c', 'T1'),
-            ('>', 'a', 'T1', 'T2'),
-            ('GOTOF', 'T2', '', 9),
-            ('-', 'a', 'd', 'T3'),
-            ('=', 'T3', '', 'a'),
-            ('P', '', '', 'a'),
-            ('GOTO', '', '', 2),
-            ('+', 'c', 'a', 'T4'),
-            ('=', 'T4', '', 'b'),
+            ('GOTO' ,    -1,    -1,     2),
+            ('*'    , 10001, 10002, 30000),
+            ('>'    , 10000, 30000, 38000),
+            ('GOTOF', 38000,    -1,     9),
+            ('-'    , 10000, 10003, 30001),
+            ('='    , 30001,    -1, 10000),
+            ('P'    ,    -1,    -1, 10000),
+            ('GOTO' ,    -1,    -1,     2),
+            ('+'    , 10002, 10000, 30002),
+            ('='    , 30002,    -1, 10001),
         ]
 
         assert self.parser.QM.quadruples == quads
@@ -488,35 +1322,35 @@ class TestInput24:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('*', 'b', 'c', 'T1'),
-            ('+', 'a', 'T1', 'T2'),
-            ('<', 'T2', 'd', 'T3'),
-            ('GOTOF', 'T3', '', 27),
-            ('+', 'a', 'b', 'T4'),
-            ('<', 'T4', 'c', 'T5'),
-            ('GOTOF', 'T5', '', 17),
-            ('+', 'b', 'c', 'T6'),
-            ('=', 'T6', '', 'a'),
-            ('-', 'a', 1, 'T7'),
-            ('=', 'T7', '', 'a'),
-            ('+', 'b', 'c', 'T8'),
-            ('>', 'a', 'T8', 'T9'),
-            ('GOTOT', 'T9', '', 11),
-            ('GOTO', '', '', 26),
-            ('+', 'c', 'd', 'T10'),
-            ('>', 'b', 'T10', 'T11'),
-            ('GOTOF', 'T11', '', 26),
-            ('*', 'c', 'd', 'T12'),
-            ('+', 'b', 'T12', 'T13'),
-            ('=', 'T13', '', 'a'),
-            ('-', 'a', 'd', 'T14'),
-            ('=', 'T14', '', 'b'),
-            ('GOTO', '', '', 17),
-            ('GOTO', '', '', 2),
-            ('*', 'b', 'c', 'T15'),
-            ('=', 'T15', '', 'a'),
-            ('=', 0, '', 'c')
+            ( 'GOTO' ,    -1,    -1,     2),
+            ( '*'    , 10001, 10002, 30000),
+            ( '+'    , 10000, 30000, 30001),
+            ( '<'    , 30001, 10003, 38000),
+            ( 'GOTOF', 38000,    -1,    27),
+            ( '+'    , 10000, 10001, 30002),
+            ( '<'    , 30002, 10002, 38001),
+            ( 'GOTOF', 38001,    -1,    17),
+            ( '+'    , 10001, 10002, 30003),
+            ( '='    , 30003,    -1, 10000),
+            ( '-'    , 10000, 40000, 30004),
+            ( '='    , 30004,    -1, 10000),
+            ( '+'    , 10001, 10002, 30005),
+            ( '>'    , 10000, 30005, 38002),
+            ( 'GOTOT', 38002,    -1,    11),
+            ( 'GOTO' ,    -1,    -1,    26),
+            ( '+'    , 10002, 10003, 30006),
+            ( '>'    , 10001, 30006, 38003),
+            ( 'GOTOF', 38003,    -1,    26),
+            ( '*'    , 10002, 10003, 30007),
+            ( '+'    , 10001, 30007, 30008),
+            ( '='    , 30008,    -1, 10000),
+            ( '-'    , 10000, 10003, 30009),
+            ( '='    , 30009,    -1, 10001),
+            ( 'GOTO' ,    -1,    -1,    17),
+            ( 'GOTO' ,    -1,    -1,     2),
+            ( '*'    , 10001, 10002, 30010),
+            ( '='    , 30010,    -1, 10000),
+            ( '='    , 40001,    -1, 10002),
         ]
 
         assert self.parser.QM.quadruples == quads
@@ -539,82 +1373,84 @@ class TestInput27:
 
     def test_QUADGENERATION(self):
         quads = [
-            ('GOTO', '', '', 2),
-            ('=', 0, '', 'i'), 
-            ('=', 10, '', 'T1'), 
-            ('<', 'i', 'T1', 'T2'), 
-            ('GOTOF', 'T2', '', 16), 
-            ('+', 'a', 'b', 'T3'), 
-            ('*', 'c', 'd', 'T4'), 
-            ('>', 'T3', 'T4', 'T5'), 
-            ('GOTOF', 'T5', '', 12), 
-            ('+', 'b', 'd', 'T6'), 
-            ('=', 'T6', '', 'a'), 
-            ('*', 'a', 'c', 'T7'), 
-            ('=', 'T7', '', 'b'), 
-            ('++', 'i', 1, 'i'), 
-            ('GOTO', '', '', 4)
+            ('GOTO' ,    -1,    -1,     2),
+            ('='    , 40000,    -1, 10008),
+            ('='    , 40001,    -1, 30000),
+            ('<'    , 10008, 30000, 38000),
+            ('GOTOF', 38000,    -1,    16),
+            ('+'    , 10000, 10001, 30001),
+            ('*'    , 10002, 10003, 30002),
+            ('>'    , 30001, 30002, 38001),
+            ('GOTOF', 38001,    -1,    12),
+            ('+'    , 10001, 10003, 30003),
+            ('='    , 30003,    -1, 10000),
+            ('*'    , 10000, 10002, 30004),
+            ('='    , 30004,    -1, 10001),
+            ('++'   , 10008, 40002, 10008),
+            ('GOTO' ,    -1,    -1,     4),
             ]
 
         assert self.parser.QM.quadruples == quads
 
-class TestInput28:
-    # Initialize a different compiler with the needed file
-    status, lexer, parser = initializeCompiler('input_28.txt')
+# class TestInput28:
+#     # Initialize a different compiler with the needed file
+#     status, lexer, parser = initializeCompiler('input_28.txt')
 
-    def test_QUADGENERATION(self):
-        quads = [
-            ('GOTO', '', '', 31), 
-            ('>', 'a', 0, 'T1'), 
-            ('GOTOF', 'T1', '', 11), 
-            ('*', 'b', 'j', 'T2'), 
-            ('+', 'a', 'T2', 'T3'), 
-            ('+', 'T3', 'i', 'T4'), 
-            ('=', 'T4', '', 'i'), 
-            ('+', 'i', 'j', 'T5'), 
-            ('P', '', '', 'T5'), 
-            ('GOTO', '', '', 13), 
-            ('+', 'a', 'b', 'T6'), 
-            ('P', '', '', 'T6'), 
-            ('ENDFUNC', '', '', ''), 
-            ('=', 'a', '', 'i'), 
-            ('>', 'a', 0, 'T7'), 
-            ('GOTOF', 'T7', '', 30), 
-            ('*', 'k', 'j', 'T8'), 
-            ('-', 'a', 'T8', 'T9'), 
-            ('=', 'T9', '', 'a'), 
-            ('ERA', '', '', 'uno'), 
-            ('*', 'a', 2, 'T10'), 
-            ('PARAM', 'T10', '', 'P1'), 
-            ('+', 'a', 'k', 'T11'), 
-            ('PARAM', 'T11', '', 'P2'), 
-            ('GOSUB', '', '', 'uno'), 
-            ('*', 'g', 'j', 'T12'), 
-            ('-', 'T12', 'k', 'T13'), 
-            ('=', 'T13', '', 'g'), 
-            ('GOTO', '', '', 15), 
-            ('ENDFUNC', '', '', ''), 
-            ('=', 2, '', 'i'), 
-            ('+', 'i', 1, 'T14'), 
-            ('=', 'T14', '', 'k'), 
-            ('=', 3.14, '', 'f'), 
-            ('ERA', '', '', 'dos'), 
-            ('+', 'i', 'k', 'T15'), 
-            ('PARAM', 'T15', '', 'P1'), 
-            ('*', 'f', 3, 'T16'), 
-            ('PARAM', 'T16', '', 'P2'), 
-            ('GOSUB', '', '', 'dos'), 
-            ('P', '', '', 'i'), 
-            ('*', 'j', 2, 'T17'), 
-            ('P', '', '', 'T17'), 
-            ('*', 'f', 2, 'T18'), 
-            ('+', 'T18', 1.5, 'T19'), 
-            ('P', '', '', 'T19'), 
-            ('/', 'k', 2, 'T20'), 
-            ('-', 'i', 'T20', 'T21'), 
-            ('=', 'T21', '', 'i'), 
-            ('>', 'i', 0, 'T22'), 
-            ('GOTOT', 'T22', '', 35)
-            ]
+#     def test_QUADGENERATION(self):
+#         quads = [
+#             ('GOTO', '', '', 31), 
+#             ('>', 'a', 0, 'T1'), 
+#             ('GOTOF', 'T1', '', 11), 
+#             ('*', 'b', 'j', 'T2'), 
+#             ('+', 'a', 'T2', 'T3'), 
+#             ('+', 'T3', 'i', 'T4'), 
+#             ('=', 'T4', '', 'i'), 
+#             ('+', 'i', 'j', 'T5'), 
+#             ('P', '', '', 'T5'), 
+#             ('GOTO', '', '', 13), 
+#             ('+', 'a', 'b', 'T6'), 
+#             ('P', '', '', 'T6'), 
+#             ('ENDFUNC', '', '', ''), 
+#             ('=', 'a', '', 'i'), 
+#             ('>', 'a', 0, 'T7'), 
+#             ('GOTOF', 'T7', '', 30), 
+#             ('*', 'k', 'j', 'T8'), 
+#             ('-', 'a', 'T8', 'T9'), 
+#             ('=', 'T9', '', 'a'), 
+#             ('ERA', '', '', 'uno'), 
+#             ('*', 'a', 2, 'T10'), 
+#             ('PARAM', 'T10', '', 'P1'), 
+#             ('+', 'a', 'k', 'T11'), 
+#             ('PARAM', 'T11', '', 'P2'), 
+#             ('GOSUB', '', '', 'uno'), 
+#             ('*', 'g', 'j', 'T12'), 
+#             ('-', 'T12', 'k', 'T13'), 
+#             ('=', 'T13', '', 'g'), 
+#             ('GOTO', '', '', 15), 
+#             ('ENDFUNC', '', '', ''), 
+#             ('=', 2, '', 'i'), 
+#             ('+', 'i', 1, 'T14'), 
+#             ('=', 'T14', '', 'k'), 
+#             ('=', 3.14, '', 'f'), 
+#             ('ERA', '', '', 'dos'), 
+#             ('+', 'i', 'k', 'T15'), 
+#             ('PARAM', 'T15', '', 'P1'), 
+#             ('*', 'f', 3, 'T16'), 
+#             ('PARAM', 'T16', '', 'P2'), 
+#             ('GOSUB', '', '', 'dos'), 
+#             ('P', '', '', 'i'), 
+#             ('*', 'j', 2, 'T17'), 
+#             ('P', '', '', 'T17'), 
+#             ('*', 'f', 2, 'T18'), 
+#             ('+', 'T18', 1.5, 'T19'), 
+#             ('P', '', '', 'T19'), 
+#             ('/', 'k', 2, 'T20'), 
+#             ('-', 'i', 'T20', 'T21'), 
+#             ('=', 'T21', '', 'i'), 
+#             ('>', 'i', 0, 'T22'), 
+#             ('GOTOT', 'T22', '', 35)
+#             ]
 
-        assert self.parser.QM.quadruples == quads
+#         assert self.parser.QM.quadruples == quads
+
+#     # TODO: Test for a typed function without a RETURN statement (throws error)

@@ -12,18 +12,20 @@ from Components.status import semanticError, syntacticalError
 from Components.semcube import OrangeCube
 from Components.quadmachine import OrangeQuadMachine
 
+
 class OrangeParser(Parser):
     tokens = OrangeLexer.tokens
     debugfile = 'parser.out'    # Parser debugging file
     start = 'program'           # Start parsing from < program > rule
     reserved = OrangeLexer.reserved
     
-    def __init__(self, status):
+    def __init__(self, status, memory):
         self.StatusChecker = status   # Initiate status checker
-        self.OFD = OrangeFuncDir(self.StatusChecker)    # Orange Function Directory
-        self.OVT = OrangeVarTable(self.StatusChecker)   # Orange Variable Table
-        self.SC = OrangeCube()                          # Orange Semantic Cube
-        self.QM = OrangeQuadMachine(self.OFD, self.SC)                   # Orange Quadruple Machine
+        self.MM  = memory   # Initiate status checker
+        self.OFD = OrangeFuncDir(self.StatusChecker, self.MM)    # Orange Function Directory
+        self.OVT = OrangeVarTable(self.StatusChecker, self.MM)   # Orange Variable Table
+        self.SC  = OrangeCube()                         # Orange Semantic Cube
+        self.QM  = OrangeQuadMachine(self.OFD, self.SC, self.MM) # Orange Quadruple Machine
         self.programName = ''
 
     ### GRAMMAR ###
@@ -32,7 +34,6 @@ class OrangeParser(Parser):
     @_('PROGRAM ID saveprogramname declare')
     # @_('PROGRAM ID declare')
     def program(self, p):
-
         return p
 
     # Declaration blocks (global variables & functions)
@@ -55,20 +56,11 @@ class OrangeParser(Parser):
     def declareblock(self, p):
         return p
     
-    # WARNING: Changed RETURN factor to RETURN exp
-        # Did this so I could return things like a + b instead of (a + b)
-    # Block with a value return
-    @_('LCURLY decvars blockcontent RETURN exp SEMICOLON RCURLY')
-    def returnblock(self, p):
-        return p
-
-        # Single or multiple block content
+    # Single or multiple block content
     @_('statute blockcontent', 'empty')
     def blockcontent(self, p):
         return p
     
-
-
     # (Optional)
     # Variable declaration block
     @_('VARS decvar_line')
@@ -120,24 +112,6 @@ class OrangeParser(Parser):
             functionName = self.programName
         else:
             functionName = self.OFD.context
-        
-            # print('🥑 0: ', p[0])
-            # print(self.OFD.checkVar(p[0]))
-
-        # if p[-2] == ',' and isinstance(p[-4], tuple):
-        #     print('🥑 1: ', p[-1])
-        #     print('🥑 2: ', p[-2])
-        #     print('🥑 3: ', p[-3])
-        #     print('🥑 4: ', p[-4])
-        #     print('🥑 5: ', p[-5])
-        #     print('🥑 6: ', p[-6])
-        #     print('🥑 7: ', p[-7])
-        #     print('🥑 8: ', p[-8])
-        #     self.OFD.dir[functionName]['size']['local'][p[-4][1]] += 1
-
-        # else:
-        #     print('🍬: ', p[-2])
-        #     self.OFD.dir[functionName]['size']['local'][p[-2][1]] += 1
 
         self.OFD.dir[functionName]['size']['local'][self.OVT.varType] += 1
 
@@ -180,45 +154,33 @@ class OrangeParser(Parser):
         return p
 
     # Function type definition
-    @_('FUNC voidfunc', 'FUNC typefunc')
+        # Function without a return value
+            # void fullname(firstname, lastname) {
+            #   print("Fullname: ", firstname, " ", lastname)
+            # }
+        # Function with a return value
+            # int sum(a, b) {
+            #   return a + b
+            # }
+    @_('FUNC functype ID changecontext LPAREN params RPAREN declareblock')
     def func(self, p):
-        return p
-
-    # Function without a return value
-        # void fullname(firstname, lastname) {
-        #   print("Fullname: ", firstname, " ", lastname)
-        # }
-    @_('VOID ID changecontext LPAREN params RPAREN declareblock')
-    def voidfunc(self, p):
-        self.QM.addOperator('ENDFUNC')
-        self.QM.addOperand(('',''))
-        self.QM.addOperand(('',''))
-        self.QM.generateQuadruple()
-        return p
-
-    # Function with a return value
-        # int sum(a, b) {
-        #   return a + b
-        # }
-    @_('type ID changecontext LPAREN params RPAREN returnblock')
-    def typefunc(self, p):
         # In second argument add p[0] -> whatever < type > returns
         # Add p[0][1] to get the second element -> < type > returns tuples like ('type', 'int')
         self.QM.addOperator('ENDFUNC')
-        self.QM.addOperand(('',''))
-        self.QM.addOperand(('',''))
+        self.QM.addOperand((-1, -1))
+        self.QM.addOperand((-1, -1))
         self.QM.generateQuadruple()
         return p
+    
+    @_('VOID')
+    def functype(self, p):
+        return p[0]
+    
+    @_('type')
+    def functype(self, p):
+        return p[0]
 
     # Parameter declaration
-        # Function()
-        # Function(parameter)
-        # Function(param1, param2, param3)
-    # @_('type ID', 'type ID COMMA params', 'empty')
-    # def params(self, p):
-    #     return p
-    
-    
     @_('param params_aux', 'empty')
     def params(self, p):
         return p
@@ -228,8 +190,8 @@ class OrangeParser(Parser):
         paramType = p[0][1]
         paramName = p[1]
         self.OFD.addParam(paramName, paramType)
-
         return p
+
     @_('COMMA params','empty')
     def params_aux(self, p):
         return p
@@ -239,19 +201,23 @@ class OrangeParser(Parser):
         # fullname("Beto", "Rendon")
     @_('ID generate_era LPAREN callvalues RPAREN')
     def call(self, p):
-        print('🍓: ', self.QM.CallSignature)
-        print('🍇: ', self.OFD.dir[p[0]]['signature'])
         if self.QM.CallSignature != self.OFD.dir[p[0]]['signature']:
             raise semanticError(f"❌ Function signature mismatch | Arguments given for < {self.OFD.dir[p[0]]['name']} > do not match the function's signature")
+        else:
+            # This means the call is for a typed function, meaning it needs to add the global
+            # variable to store the function's result
+            nonReturnTypes = ['main', 'void', 'prog']
+            if self.OFD.dir[p[0]]['type'] not in nonReturnTypes:
+                self.QM.addOperand(p[0])
+            
+            # Generate GOSUB quadruple
+            self.QM.addOperator('GOSUB')
+            self.QM.addOperand((p[0], 'func'))
+            self.QM.addOperand((-1, -1))
+            self.QM.generateQuadruple()
 
-        # Generate GOSUB quadruple
-        self.QM.addOperator('GOSUB')
-        self.QM.addOperand((p[0], 'func'))
-        self.QM.addOperand(('',''))
-        self.QM.generateQuadruple()
-
-        # Reset parameter counter
-        self.QM.ParameterNumber = 0
+            # Reset parameter counter
+            self.QM.ParameterNumber = 0
         return p
     
     @_('')
@@ -266,7 +232,7 @@ class OrangeParser(Parser):
             # Generate Activation Record Expansion -new- size quadruple
             self.QM.addOperator('ERA')
             self.QM.addOperand((p[-1], 'func'))
-            self.QM.addOperand(('', ''))
+            self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
         
         # Raise error if function doesn't exist
@@ -290,8 +256,6 @@ class OrangeParser(Parser):
     
     @_('')
     def generate_param(self, p):
-        print('🍌 Operands: ', self.QM.operands)
-        print('🍌 ParamNumber: ', self.QM.ParameterNumber)
         self.QM.CallSignature += self.QM.operands[-1][1][0]
         self.QM.addOperator('PARAM')
         self.QM.addOperand((self.QM.generateParameter(),'param'))
@@ -468,7 +432,8 @@ class OrangeParser(Parser):
     @_('')
     def createfinaltempvar(self, p):
         vfinalName = (self.QM.generateTempVar('int'), 'int')
-        self.QM.addOperand(vfinalName)
+        self.QM.operands.append(vfinalName)
+        # self.QM.addOperand(vfinalName)
         return p
 
     @_('')
@@ -482,15 +447,18 @@ class OrangeParser(Parser):
             controlVariable = (self.QM.quadruples[self.QM.QuadrupleNumber-2][3], 'int')
             endVariable     = (self.QM.quadruples[self.QM.QuadrupleNumber-1][3], 'int')
             self.QM.addOperator('<')
-            self.QM.addOperand(controlVariable)
-            self.QM.addOperand(endVariable)
+            
+            # Add operands directly (with addOperand() it adds the addresses as constants)
+            self.QM.operands.append(controlVariable)
+            self.QM.operands.append(endVariable)
+
             self.QM.generateQuadruple()
             self.QM.jumps.append(self.QM.QuadrupleNumber)
 
-
         else:
             raise semanticError('❌ Type mismatch | FOR loop ending must be an integer')
-        return p
+
+            return p
     
 
 
@@ -545,7 +513,7 @@ class OrangeParser(Parser):
     @_('var')
     def readvalue(self, p):
         self.QM.addOperand(p[0][1])          # To not break the internals of addOperand, add fluff
-        self.QM.addOperand(('', ''))      # To not break the internals of addOperand, add fluff
+        self.QM.addOperand((-1, -1))      # To not break the internals of addOperand, add fluff
         self.QM.addOperator('R')          # P stands for PRINT
         self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))        
         return p
@@ -564,7 +532,7 @@ class OrangeParser(Parser):
     # Print a super expression and/or a string
     @_('super_exp')
     def writevalues(self, p):
-        self.QM.addOperand(('', ''))      # To not break the internals of addOperand, add fluff
+        self.QM.addOperand((-1, -1))      # To not break the internals of addOperand, add fluff
         self.QM.addOperator('P')          # P stands for PRINT
         self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))        
         return p
@@ -572,8 +540,8 @@ class OrangeParser(Parser):
     # Print a super expression and/or a string
     @_('CTESTRING')
     def writevalues(self, p):
-        self.QM.addOperand((p[0], 'str')) # Constants are identified as (constant, type)
-        self.QM.addOperand(('', ''))      # To not break the internals of addOperand, add fluff
+        self.QM.addOperand((p[0], 'string')) # Constants are identified as (constant, type)
+        self.QM.addOperand((-1, -1))      # To not break the internals of addOperand, add fluff
         self.QM.addOperator('P')          # P stands for PRINT
         self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))
         return p
@@ -592,22 +560,22 @@ class OrangeParser(Parser):
         # Opening slot for a DO WHILE 
         if p[-7] == 'do' and p[-4] == 'while':   # DO saveposition block WHILE LPAREN expression RPAREN <WE ARE HERE> filljumps
             self.QM.addOperator('GOTOT')
-            self.QM.addOperand(('', ''))
+            self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
 
 
         # Opening slot for an IF
         elif p[-1] == ')' or p[-10] == 'from':    # if (condition) <WE ARE HERE> {statements}
             self.QM.addOperator('GOTOF')
-            self.QM.addOperand(('', ''))
+            self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
             self.QM.jumps.append(self.QM.QuadrupleNumber)
             
         # Opening slot for an ELSE
         elif p[-2] == 'else':   # if (condition) {statements} ELSE filljumps <WE ARE HERE> {statements}
             self.QM.addOperator('GOTO')
-            self.QM.addOperand(('', ''))
-            self.QM.addOperand(('', ''))
+            self.QM.addOperand((-1, -1))
+            self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
             self.QM.jumps.append(self.QM.QuadrupleNumber)
         
@@ -635,8 +603,8 @@ class OrangeParser(Parser):
         elif p[-7] == 'while':
             # Generate GOTO quadruple that will return us to before the WHILE's condition
             self.QM.addOperator('GOTO')
-            self.QM.addOperand(('', ''))
-            self.QM.addOperand(('', ''))
+            self.QM.addOperand((-1, -1))
+            self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
             
             # Fill the WHILE's condition (GOTOF) with position AFTER the GOTO we just created
@@ -658,14 +626,14 @@ class OrangeParser(Parser):
             # Loop increment quadruple
             controlVariable = (self.QM.quadruples[loopReturn-1][1], 'int') # self.QM.quadruples[loopReturn] is the comparison quadruple -> ('<', VControl, VFinal, Temp)
             self.QM.addOperator('++')
-            self.QM.addOperand(controlVariable)
+            self.QM.operands.append(controlVariable)
             self.QM.addOperand((1, 'int'))
             self.QM.generateQuadruple()
 
             # Unfilled return quadruple
             self.QM.addOperator('GOTO')
-            self.QM.addOperand(('', ''))
-            self.QM.addOperand(('', ''))
+            self.QM.addOperand((-1, -1))
+            self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
 
             # Fill GOTOF quadruple
@@ -704,9 +672,41 @@ class OrangeParser(Parser):
     @_('INT', 'FLOAT', 'BOOL')
     def type(self, p):
         return p
+    
+    @_('RETURN super_exp')
+    def returnstmt(self, p):
+        prohibitedTypes = ['main', 'prog', 'void']
+        if self.OFD.dir[self.OFD.context]['type'] in prohibitedTypes:
+            raise semanticError(f'❌ RETURN ERROR | Only typed functions may return values') 
+        else:
+            # Last operand is the result of the super_exp after the RETURN token
+            returnResult = self.QM.operands.pop()
+            
+            # Get the name for the global variable where the return result will be stored
+            resultVarName = self.OFD.dir[self.programName]['table'][self.OFD.context]['name']
+            
+            # Assign the result of the super_exp to the global return variable for the current function
+            self.QM.addOperator('=')
+            
+            # Use addOperand function to insert operand without messing with constant tables or other parts
+            self.QM.addOperand((resultVarName, 'return'))
+            
+            # Directly append to operands to avoid filters in addOperand function (they would pass it as a constant)
+            self.QM.operands.append(returnResult)
+            
+            # Generate assignment quadruple
+            self.QM.generateQuadruple()
+
+            # Generate END FUNCTION quadruple
+            self.QM.addOperator('ENDFUNC')
+            self.QM.addOperand((-1, -1))
+            self.QM.addOperand((-1, -1))
+            self.QM.generateQuadruple()
+
+        return p
         
     # Statute definition
-    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'dowhileloop', 'forloop', 'call')
+    @_('assignment', 'condition', 'write', 'read', 'whileloop', 'dowhileloop', 'forloop', 'call', 'returnstmt')
     def statute(self, p):
         return p
     
@@ -758,6 +758,15 @@ class OrangeParser(Parser):
             # If its a typed function it returns a tuple like ('type', 'int')
             if isinstance(p[-2], tuple):
                 functionType = p[-2][1]
+                
+                # Add function as a global variable (to store the value it returns)
+                functionResultAddress = self.MM.buildAddress(functionType, 'global')
+                self.OFD.dir[self.programName]['table'][p[-1]] = {
+                    'name': p[-1],
+                    'type': functionType,
+                    'scope': self.programName,
+                    'address': functionResultAddress
+                }
             
             # Otherwise it only returns a 'VOID' string        
             else:
@@ -795,10 +804,14 @@ class OrangeParser(Parser):
         # Save program name to check for global variables later
         Pname = p[-1]
         
-        # Define function data in a readable way
-        self.programName = Pname
+        # Know how to reference the GLOBAL context from other components
+        self.programName     = Pname
         self.OFD.programName = Pname
-        self.OFD.context = Pname
+        self.OVT.programName = Pname
+        self.OFD.context     = Pname
+        self.MM.programName  = Pname
+
+        # Define function data in a readable way
         functionName   = self.programName
         functionType   = 'prog'
         variableTable  = {}
@@ -827,8 +840,8 @@ class OrangeParser(Parser):
         
         # Generate GOTO MAIN quadruple
         self.QM.addOperator('GOTO')
-        self.QM.addOperand(('', ''))
-        self.QM.addOperand(('', ''))
+        self.QM.addOperand((-1, -1))
+        self.QM.addOperand((-1, -1))
         self.QM.generateQuadruple()
         self.QM.jumps.append(self.QM.QuadrupleNumber)
 
