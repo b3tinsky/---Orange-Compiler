@@ -81,10 +81,11 @@ class MemoryManager():
 
         return address
 
-
-
-
-
-
-
-
+    def resetContextAddresses(self):
+        # Reset context bound address counters
+        self.addressBook['local']['int']   = 0
+        self.addressBook['local']['float'] = 4000
+        self.addressBook['local']['bool']  = 8000
+        self.addressBook['temp']['int']    = 0
+        self.addressBook['temp']['float']  = 4000
+        self.addressBook['temp']['bool']   = 8000

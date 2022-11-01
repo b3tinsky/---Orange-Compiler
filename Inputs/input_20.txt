@@ -5,9 +5,14 @@ program test_20
 
 main()
 {
+    a = 1;
+    b = 2;
+    c = 2;
+    d = 1;
     if(a + b > c * d)
         {
             a = b + d;
         }
     b = a * c;
+    print("<-- A -->", a);
 }

@@ -18,9 +18,8 @@ class OrangeQuadMachine():
     # Keeps track of temporary variable names
     def generateTempVar(self, resultType):
         address = self.MM.buildAddress(resultType, 'temp')
-        # self.TempNumber += 1
         self.OFD.dir[self.OFD.context]['size']['temp'][resultType] += 1
-        # return f'T{self.TempNumber}'
+
         return address
 
     def generateParameter(self):
@@ -149,6 +148,12 @@ class OrangeQuadMachine():
         elif operator == 'ENDFUNC':
             # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
             self.quadruples.append( (operator, -1, -1, -1) ) 
+            return
+        
+        # RETURN
+        elif operator == 'RETURN':
+            # Adds quadruple, but at this point it doesn't know where to jump in case condition is not met
+            self.quadruples.append( (operator, rightOperand[0], -1, leftOperand[0]) ) 
             return
 
         # ERA

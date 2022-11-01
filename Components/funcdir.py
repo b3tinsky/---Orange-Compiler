@@ -14,7 +14,7 @@ class OrangeFuncDir():
             'bool'  : {},
             'string': {}
         }
-        
+
         # DOC: Start with a global context. As functions and main() are declared, the context changes
         self.context = ''
         

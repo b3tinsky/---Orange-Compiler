@@ -36,15 +36,15 @@ Checkpoints are given by our professor, although they can change during the seme
     - ~~TYPED~~
 - ~~Function call~~
 
-### ⚠️ Checkpoint \#6: Memory map for virtual machine
+### ✅ Checkpoint \#6: Memory map for virtual machine
 - ~~Memory management~~
-- Execution of arithmetic expressions
-- Secuential statutes
+- ~~Execution of arithmetic expressions~~
+- ~~Secuential statutes~~
 
-### ❌ Checkpoint \#7: Code generation for arrays and structured types
-- Execution of conditional statutes
+### ✅ Checkpoint \#7: Code generation for arrays and structured types
+- ~~Execution of conditional statutes~~
 
-### ❌ Checkpoint \#8: First version of documentation
+### ⚠️ Checkpoint \#8: First version of documentation
 - For a specific section
     - Code generation
     - Virtual machine
@@ -368,6 +368,19 @@ __Inputs__
 - Refactored tests
 - Executed tests by hand to confirm everything works (some bugs were found and fixed). Did not execute test 28 yet.
 
+---
+
+### 📆 November 01 🕓 16:09
+- Refactored tests
+- Separated tests into their own file to avoid problems with a virtual machine execution
+- Memory addresses reset after context switch
+- OBJ file is generated after the parser finishes and is read and executed by the virtual machine
+- RETURN quadruple added
+- VirtualMachine developed.
+    - Instructions are added as individual functions that are called through a switch (to speed things up)
+    - An instruction pointer counter is added and updated as the instructions are read and executed
+    - A "breadcrumb" list is added to keep track of instruction numbers to go back when calling a function
+    - The function directory and the constant table are brought back to reference them throughout execution
 
 # Reference
 
@@ -402,6 +415,9 @@ __Inputs__
 
 [El Libro de Python - Switch en Python](https://ellibrodepython.com/switch-python)
 
+[Towards Data Science - Do not use python pickle unless you know all these facts](https://towardsdatascience.com/do-not-use-python-pickle-unless-you-know-all-these-facts-d9e8695b7d43)
+
+[Codigo Piton - Como hacer switch case en python](https://www.codigopiton.com/como-hacer-switch-case-en-python/)
 
 ## StackOverflow
 [Method arguments in Python](https://stackoverflow.com/questions/5169257/method-arguments-in-python)

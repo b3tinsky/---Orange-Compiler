@@ -4,9 +4,7 @@ from Components.funcdir import OrangeFuncDir
 from Components.vartable import OrangeVarTable
 from Components.status import OrangeStatus
 from Components.memory import MemoryManager
-
-# from Components import funcdir
-# from Components import vartable
+from Components.virtualmachine import VirtualMachine
 
 # Normal imports
 from pathlib import Path
@@ -20,7 +18,7 @@ def orange_juice(test_name, test_data):
     try:
         lexer = OrangeLexer(StatusChecker)
         parser = OrangeParser(StatusChecker, MemoryM)
-        print('▼'*15, test_name ,'▼'*15)
+        # print('▼'*15, test_name ,'▼'*15)
         
         # No command line arguments given
         if not argument_list:
@@ -49,21 +47,23 @@ def orange_juice(test_name, test_data):
     except Exception as err:
         print(str(err))
 
-    parser.OFD.printdata()
-    print(f'-'*50)
-    print('JUMPS: ', parser.QM.jumps)
-    print('OPERANDS: ', parser.QM.operands)
-    print('OPERATORS: ', parser.QM.operators)
-    print(f'-'*50)
+    # parser.OFD.printdata()
+    # print(f'-'*50)
+    # print('JUMPS: ', parser.QM.jumps)
+    # print('OPERANDS: ', parser.QM.operands)
+    # print('OPERATORS: ', parser.QM.operators)
+    # print(f'-'*50)
     parser.QM.printQuads()
-    print(f'-'*50)
-    print('▲'*15, test_name ,'▲'*15)
-    print()
+    # print(f'-'*50)
+    # print('▲'*15, test_name ,'▲'*15)
+    # print()
+    VM.run()
 
 
 # Persistent Objects
 StatusChecker = OrangeStatus()
 MemoryM = MemoryManager()
+VM = VirtualMachine()
 
 # Command line arguments
 argument_list = sys.argv[1:]

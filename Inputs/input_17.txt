@@ -6,5 +6,12 @@ program test_17
 
 main()
 {
+    a = 1;
+    b = 2;
+    c = 3;
+    d = 2;
+    e = 1;
+
     z = a*(b+c*d-e)>b+(c*d-e);
+    print("<-- Z --> ", z);
 }

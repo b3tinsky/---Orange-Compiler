@@ -5,10 +5,16 @@ program test_27
 
 main()
 {
+    a = 2;
+    b = 2;
+    c = 1;
+    d = 2;
     from i = 0 to 10 do 
     {
+        print("<-- FOR -->", i);
         if(a + b > c * d)
             {
+                print("<-- IF -->", i);
                 a = b + d;
             }
         b = a * c;

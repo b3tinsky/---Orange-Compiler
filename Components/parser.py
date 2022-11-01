@@ -1,5 +1,6 @@
 # ▲▼
 
+import pickle
 from sly import Parser
 from Components.scanner import OrangeLexer
 # DOC: Explain why I need a deep copy instead of using the same VariableTable object
@@ -32,8 +33,15 @@ class OrangeParser(Parser):
     
     # Program declaration
     @_('PROGRAM ID saveprogramname declare')
-    # @_('PROGRAM ID declare')
     def program(self, p):
+        with open('ovejota.pickle','wb') as obj:
+            DUMP = {
+                'quadruples': self.QM.quadruples,
+                'functiondirectory': self.OFD.dir,
+                'constantstable': self.OFD.constants,
+                'programname': self.OFD.programName
+            }
+            pickle.dump(DUMP, obj)
         return p
 
     # Declaration blocks (global variables & functions)
@@ -258,7 +266,8 @@ class OrangeParser(Parser):
     def generate_param(self, p):
         self.QM.CallSignature += self.QM.operands[-1][1][0]
         self.QM.addOperator('PARAM')
-        self.QM.addOperand((self.QM.generateParameter(),'param'))
+        paramNum = self.QM.generateParameter()
+        self.QM.addOperand((paramNum,'param'))
         self.QM.generateQuadruple()
         return p
 
@@ -458,7 +467,7 @@ class OrangeParser(Parser):
         else:
             raise semanticError('❌ Type mismatch | FOR loop ending must be an integer')
 
-            return p
+            # return p
     
 
 
@@ -673,6 +682,7 @@ class OrangeParser(Parser):
     def type(self, p):
         return p
     
+    # FIXME: Add a semicolon at the end
     @_('RETURN super_exp')
     def returnstmt(self, p):
         prohibitedTypes = ['main', 'prog', 'void']
@@ -686,21 +696,28 @@ class OrangeParser(Parser):
             resultVarName = self.OFD.dir[self.programName]['table'][self.OFD.context]['name']
             
             # Assign the result of the super_exp to the global return variable for the current function
-            self.QM.addOperator('=')
+            # self.QM.addOperator('=')
             
             # Use addOperand function to insert operand without messing with constant tables or other parts
-            self.QM.addOperand((resultVarName, 'return'))
+            # self.QM.addOperand((resultVarName, 'return'))
             
             # Directly append to operands to avoid filters in addOperand function (they would pass it as a constant)
-            self.QM.operands.append(returnResult)
+            # self.QM.operands.append(returnResult)
             
             # Generate assignment quadruple
-            self.QM.generateQuadruple()
+            # self.QM.generateQuadruple()
 
             # Generate END FUNCTION quadruple
-            self.QM.addOperator('ENDFUNC')
-            self.QM.addOperand((-1, -1))
-            self.QM.addOperand((-1, -1))
+            # self.QM.addOperator('ENDFUNC')
+            # self.QM.addOperand((-1, -1))
+            # self.QM.addOperand((-1, -1))
+            # self.QM.generateQuadruple()
+            
+            self.QM.addOperator('RETURN')
+            self.QM.addOperand((resultVarName, 'return'))
+            self.QM.operands.append(returnResult)
+            # self.QM.addOperand((-1, -1))
+            # self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
 
         return p
@@ -715,6 +732,7 @@ class OrangeParser(Parser):
         # Usually the context changes AFTER the rule is finished, but this doesn't work for variable tables  
     @_('')
     def changecontext(self, p):
+        self.MM.resetContextAddresses()
         self.OVT.cleartable()
 
         if (p[-2] == 'program'):
