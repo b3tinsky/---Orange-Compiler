@@ -73,7 +73,7 @@ class OrangeQuadMachine():
             # [[+],[-],[*]] <- a + (c - (b * d))
         self.operators[-1].append(operator)
     
-
+    # FIXME: Remove "returns"
     def generateQuadruple(self):
         self.QuadrupleNumber += 1             # Keep track of quad number
         rightOperand = self.operands.pop()    # ('name', 'type')

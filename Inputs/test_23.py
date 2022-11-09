@@ -26,6 +26,7 @@ class TestInput23:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_23.txt')
 
+    @pytest.mark.order(32)
     def test_QUADGENERATION(self):
         quads = [
             ('GOTO' ,    -1,    -1,     2),
@@ -46,6 +47,7 @@ class TestInput23:
 
         assert self.parser.QM.quadruples == quads
 
+    @pytest.mark.order(33)
     def test_execution(self):
         vm23 = VirtualMachine()
         vm23.run()

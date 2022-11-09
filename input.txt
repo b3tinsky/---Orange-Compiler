@@ -1,0 +1,25 @@
+program test_29
+    vars 
+        int i, j, k;
+        float f;
+
+func int fact(int n)
+{
+    if (n == 1)
+    {
+        return n
+    }
+    else
+    {
+        return n * (fact(n - 1))
+    }
+}
+
+main()
+{
+    i = 2;
+    j = 1;
+    k = i + 1;
+    f = 3.14;
+    print("Factorial of 4: ", fact(4), "\n");
+}

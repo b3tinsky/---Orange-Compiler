@@ -27,7 +27,8 @@ class TestInput03:
     status, lexer, parser = initializeCompiler('input_03.txt')
     vm03 = VirtualMachine()
     vm03.run()
-
+    
+    @pytest.mark.order(3)
     def test_functionDirectory(self):
         dir = {
             'main': {
@@ -103,6 +104,7 @@ class TestInput03:
         }
         assert self.parser.OFD.dir == dir
 
+    @pytest.mark.order(4)
     def test_constantsTable(self):
         constantsTable = {
             'bool': {},
@@ -119,6 +121,7 @@ class TestInput03:
 
         assert self.parser.OFD.constants == constantsTable
 
+    @pytest.mark.order(5)
     def test_execution(self):
         result = [{}, {20000: 2, 20001: 3, 20002: 1, 30000: 3, 30001: 14}]
 

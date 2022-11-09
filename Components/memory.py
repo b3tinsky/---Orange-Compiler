@@ -76,9 +76,6 @@ class MemoryManager():
         # Build address | Base address based on scope & Type address
         address = self.buildAddress(type, scope)
 
-        # Allocate in memory blocks
-        # TODO: Open space in memory blocks
-
         return address
 
     def resetContextAddresses(self):

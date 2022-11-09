@@ -1,42 +1,18 @@
-program patito
+program test_28
     vars 
         int i, j, k;
         float f;
 
-func void uno(int a, int b)
+func int sum(int a, int b)
 {
-    if (a > 0)
-    {
-        i = a + b * j + i;
-        print( i + j );
-    }
-    else
-    {
-        print( a + b );
-    }
-}
-
-func void dos(int a, float g)
-{
-    i = a;
-    while ( a > 0)
-    {
-        a = a - k * j;
-        uno(a * 2, a + k)
-        g = g * j - k;
-    }
+    return a + b
 }
 
 main()
 {
     i = 2;
+    j = 1;
     k = i + 1;
     f = 3.14;
-    do
-    {
-        dos(i + k, f*3)
-        print(i, j*2, f*2+1.5);
-        i = i - k / 2;
-    } while (i > 0)
-
+    print("SUM: ", sum(7, 5), "\n");
 }

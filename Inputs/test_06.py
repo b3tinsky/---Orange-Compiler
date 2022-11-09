@@ -25,7 +25,8 @@ def initializeCompiler(test_file):
 class TestInput06:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_06.txt')
-
+    
+    @pytest.mark.order(10)
     def test_VARDECLARATION(self):
         dir = {
             'test_06': {
@@ -170,7 +171,7 @@ class TestInput06:
                     },
                 'table': {
                     'test': {
-                        'address': 20003, 
+                        'address': 20000, 
                         'name': 'test', 
                         'scope': 'main',
                         'type': 'int', 
@@ -181,11 +182,12 @@ class TestInput06:
             }
         assert self.parser.OFD.dir == dir
 
+    @pytest.mark.order(11)
     def test_execution(self, monkeypatch):
         monkeypatch.setattr('builtins.input', lambda: -3)
         vm06 = VirtualMachine()
         vm06.run()
 
-        result = [{14000: None, 14001: None, 14002: None, 10000: None, 10001: 1, 10002: 2, 10003: 3, 10004: -3}, {20003: None, 30000: 3, 30001: 0}]
+        result = [{14000: None, 14001: None, 14002: None, 10000: None, 10001: 1, 10002: 2, 10003: 3, 10004: -3}, {20000: None, 30000: 3, 30001: 0}]
 
         assert vm06.memory == result

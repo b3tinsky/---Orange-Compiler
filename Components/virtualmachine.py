@@ -165,14 +165,14 @@ class VirtualMachine():
 
     # Quadruple example -> ('RETURN', 20000, -1, 10003)
     def returnOperator(self, QUAD):
+        # Get value to store
         returnValue = self.fetchFromAddress(QUAD[1])
+        
+        # Store value in global variable for function returns
         self.setInAddress(returnValue, QUAD[3])
+        
+        # Changes instruction pointer and removes last memory block
         self.endfuncOperator(QUAD)
-
-        # Go back to where the function was called
-        # self.IP = self.BC
-        # Delete function's memory block
-        # self.memory.pop()
 
     
     # Quadruple example -> ('GOSUB', -1, -1, 'sum')
@@ -229,7 +229,6 @@ class VirtualMachine():
             # Move Instruction Pointer
             self.IP += 1
 
-        # Bring back memory to confirm execution
         print('🌍: ', self.memory)
 
     def createMemory(self, function):
@@ -293,7 +292,7 @@ class VirtualMachine():
             self.createMemory('main')
         
         except:
-            raise semanticError('❌ OVEJOTA file not found')
+            raise semanticError('❌ Object file not found')
 
     def fetchFromAddress(self, address):
         # Global variables
@@ -302,7 +301,6 @@ class VirtualMachine():
         
         # Local variables
         elif 20000 <= address < 30000:
-            # HACK
             if address in self.memory[-1] and self.memory[-1][address] != None:
                 return self.memory[-1][address]
             
@@ -312,9 +310,6 @@ class VirtualMachine():
             else:
                 return self.memory[-1][address]
 
-            # BUG
-            # return self.memory[-1][address]
-        
         # Temp variables
         elif 30000 <= address < 40000:
             return self.memory[-1][address]

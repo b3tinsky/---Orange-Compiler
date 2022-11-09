@@ -382,6 +382,14 @@ __Inputs__
     - A "breadcrumb" list is added to keep track of instruction numbers to go back when calling a function
     - The function directory and the constant table are brought back to reference them throughout execution
 
+---
+
+### 📆 November 08 🕓 20:52
+- Fixed recursion
+- Fixed multiple function calls overwriting the return value
+- Added an extra quadruple to store a function return value
+- Fixed tests to accomodate new quadruple for return values
+
 # Reference
 
 ## Official Documentation

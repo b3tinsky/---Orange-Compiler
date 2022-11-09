@@ -23,6 +23,8 @@ def initializeCompiler(test_file):
     return status, lexer, parser
 
 class TestInput16:
+    
+    @pytest.mark.order(21)
     def test_exception_raised(self):
         with pytest.raises(semanticError):
             # Initialize a different compiler with the needed file

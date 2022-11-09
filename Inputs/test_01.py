@@ -23,6 +23,7 @@ def initializeCompiler(test_file):
     return status, lexer, parser
 
 class TestInput01:
+    @pytest.mark.order(1)
     def test_exception_raised(self):
         with pytest.raises(syntacticalError):
             # Initialize a different compiler with the needed file

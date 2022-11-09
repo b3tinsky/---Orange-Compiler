@@ -1,31 +1,21 @@
-program patito
-    vars 
-        int i, j, k;
-        float f;
+program test_08
+vars 
+    int a, b, c;
 
-func int fact(int n)
-{
-    if (n == 1)
-    {
-        return n
-    }
-    else
-    {
-        return n * (fact(n - 1))
-    }
-}
-
-func int sum(int a, int b)
-{
+func int sum(){
+    vars int a, b, c;
+    a = 2;
+    b = 3;
     return a + b
 }
 
 main()
 {
-    i = 2;
-    j = 1;
-    k = i + 1;
-    f = 3.14;
-    print("SUM: ", sum(7, 5), "\n");
-    print("Factorial of 4: ", fact(4), "\n");
+    vars
+        float a, b, c;
+    a = 1;
+    b = 2;
+    c = a + b;
+
+    print("Your result: ", c);
 }

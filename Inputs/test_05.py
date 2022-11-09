@@ -25,12 +25,13 @@ def initializeCompiler(test_file):
 class TestInput05:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_05.txt')
-
+    
+    @pytest.mark.order(9)
     def test_VARDECLARATION(self):
         dir = {
             'test_05': {
                 'name': 'test_05', 
-                'params': {}, 
+                'params': {},
                 'quadruple': 1, 
                 'signature': '', 
                 'size': {
@@ -121,7 +122,7 @@ class TestInput05:
                     },
                 'table': {
                     'test': {
-                        'address': 20003, 
+                        'address': 20000,
                         'name': 'test', 
                         'scope': 'main',
                         'type': 'int', 

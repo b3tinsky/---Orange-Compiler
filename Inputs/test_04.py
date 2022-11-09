@@ -27,6 +27,7 @@ class TestInput04:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_04.txt')
 
+    @pytest.mark.order(6)
     def test_VARDECLARATION(self):
         dir = {
             'test_4': {
@@ -139,6 +140,7 @@ class TestInput04:
 
         assert self.parser.OFD.dir == dir
 
+    @pytest.mark.order(7)
     def test_constantsTable(self):
         constantsTable = {
             'bool': {},
@@ -154,6 +156,7 @@ class TestInput04:
 
         assert self.parser.OFD.constants == constantsTable
 
+    @pytest.mark.order(8)
     def test_execution(self, monkeypatch):
         monkeypatch.setattr('builtins.input', lambda: 17)
         vm04 = VirtualMachine()

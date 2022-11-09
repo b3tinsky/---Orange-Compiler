@@ -16,7 +16,7 @@ from Components.quadmachine import OrangeQuadMachine
 
 class OrangeParser(Parser):
     tokens = OrangeLexer.tokens
-    debugfile = 'parser.out'    # Parser debugging file
+    # debugfile = 'parser.out'    # Parser debugging file
     start = 'program'           # Start parsing from < program > rule
     reserved = OrangeLexer.reserved
     
@@ -25,7 +25,7 @@ class OrangeParser(Parser):
         self.MM  = memory   # Initiate status checker
         self.OFD = OrangeFuncDir(self.StatusChecker, self.MM)    # Orange Function Directory
         self.OVT = OrangeVarTable(self.StatusChecker, self.MM)   # Orange Variable Table
-        self.SC  = OrangeCube()                         # Orange Semantic Cube
+        self.SC  = OrangeCube()                                  # Orange Semantic Cube
         self.QM  = OrangeQuadMachine(self.OFD, self.SC, self.MM) # Orange Quadruple Machine
         self.programName = ''
 
@@ -224,12 +224,32 @@ class OrangeParser(Parser):
             self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
 
+            # Store the result in a temp var to avoid overwriting the result with multiple function calls            
+            functionResult = (self.QM.generateTempVar(self.OFD.dir[p[0]]['type']), self.OFD.dir[p[0]]['type'])
+            self.QM.addOperator('=')
+            self.QM.operands.append(functionResult)
+            self.QM.operands.append((self.OFD.dir[self.programName]['table'][p[0]]['address'], self.OFD.dir[self.programName]['table'][p[0]]['type']))
+            self.QM.generateQuadruple()
+            
+            # Latest operand is the global address for the function result <- 10003: where the result for sum() is stored
+            self.QM.operands.pop()
+            
+            # Append the temp var where the result for the function is stored <- This allows sum(1 + 1) + sum(2 + 2) without result being overwritten
+            self.QM.operands.append(functionResult)
+
             # Reset parameter counter
             self.QM.ParameterNumber = 0
+
+        # FIXME: Removes latest context when function call ends, but it shouldn't work like this
+            self.QM.operators.pop()
+
         return p
     
     @_('')
     def generate_era(self, p):
+        # FIXME: Adds new context when calling function, but it shouldn't work like this
+        self.QM.operators.append([])
+        
         # Reset parameter counter and signature
         self.QM.ParameterNumber = 0
         self.QM.CallSignature   = ''
@@ -259,7 +279,6 @@ class OrangeParser(Parser):
 
     @_('exp generate_param callvalues_aux')
     def callvalues(self, p):
-
         return p
     
     @_('')
@@ -373,6 +392,12 @@ class OrangeParser(Parser):
         return p
     
     # Factor
+        
+        # Call function
+    @_('call')
+    def factor(self, p):
+        return p
+           
         # Call variable
     @_('var')
     def factor(self, p):
@@ -385,15 +410,9 @@ class OrangeParser(Parser):
     
         return p
         
-        # Call function
-    @_('call')
-    def factor(self, p):
-        return p
-        
         # Constant variable
     @_('varcte')
     def factor(self, p):
-        # self.QM.addOperand(p[0])
         return p
         
     # Expression with parenthesis
@@ -716,8 +735,10 @@ class OrangeParser(Parser):
             self.QM.addOperator('RETURN')
             self.QM.addOperand((resultVarName, 'return'))
             self.QM.operands.append(returnResult)
-            # self.QM.addOperand((-1, -1))
-            # self.QM.addOperand((-1, -1))
+            
+            # self.QM.addOperand((-1, -1)) # NO
+            # self.QM.addOperand((-1, -1)) # NO
+            
             self.QM.generateQuadruple()
 
         return p

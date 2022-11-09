@@ -25,7 +25,8 @@ def initializeCompiler(test_file):
 class TestInput24:
     # Initialize a different compiler with the needed file
     status, lexer, parser = initializeCompiler('input_24.txt')
-
+    
+    @pytest.mark.order(34)
     def test_QUADGENERATION(self):
         quads = [
             ( 'GOTO' ,    -1,    -1,     2),
