@@ -488,7 +488,6 @@ class OrangeParser(Parser):
     def var_access(self, p):
         # Remove (id, dimension) tuple
         self.QM.operands.pop()
-        
         return p
     
     @_('')
@@ -518,6 +517,7 @@ class OrangeParser(Parser):
         amountOfDims = len(self.OFD.getVar(varName)['dimensions'])
         currentDimDict = self.OFD.getVar(varName)['dimensions'][varDim-1]
         self.QM.quadruples.append(('VERIFY', indexToCheck, currentDimDict['l_limit'], currentDimDict['u_limit']))
+        self.QM.QuadrupleNumber+=1
 
         if amountOfDims == 1:
             # - K
@@ -531,6 +531,7 @@ class OrangeParser(Parser):
             baseAddress = self.OFD.checkVar(varName)[0]
             pointerAddress = self.MM.buildAddress('int', 'pointers')
             self.QM.quadruples.append(('+', result, str(baseAddress), pointerAddress))
+            self.QM.QuadrupleNumber+=1
 
             # Add the pointer address to operands so it can be used again
             self.QM.operands.append((str(pointerAddress), 'int'))
@@ -558,6 +559,7 @@ class OrangeParser(Parser):
             baseAddress = self.OFD.checkVar(varName)[0]
             pointerAddress = self.MM.buildAddress('int', 'pointers')
             self.QM.quadruples.append(('+', result, str(baseAddress), pointerAddress))
+            self.QM.QuadrupleNumber+=1
 
             # Add the pointer address to operands so it can be used again
             self.QM.operands.append((str(pointerAddress), 'int'))
@@ -656,7 +658,7 @@ class OrangeParser(Parser):
         else:
             raise semanticError('❌ Type mismatch | FOR loop ending must be an integer')
 
-            # return p
+        return p
     
 
 
@@ -830,6 +832,11 @@ class OrangeParser(Parser):
             self.QM.addOperand((-1, -1))
             self.QM.addOperand((-1, -1))
             self.QM.generateQuadruple()
+
+            print('🛰️ Operands: ', self.QM.operands)
+            print('🛰️ QuadNumber: ', self.QM.QuadrupleNumber)
+            print('🛰️ Loop End: ', loopEnd)
+            print('🛰️ Loop Return: ', loopReturn)
 
             # Fill GOTOF quadruple
             self.QM.fillJumps(loopEnd, self.QM.QuadrupleNumber+1)

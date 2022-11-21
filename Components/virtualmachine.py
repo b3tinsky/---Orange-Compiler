@@ -60,7 +60,6 @@ class VirtualMachine():
     def multOperator(self, QUAD):
         leftValue = self.fetchFromAddress(QUAD[1])
         rightValue = self.fetchFromAddress(QUAD[2])
-
         self.setInAddress(leftValue * rightValue, QUAD[3])
         
     # Quadruple example -> ('/', 20002, 20000, 30000)
@@ -184,11 +183,9 @@ class VirtualMachine():
         
         # Save current position
         self.BC.append(self.IP)
-        # print('💧 BC: ', self.BC)
 
         # Go to function's quadruple
         self.IP = self.functiondirectory[func]['quadruple'] - 1
-        # print('💧 IP: ', self.IP)
     
     # Quadruple example -> ('VERIFY', 30002, '-2', '4')
     def verifyOperator(self, QUAD):

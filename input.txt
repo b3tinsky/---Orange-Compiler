@@ -1,48 +1,29 @@
-program test_33
-
-func void fibonacci(int nterms)
-{
-    vars
-        int n1, n2, count;
-        int nth;
-
-    # first two terms
-    n1 = 0; 
-    n2 = 1;
-    count = 0;
-
-    # check if the number of terms is valid
-    if (nterms <= 0)
-    {
-        print("Please enter a positive integer", "\n");
-    }
-    
-    # if there is only one term, return n1
-    if (nterms == 1)
-    {
-        print("Fibonacci sequence upto ", nterms, " : ", n1, "\n");
-    }
-    
-    # generate fibonacci sequence
-    else
-    {
-        print("Fibonacci sequence:", "\n");
-
-        while (count < nterms)
-        {
-            print(n1, "\n");
-            nth = n1 + n2;
-            
-            # update values
-            n1 = n2;
-            n2 = nth;
-            count = count + 1;
-        }
-    }
-}
+program test_55
 
 main()
 {
-    fibonacci(2)
+    vars
+        int a, b, x, y, i;
+        int ARR[1:10];
+        a = 5;
+        b = 3;
+        x = 7;
+        from i = 1 to 6 do 
+        {
+            ARR[i] = i;
+            # print("i: ", i, "\n");
+        }
+
+        # ARR[1] = 1;
+        # ARR[2] = 2;
+        # ARR[3] = 3;
+        # ARR[4] = 4;
+        # ARR[5] = 5;
+
+        print("ARR[1]: ", ARR[1], "\n");
+        print("ARR[2]: ", ARR[2], "\n");
+        print("ARR[3]: ", ARR[3], "\n");
+        print("ARR[4]: ", ARR[4], "\n");
+        print("ARR[5]: ", ARR[5], "\n");
 }
 
