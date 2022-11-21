@@ -112,7 +112,7 @@ class TestInput12:
             'main': {
                 'name': 'main', 
                 'params': {}, 
-                'quadruple': 6, 
+                'quadruple': 7, 
                 'signature': '', 
                 'size': {
                     'local': {

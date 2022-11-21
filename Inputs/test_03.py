@@ -35,7 +35,7 @@ class TestInput03:
                 'name': 'main', 
                 'params':{},
                 'type': 'main', 
-                'quadruple': 1,
+                'quadruple': 2,
                 'signature':'',
                 'size':{
                     'local':{

@@ -22,7 +22,7 @@ def orange_juice(test_name, test_data):
     except Exception as err:
         print(str(err))
 
-    # parser.OFD.printdata() # HACK: Prints Function Directory
+    parser.OFD.printdata() # HACK: Prints Function Directory
     print(f'-'*50)
     print('JUMPS: ', parser.QM.jumps)
     print('OPERANDS: ', parser.QM.operands)

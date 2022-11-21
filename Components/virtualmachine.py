@@ -149,6 +149,7 @@ class VirtualMachine():
        
         # Must be turned to list to access by index
         currentMemoryBlock = list(self.memory[-1])
+        currentMemoryBlock.sort()
 
         # Params are added as first local variables in new memory block
         paramAddress = currentMemoryBlock[QUAD[3]-1]
@@ -183,9 +184,11 @@ class VirtualMachine():
         
         # Save current position
         self.BC.append(self.IP)
+        # print('💧 BC: ', self.BC)
 
         # Go to function's quadruple
         self.IP = self.functiondirectory[func]['quadruple'] - 1
+        # print('💧 IP: ', self.IP)
     
     # Quadruple example -> ('VERIFY', 30002, '-2', '4')
     def verifyOperator(self, QUAD):
@@ -222,7 +225,8 @@ class VirtualMachine():
         self.setInAddress(controlVariable + incrementAmount, address)
 
     def otherOperator(self, QUAD):
-        pass
+        print('❌ ', QUAD)
+        # pass
 
     def run(self):
         # Bring back compiled data
@@ -231,7 +235,10 @@ class VirtualMachine():
         # Execute intermediate code
         while (self.IP <= self.instructionQty):
             currentInstruction = self.IP - 1
+            # print('🗡️ OFD: ', self.functiondirectory)
             
+            # print('🩸 Instruction: ', currentInstruction)
+            # print('🩸 Quadruple: ', self.quadruples[currentInstruction])
             # Execute function from instruction switch
             self.instructionSwitch.get(self.quadruples[currentInstruction][0], self.otherOperator)(self.quadruples[currentInstruction])
             

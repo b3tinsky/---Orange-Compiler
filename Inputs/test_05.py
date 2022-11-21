@@ -58,7 +58,7 @@ class TestInput05:
             'sum': {
                 'name': 'sum', 
                 'params': {}, 
-                'quadruple': 1, 
+                'quadruple': 2, 
                 'signature': '',
                 'size': {
                     'local': {
@@ -106,7 +106,7 @@ class TestInput05:
             'main': {
                 'name': 'main', 
                 'params': {}, 
-                'quadruple': 4, 
+                'quadruple': 5, 
                 'signature': '', 
                 'size': {
                     'local': {
