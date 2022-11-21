@@ -48,7 +48,8 @@ class TestInput14:
                         'bool': 0,
                         'float': 0, 
                         'int': 0, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'sum': {
@@ -59,18 +60,21 @@ class TestInput14:
                         }, 
                     'x': {
                         'address': 10000, 
-                        'name': 'x', 
+                        'dimensions':[],
+                        'name': 'x',
                         'scope': 'test_14',
                         'type': 'int', 
                         }, 
                     'y': {
                         'address': 10001, 
+                        'dimensions':[],
                         'name': 'y', 
                         'scope': 'test_14',
                         'type': 'int', 
                         }, 
                     'z': {
                         'address': 10002, 
+                        'dimensions':[],
                         'name': 'z', 
                         'scope': 'test_14',
                         'type': 'int', 
@@ -98,17 +102,20 @@ class TestInput14:
                         'bool': 0,
                         'float': 0, 
                         'int': 1, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'a': {
                         'address': 20000, 
+                        'dimensions':[],
                         'name': 'a', 
                         'scope': 'sum',
                         'type': 'int', 
                         }, 
                     'b': {
                         'address': 20001, 
+                        'dimensions':[],
                         'name': 'b', 
                         'scope': 'sum',
                         'type': 'int', 
@@ -136,7 +143,8 @@ class TestInput14:
                         'bool': 0,
                         'float': 0, 
                         'int': 1, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {}, 
                 'type': 'main', 

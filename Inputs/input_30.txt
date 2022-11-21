@@ -1,0 +1,31 @@
+program test_30
+    vars 
+        int i; 
+        int A[-3:5];
+        int j;
+        int B[2:6][-2:4];
+        int k;
+        int C[1:2][3:6][0:1];
+
+main()
+{
+    i = 1;
+    j = 2;
+    k = 3;
+
+    A[0] = 0;
+    A[1] = 1;
+    A[2] = 2;
+    A[3] = 3;
+    A[4] = 4;
+    
+    print("i: ", i, "\n");
+    print("j: ", j, "\n");
+    print("k: ", k, "\n");
+
+    print("A[0]: ", A[0], "\n");
+    print("A[1]: ", A[1], "\n");
+    print("A[2]: ", A[2], "\n");
+    print("A[3]: ", A[3], "\n");
+    print("A[4]: ", A[4], "\n");
+}

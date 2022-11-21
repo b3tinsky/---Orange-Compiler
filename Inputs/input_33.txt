@@ -1,0 +1,54 @@
+program test_33
+
+func void fibonacci(int nterms)
+{
+    vars
+        int n1, n2, count;
+        int nth;
+
+    # first two terms
+    n1 = 0; 
+    n2 = 1;
+    count = 0;
+
+    # check if the number of terms is valid
+    if (nterms <= 0)
+    {
+        print("Please enter a positive integer", "\n");
+    }
+    
+    # if there is only one term, return n1
+    if (nterms == 1)
+    {
+        print("Fibonacci sequence upto", nterms, ":", n1, "\n");
+    }
+    
+    # generate fibonacci sequence
+    else
+    {
+        print("Fibonacci sequence:", "\n");
+
+        while (count < nterms)
+        {
+            print(n1, "\n");
+            nth = n1 + n2;
+            
+            # update values
+            n1 = n2;
+            n2 = nth;
+            count = count + 1;
+        }
+    }
+}
+
+main()
+{
+    vars
+        int n;
+    
+    n = 7;
+    print(n, "\n");
+
+    fibonacci(1)
+}
+

@@ -47,6 +47,7 @@ class OrangeLexer(Lexer):
         INT,
         FLOAT,
         BOOL,
+        COLON,
         SEMICOLON,
         COMMA,
         LPAREN,
@@ -73,33 +74,6 @@ class OrangeLexer(Lexer):
         CTEFLOAT,
         CTESTRING,
     }
-
-    # Regular expression rules for tokens
-    SEMICOLON = r'\;'
-    COMMA = r'\,'
-    LPAREN = r'\('
-    RPAREN = r'\)'
-    LBRACKET = r'\['
-    RBRACKET = r'\]'
-    LCURLY = r'\{'
-    RCURLY = r'\}'
-    EQ = r'\=\='
-    NEQ = r'\!\='
-    GTE = r'\>\='
-    LTE = r'\<\='
-    AND = r'\&\&'
-    OR = r'\|\|'
-    ASSIGN = r'\='
-    GT = r'\>'
-    LT = r'\<'
-    PLUS = r'\+'
-    MINUS = r'\-'
-    TIMES = r'\*'
-    DIVIDE = r'\/'
-
-    # String containing ignored characters between tokens
-    ignore         = ' \t'
-    ignore_comment = r'\#.*'
     
     # Rule definitions
     @_('True', 'False')
@@ -145,6 +119,34 @@ class OrangeLexer(Lexer):
     ID['float']   = FLOAT
     ID['bool']    = BOOL
     
+    # Regular expression rules for tokens
+    COLON = r'\:'
+    SEMICOLON = r'\;'
+    COMMA = r'\,'
+    LPAREN = r'\('
+    RPAREN = r'\)'
+    LBRACKET = r'\['
+    RBRACKET = r'\]'
+    LCURLY = r'\{'
+    RCURLY = r'\}'
+    EQ = r'\=\='
+    NEQ = r'\!\='
+    GTE = r'\>\='
+    LTE = r'\<\='
+    AND = r'\&\&'
+    OR = r'\|\|'
+    ASSIGN = r'\='
+    GT = r'\>'
+    LT = r'\<'
+    PLUS = r'\+'
+    MINUS = r'\-'
+    TIMES = r'\*'
+    DIVIDE = r'\/'
+
+    # String containing ignored characters between tokens
+    ignore         = ' \t'
+    ignore_comment = r'\#.*'
+
     # Define a rule so we can track line numbers
     @_(r'\n+')
     def ignore_newline(self, t):

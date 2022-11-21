@@ -49,23 +49,27 @@ class TestInput12:
                         'bool': 0,
                         'float': 0, 
                         'int': 0, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'a': {
                         'address': 10000, 
+                        'dimensions':[],
                         'name': 'a', 
                         'scope': 'test_12',
                         'type': 'int', 
                         }, 
                     'b': {
                         'address': 10001, 
+                        'dimensions':[],
                         'name': 'b', 
                         'scope': 'test_12',
                         'type': 'int', 
                         }, 
                     'c': {
                         'address': 10002, 
+                        'dimensions':[],
                         'name': 'c', 
                         'scope': 'test_12',
                         'type': 'int', 
@@ -99,7 +103,8 @@ class TestInput12:
                         'bool': 0,
                         'float': 0, 
                         'int': 1, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {}, 
                 'type': 'int', 
@@ -124,23 +129,27 @@ class TestInput12:
                         'bool': 0,
                         'float': 0, 
                         'int': 1, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'x': {
-                        'address': 20000, 
+                        'address': 20000,
+                        'dimensions':[],
                         'name': 'x', 
                         'scope': 'main',
                         'type': 'int', 
                         }, 
                     'y': {
                         'address': 20001, 
+                        'dimensions':[],
                         'name': 'y', 
                         'scope': 'main',
                         'type': 'int', 
                         }, 
                     'z': {
                         'address': 20002, 
+                        'dimensions':[],
                         'name': 'z', 
                         'scope': 'main',
                         'type': 'int', 

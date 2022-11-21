@@ -52,23 +52,27 @@ class TestInput03:
                         'bool': 0,
                         'float': 0,
                         'int': 2
-                    }
+                    },
+                    'pointers':[]
                 },
                 'table': {
                     'x': {
-                        'address': 20002,
+                        'address': 20000,
+                        'dimensions': [],
                         'name': 'x', 
                         'scope': 'main',
                         'type': 'int', 
                         },
                     'y': {
-                        'address': 20000, 
+                        'address': 20001, 
+                        'dimensions': [],
                         'name': 'y', 
                         'type': 'int', 
                         'scope': 'main'
                         }, 
                     'z': {
-                        'address': 20001, 
+                        'address': 20002,
+                        'dimensions': [],
                         'name': 'z', 
                         'type': 'int', 
                         'scope': 'main'
@@ -96,7 +100,8 @@ class TestInput03:
                         'bool': 0,
                         'float': 0,
                         'int': 0
-                    }
+                    },
+                    'pointers': []
                 },
                 'type': 'prog', 
                 'table': {},
@@ -123,6 +128,6 @@ class TestInput03:
 
     @pytest.mark.order(5)
     def test_execution(self):
-        result = [{}, {20000: 2, 20001: 3, 20002: 1, 30000: 3, 30001: 14}]
+        result = [{}, {20000: 1, 20001: 2, 20002: 3, 30000: 3, 30001: 14}]
 
         assert self.vm03.memory == result

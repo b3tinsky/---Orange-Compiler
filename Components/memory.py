@@ -5,31 +5,53 @@ class MemoryManager():
     def __init__(self):
         self.programName = '' # Global scope
     
+        # Base addresses
+        self.global_base   = 10000
+        self.local_base    = 20000
+        self.temp_base     = 30000
+        self.const_base    = 40000
+        self.pointers_base = 50000
+        
+        # Main typed addresses
+        self.main_int      = 0
+        self.main_float    = 4000
+        self.main_bool     = 8000
+        
+        # Constant fixed addresses
+        self.const_int     = 0
+        self.const_float   = 2500
+        self.const_bool    = 5000
+        self.const_string  = 7500
+
         self.addressBook = {
             'global': {
-                'base'  : 10000,    # Base Address
-                'int'   : 0,        # Range for ints    10,000 - 13,999
-                'float' : 4000,     # Range for floats  14,000 - 17,999
-                'bool'  : 8000      # Range for bools   18,000 - 19,999
+                'base'  : self.global_base,     # Base Address
+                'int'   : self.main_int,        # Range for ints    10,000 - 13,999
+                'float' : self.main_float,      # Range for floats  14,000 - 17,999
+                'bool'  : self.main_bool        # Range for bools   18,000 - 19,999
             },
             'local': {
-                'base'  : 20000,    # Base Address
-                'int'   : 0,        # Range for ints    20,000 - 23,999
-                'float' : 4000,     # Range for floats  24,000 - 27,999
-                'bool'  : 8000      # Range for bools   28,000 - 29,999
+                'base'  : self.local_base,      # Base Address
+                'int'   : self.main_int,        # Range for ints    20,000 - 23,999
+                'float' : self.main_float,      # Range for floats  24,000 - 27,999
+                'bool'  : self.main_bool        # Range for bools   28,000 - 29,999
             },
             'temp': {
-                'base'  : 30000,    # Base Address
-                'int'   : 0,        # Range for ints    30,000 - 33,999
-                'float' : 4000,     # Range for floats  34,000 - 37,999
-                'bool'  : 8000      # Range for bools   38,000 - 39,999
+                'base'  : self.temp_base,       # Base Address
+                'int'   : self.main_int,        # Range for ints    30,000 - 33,999
+                'float' : self.main_float,      # Range for floats  34,000 - 37,999
+                'bool'  : self.main_bool        # Range for bools   38,000 - 39,999
             },
             'const': {
-                'base'   : 40000,   # Base Address
-                'int'    : 0,       # Range for ints    40,000 - 42,499
-                'float'  : 2500,    # Range for floats  42,500 - 44,999
-                'bool'   : 5000,    # Range for bools   45,000 - 47,499
-                'string' : 7500     # Range for strings 47,500 - 49,999                
+                'base'   : self.const_base,     # Base Address
+                'int'    : self.const_int,      # Range for ints    40,000 - 42,499
+                'float'  : self.const_float,    # Range for floats  42,500 - 44,999
+                'bool'   : self.const_bool,     # Range for bools   45,000 - 47,499
+                'string' : self.const_string    # Range for strings 47,500 - 49,999                
+            },     
+            'pointers': {
+                'base'   : self.pointers_base,  # Base Address
+                'int'    : self.main_int        # Range for ints    50,000 - 59,999
             }     
         }
 
@@ -44,19 +66,20 @@ class MemoryManager():
     def checkMemoryLimits(self, type, scope):
         # Returns a True or False based on memory limits (by scope and type) 
         return  {
-            ('global', 'int'   ) : lambda: 10000 <= self.addressBook['global']['base'] + self.addressBook['global']['int']   < 14000,
-            ('global', 'float' ) : lambda: 14000 <= self.addressBook['global']['base'] + self.addressBook['global']['float'] < 18000,
-            ('global', 'bool'  ) : lambda: 18000 <= self.addressBook['global']['base'] + self.addressBook['global']['bool']  < 20000,
-            ('local' , 'int'   ) : lambda: 20000 <= self.addressBook['local']['base']  + self.addressBook['local']['int']    < 24000,
-            ('local' , 'float' ) : lambda: 24000 <= self.addressBook['local']['base']  + self.addressBook['local']['float']  < 28000,
-            ('local' , 'bool'  ) : lambda: 28000 <= self.addressBook['local']['base']  + self.addressBook['local']['bool']   < 30000,
-            ('temp'  , 'int'   ) : lambda: 30000 <= self.addressBook['temp']['base']   + self.addressBook['temp']['int']     < 34000,
-            ('temp'  , 'float' ) : lambda: 34000 <= self.addressBook['temp']['base']   + self.addressBook['temp']['float']   < 38000,
-            ('temp'  , 'bool'  ) : lambda: 38000 <= self.addressBook['temp']['base']   + self.addressBook['temp']['bool']    < 40000,
-            ('const' , 'int'   ) : lambda: 40000 <= self.addressBook['const']['base']  + self.addressBook['const']['int']    < 42500,
-            ('const' , 'float' ) : lambda: 42500 <= self.addressBook['const']['base']  + self.addressBook['const']['float']  < 45000,
-            ('const' , 'bool'  ) : lambda: 45000 <= self.addressBook['const']['base']  + self.addressBook['const']['bool']   < 47500,
-            ('const' , 'string') : lambda: 47500 <= self.addressBook['const']['base']  + self.addressBook['const']['string'] < 50000
+            ('global', 'int'   )  : lambda: self.global_base                     <= self.addressBook['global'  ]['base'] + self.addressBook['global'  ]['int'   ] < self.global_base   + self.main_float,
+            ('global', 'float' )  : lambda: self.global_base + self.main_float   <= self.addressBook['global'  ]['base'] + self.addressBook['global'  ]['float' ] < self.global_base   + self.main_bool,
+            ('global', 'bool'  )  : lambda: self.global_base + self.main_bool    <= self.addressBook['global'  ]['base'] + self.addressBook['global'  ]['bool'  ] < self.local_base,
+            ('local' , 'int'   )  : lambda: self.local_base                      <= self.addressBook['local'   ]['base'] + self.addressBook['local'   ]['int'   ] < self.local_base    + self.main_float,
+            ('local' , 'float' )  : lambda: self.local_base  + self.main_float   <= self.addressBook['local'   ]['base'] + self.addressBook['local'   ]['float' ] < self.local_base    + self.main_bool,
+            ('local' , 'bool'  )  : lambda: self.local_base  + self.main_bool    <= self.addressBook['local'   ]['base'] + self.addressBook['local'   ]['bool'  ] < self.temp_base,
+            ('temp'  , 'int'   )  : lambda: self.temp_base                       <= self.addressBook['temp'    ]['base'] + self.addressBook['temp'    ]['int'   ] < self.temp_base     + self.main_float,
+            ('temp'  , 'float' )  : lambda: self.temp_base   + self.main_float   <= self.addressBook['temp'    ]['base'] + self.addressBook['temp'    ]['float' ] < self.temp_base     + self.main_bool,
+            ('temp'  , 'bool'  )  : lambda: self.temp_base   + self.main_bool    <= self.addressBook['temp'    ]['base'] + self.addressBook['temp'    ]['bool'  ] < self.const_base,
+            ('const' , 'int'   )  : lambda: self.const_base                      <= self.addressBook['const'   ]['base'] + self.addressBook['const'   ]['int'   ] < self.const_base    + self.const_float,
+            ('const' , 'float' )  : lambda: self.const_base  + self.const_float  <= self.addressBook['const'   ]['base'] + self.addressBook['const'   ]['float' ] < self.const_base    + self.const_bool,
+            ('const' , 'bool'  )  : lambda: self.const_base  + self.const_bool   <= self.addressBook['const'   ]['base'] + self.addressBook['const'   ]['bool'  ] < self.const_base    + self.const_string,
+            ('const' , 'string')  : lambda: self.const_base  + self.const_string <= self.addressBook['const'   ]['base'] + self.addressBook['const'   ]['string'] < self.pointers_base,
+            ('pointers' , 'int')  : lambda: self.pointers_base                   <= self.addressBook['pointers']['base'] + self.addressBook['pointers']['int'   ] < 60000
         }.get((scope, type), lambda: None)
 
     def buildAddress(self, type, scope):
@@ -80,9 +103,10 @@ class MemoryManager():
 
     def resetContextAddresses(self):
         # Reset context bound address counters
-        self.addressBook['local']['int']   = 0
-        self.addressBook['local']['float'] = 4000
-        self.addressBook['local']['bool']  = 8000
-        self.addressBook['temp']['int']    = 0
-        self.addressBook['temp']['float']  = 4000
-        self.addressBook['temp']['bool']   = 8000
+        self.addressBook['local']['int']     = self.main_int
+        self.addressBook['local']['float']   = self.main_float
+        self.addressBook['local']['bool']    = self.main_bool
+        self.addressBook['temp']['int']      = self.main_int
+        self.addressBook['temp']['float']    = self.main_float
+        self.addressBook['temp']['bool']     = self.main_bool
+        self.addressBook['pointers']['int']  = self.main_int

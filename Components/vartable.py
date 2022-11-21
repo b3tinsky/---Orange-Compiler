@@ -28,8 +28,6 @@ class OrangeVarTable():
         else:
             return False
         
-        
-
     def addvar(self, id, type, scope, currentFuncDir):
         if self.checkvar(id, currentFuncDir):
             raise semanticError(f'🚫 Variable < {id} > already exists in current context')
@@ -42,8 +40,64 @@ class OrangeVarTable():
                 'name': id, 
                 'type': type, 
                 'scope': scope,
-                'address': address
+                'address': address,
+                'dimensions': []
                 }
+
+    def processDimensions(self, varName):
+        scope = self.table[varName]['scope']
+        counter = 0
+        amountOfDimensions = len(self.table[varName]['dimensions'])
+        r = 1
+        m = 0
+
+        # First run calculate R values and size of each dimension
+        while counter < amountOfDimensions:
+            # Current dimension dictionary
+            currentDim = self.table[varName]['dimensions'][counter]
+            
+            # Size of the current dimension
+            currentDim['D'] = currentDim['u_limit'] - currentDim['l_limit'] + 1
+
+            # Calculate and keep track of R value
+            r = r * (currentDim['D'])
+            currentDim['R'] = r
+
+            # Update counter
+            counter += 1
+
+        # Reset counter and establish M0 as the latest R
+        m = r
+        offset = 0
+        counter = 0
+
+        # Allocate memory for the addresses needed
+        for address in range(m - 1): # m - 1 because base address already exists
+            self.MemoryManager.allocateMemory(self.varType, 'global' if scope == self.programName else 'local')
+
+
+        # Second run calculate M values
+        while counter < amountOfDimensions:
+            # Current dimension dictionary
+            currentDim = self.table[varName]['dimensions'][counter]
+            
+            # Calculate M value
+            currentDim['M'] = int(m / currentDim['D'])
+
+            # Update M value <- Starts as M0, then M1 and so on..
+            m = currentDim['M']
+
+            # Update offset
+            offset = offset + currentDim['l_limit'] * m
+            currentDim['Offset'] = offset
+
+            # Update counter
+            counter += 1
+
+        # print('🕯️ VarTable: ', self.table[varName])
+        # print('🕯️ DIMENSIONS: ', self.table[varName]['dimensions'][-1]['R'])
+
+
 
     '''
     Tokenstream is the complete token stream provided by the rules:
@@ -67,7 +121,6 @@ class OrangeVarTable():
         for i in flattenedTokenStream:
             self.addvar(i, varType, scope, currentFuncDir)
             
-
     '''
     Flattens the token stream by returning each individual value instead of nested tuples
         From:
@@ -83,9 +136,6 @@ class OrangeVarTable():
             if i not in reservedTokens:
                 yield from [i] if not isinstance(i, tuple) else self.flattentokenstream(i)
         
-
-
-
     def cleartable(self):
         self.table = {}
 

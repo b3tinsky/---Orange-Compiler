@@ -50,53 +50,62 @@ class TestInput04:
                         'bool': 0,
                         'float': 0,
                         'int': 0
-                    }
+                    },
+                    'pointers': []
                 },
                 'table': {
                     'x': {
                         'address': 14000,
+                        'dimensions': [],
                         'name': 'x', 
                         'scope': 'test_4',
                         'type': 'float', 
                         }, 
                     'y': {
                         'address': 14001,
+                        'dimensions': [],
                         'name': 'y', 
                         'scope': 'test_4',
                         'type': 'float', 
                         }, 
                     'z': {
                         'address': 14002,
+                        'dimensions': [],
                         'name': 'z', 
                         'scope': 'test_4',
                         'type': 'float', 
                         }, 
                     'i': {
-                        'address': 10000,
+                        'address': 10004,
+                        'dimensions': [],
                         'name': 'i', 
                         'scope': 'test_4',
                         'type': 'int', 
                         }, 
                     'a': {
-                        'address': 10001,
+                        'address': 10000,
+                        'dimensions': [],
                         'name': 'a',
                         'scope': 'test_4',
                         'type': 'int', 
                         }, 
                     'b': {
-                        'address': 10002,
+                        'address': 10001,
+                        'dimensions': [],
                         'name': 'b', 
                         'scope': 'test_4',
                         'type': 'int', 
                         }, 
                     'c': {
-                        'address': 10003,
+                        'address': 10002,
+                        'dimensions': [],
                         'name': 'c', 
                         'scope': 'test_4',
                         'type': 'int', 
                         }, 
                     'd': {
-                        'address': 10004,
+                        'address': 10003,
+                        'dimensions': [],
                         'name': 'd', 
                         'scope': 'test_4',
                         'type': 'int', 
@@ -124,11 +133,13 @@ class TestInput04:
                         'bool': 0,
                         'float': 0,
                         'int': 2
-                    }
+                    },
+                    'pointers':[]
                 },
                 'table': {
                     'test': {
-                        'address': 20000, 
+                        'address': 20000,
+                        'dimensions':[], 
                         'name': 'test', 
                         'scope': 'main',
                         'type': 'int', 
@@ -162,6 +173,5 @@ class TestInput04:
         vm04 = VirtualMachine()
         vm04.run()
 
-        result = [{14000: None, 14001: None, 14002: None, 10000: None, 10001: 1, 10002: 2, 10003: 3, 10004: 17}, {20000: None, 30000: 3, 30001: 20}]
-
+        result = [{10000: 1, 10001: 2, 10002: 3, 10003: 17, 10004: None, 14000: None, 14001: None, 14002: None}, {20000: None, 30000: 3, 30001: 20}]
         assert vm04.memory == result

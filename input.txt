@@ -1,25 +1,19 @@
-program test_29
-    vars 
-        int i, j, k;
-        float f;
+program test_33
 
-func int fact(int n)
+func void fibonacci()
 {
-    if (n == 1)
-    {
-        return n
-    }
-    else
-    {
-        return n * (fact(n - 1))
-    }
+    print("FIBONACCI!!!!", "\n");
+    
+
 }
 
 main()
 {
-    i = 2;
-    j = 1;
-    k = i + 1;
-    f = 3.14;
-    print("Factorial of 4: ", fact(4), "\n");
+    # vars
+    # int n;
+    # n = 7;
+    # print(n, "\n");
+
+    fibonacci()
 }
+

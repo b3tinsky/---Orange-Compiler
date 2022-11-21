@@ -49,7 +49,8 @@ class TestInput05:
                         'bool': 0,
                         'float': 0, 
                         'int': 0, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {}, 
                 'type': 'prog', 
@@ -74,23 +75,27 @@ class TestInput05:
                         'bool': 0,
                         'float': 0, 
                         'int': 0, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'result': {
-                        'address': 20000, 
+                        'address': 20002, 
+                        'dimensions':[],
                         'name': 'result', 
                         'scope': 'sum',
                         'type': 'int', 
                         }, 
                     'sum_a': {
-                        'address': 20001, 
+                        'address': 20000, 
+                        'dimensions':[],
                         'name': 'sum_a', 
                         'scope': 'sum',
                         'type': 'int', 
                         }, 
                     'sum_b': {
-                        'address': 20002, 
+                        'address': 20001, 
+                        'dimensions':[],
                         'name': 'sum_b', 
                         'scope': 'sum',
                         'type': 'int', 
@@ -118,11 +123,13 @@ class TestInput05:
                         'bool': 0,
                         'float': 0, 
                         'int': 0, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'test': {
                         'address': 20000,
+                        'dimensions':[],
                         'name': 'test', 
                         'scope': 'main',
                         'type': 'int', 

@@ -16,7 +16,7 @@ from Components.quadmachine import OrangeQuadMachine
 
 class OrangeParser(Parser):
     tokens = OrangeLexer.tokens
-    # debugfile = 'parser.out'    # Parser debugging file
+    debugfile = 'parser.out'    # Parser debugging file
     start = 'program'           # Start parsing from < program > rule
     reserved = OrangeLexer.reserved
     
@@ -95,7 +95,7 @@ class OrangeParser(Parser):
         # int variable ;
     @_('decvar_type decvar SEMICOLON')
     def decvar_line(self, p):
-        self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
+        # self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
     
     # Multiple variable declaration line
@@ -103,7 +103,7 @@ class OrangeParser(Parser):
         # float x, y, z ;
     @_('decvar_type decvar SEMICOLON decvar_line')
     def decvar_line(self, p):
-        self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
+        # self.OVT.addvartokenstream(p, self.OFD.context, {} if not self.OFD.dir else self.OFD.dir[self.programName])
         return p
     
     @_('type')
@@ -140,19 +140,55 @@ class OrangeParser(Parser):
         return p
     
     # Normal variable
-    @_('ID')
+    @_('ID add_id dim')
     def var(self, p):
+        if self.OVT.table[p[0]]['dimensions']:
+            self.OVT.processDimensions(p[0])
+            # Allocate memory for the addresses needed
+            baseAddress = self.OVT.table[p[0]]['address']
+
+            for i in range(self.OVT.table[p[0]]['dimensions'][-1]['R']):
+                self.OFD.dir[self.OFD.context]['size']['pointers'].append(baseAddress + i + 1)
         return p
     
-    # Array variable
-    @_('ID LBRACKET CTEINT RBRACKET')
-    def var(self, p):
+    @_('')
+    def add_id(self, p):
+        varName = p[-1]
+        varType = self.OVT.varType
+        varScope = self.OFD.context
+        currentFuncDir = {} if not self.OFD.dir else self.OFD.dir[self.programName]
+        self.OVT.addvar(varName, varType, varScope, currentFuncDir)
         return p
-    
-    # Matrix variable
-    @_('ID LBRACKET CTEINT RBRACKET LBRACKET CTEINT RBRACKET')
-    def var(self, p):
+
+    @_('LBRACKET CTEINT COLON CTEINT RBRACKET dim')
+    def dim(self, p):
+        # Gets latest var inserted
+            # Doing it this way prevents errors when var has more than one dimension <- arr[0:5][1:3]            
+        latestVar = list(self.OVT.table)[-1]
+        
+        if (p[1] > p[3]):
+            raise semanticError(f'🚫 Limits must go from lower to upper | Variable: {latestVar}[{p[1]}:{p[3]}]')
+        if (p[1] == p[3]):
+            raise semanticError(f'🚫 Dimensions must be greater than 1 | Variable: {latestVar}[{p[1]}:{p[3]}]')
+
+
+        # Append limits into dimension structures
+        self.OVT.table[latestVar]['dimensions'].insert(0, 
+            {
+            'l_limit':p[1], 
+            'u_limit':p[3],
+            'D': 0,
+            'R': None,
+            'M': None,
+            'Offset': None,
+            }
+            )
         return p
+
+    @_('empty')
+    def dim(self, p):
+        return p
+
 
 
     # (Optional)
@@ -212,30 +248,46 @@ class OrangeParser(Parser):
         if self.QM.CallSignature != self.OFD.dir[p[0]]['signature']:
             raise semanticError(f"❌ Function signature mismatch | Arguments given for < {self.OFD.dir[p[0]]['name']} > do not match the function's signature")
         else:
+            print('🥥 Type: ', self.OFD.dir[p[0]]['type'])
+            print('🥥 p[0]: ', p[0])
+            # print('🥥 Operands: ', self.QM.operands)
+            # print('🥥 Operators: ', self.QM.operators)
+            # print('🥥 Quadruples: ')
+            # self.QM.printQuads()
+
             # This means the call is for a typed function, meaning it needs to add the global
             # variable to store the function's result
             nonReturnTypes = ['main', 'void', 'prog']
             if self.OFD.dir[p[0]]['type'] not in nonReturnTypes:
                 self.QM.addOperand(p[0])
             
-            # Generate GOSUB quadruple
-            self.QM.addOperator('GOSUB')
-            self.QM.addOperand((p[0], 'func'))
-            self.QM.addOperand((-1, -1))
-            self.QM.generateQuadruple()
+                # Generate GOSUB quadruple
+                self.QM.addOperator('GOSUB')
+                self.QM.addOperand((p[0], 'func'))
+                self.QM.addOperand((-1, -1))
+                self.QM.generateQuadruple()
+                
+                # Store the result in a temp var to avoid overwriting the result with multiple function calls            
+                functionResult = (self.QM.generateTempVar(self.OFD.dir[p[0]]['type']), self.OFD.dir[p[0]]['type'])
+                self.QM.addOperator('=')
+                self.QM.operands.append(functionResult)
+                self.QM.operands.append((self.OFD.dir[self.programName]['table'][p[0]]['address'], self.OFD.dir[self.programName]['table'][p[0]]['type']))
+                self.QM.generateQuadruple()
 
-            # Store the result in a temp var to avoid overwriting the result with multiple function calls            
-            functionResult = (self.QM.generateTempVar(self.OFD.dir[p[0]]['type']), self.OFD.dir[p[0]]['type'])
-            self.QM.addOperator('=')
-            self.QM.operands.append(functionResult)
-            self.QM.operands.append((self.OFD.dir[self.programName]['table'][p[0]]['address'], self.OFD.dir[self.programName]['table'][p[0]]['type']))
-            self.QM.generateQuadruple()
+                # Latest operand is the global address for the function result <- 10003: where the result for sum() is stored
+                self.QM.operands.pop()
+                
+                # Append the temp var where the result for the function is stored <- This allows sum(1 + 1) + sum(2 + 2) without result being overwritten
+                self.QM.operands.append(functionResult)
+
+            elif self.OFD.dir[p[0]]['type'] == 'void':
+                # Generate GOSUB quadruple
+                self.QM.addOperator('GOSUB')
+                self.QM.addOperand((p[0], 'func'))
+                self.QM.addOperand((-1, -1))
+                self.QM.generateQuadruple()
+
             
-            # Latest operand is the global address for the function result <- 10003: where the result for sum() is stored
-            self.QM.operands.pop()
-            
-            # Append the temp var where the result for the function is stored <- This allows sum(1 + 1) + sum(2 + 2) without result being overwritten
-            self.QM.operands.append(functionResult)
 
             # Reset parameter counter
             self.QM.ParameterNumber = 0
@@ -277,7 +329,7 @@ class OrangeParser(Parser):
     def callvalues_aux(self, p):
         return p
 
-    @_('exp generate_param callvalues_aux')
+    @_('exp generate_param callvalues_aux', 'callvalues_aux')
     def callvalues(self, p):
         return p
     
@@ -398,17 +450,118 @@ class OrangeParser(Parser):
     def factor(self, p):
         return p
            
-        # Call variable
-    @_('var')
+        # Variable
+    @_('var_access')
     def factor(self, p):
+        return p
+
+    @_('ID')
+    def var_access(self, p):
         # p[0]    -> ('var', 'tmp_1')
         # p[0][1] -> 'tmp_1'
-        id = p[0][1]
+        id = p[0]
         
         # Add var name and type to operand stack in the Quadruple Machine
         self.QM.addOperand(id)
     
         return p
+        
+        # Array
+    # @_('ID verify_id access_dim')
+    # def var_access(self, p):
+    #     # Remove (id, dimension) tuple
+    #     self.QM.operands.pop()
+        
+    #     return p
+    
+    # @_('')
+    # def verify_id(self, p):
+    #     # Check if var exists
+    #     id = p[-1]
+    #     self.OFD.checkVar(id)
+        
+    #     # Add to operands as name and starter dimension of 1 (will be increased with each verify_dim)
+    #     self.QM.operands.append((id, 1))
+    #     return p
+    
+    # @_('fakefloor LBRACKET exp RBRACKET verify_dim access_dim')
+    # def access_dim(self, p):
+    #     self.QM.operators.pop()
+    #     return p
+    
+    # @_('')
+    # def verify_dim(self, p):
+        
+    #     # S
+    #     indexToCheck = self.QM.operands.pop()[0]
+    #     var = self.QM.operands.pop()
+    #     varName = var[0]
+    #     varDim = var[1]
+
+    #     amountOfDims = len(self.OFD.getVar(varName)['dimensions'])
+    #     currentDimDict = self.OFD.getVar(varName)['dimensions'][varDim-1]
+    #     self.QM.quadruples.append(('VERIFY', indexToCheck, currentDimDict['l_limit'], currentDimDict['u_limit']))
+
+    #     if amountOfDims == 1:
+    #         # - K
+    #         self.QM.addOperator('-')
+    #         self.QM.operands.append((indexToCheck, 'int'))
+    #         self.QM.operands.append((str(currentDimDict['Offset']), 'int'))
+    #         self.QM.generateQuadruple()
+
+    #         # + Base Address
+    #         result = self.QM.operands.pop()[0]
+    #         baseAddress = self.OFD.checkVar(varName)[0]
+    #         pointerAddress = self.MM.buildAddress('int', 'pointers')
+    #         self.QM.quadruples.append(('+', result, str(baseAddress), pointerAddress))
+
+    #         # Add the pointer address to operands so it can be used again
+    #         self.QM.operands.append((str(pointerAddress), 'int'))
+            
+    #         # Save to pointers list (to later recreate memory in execution)
+    #         self.OFD.dir[self.OFD.context]['size']['pointers'].append(pointerAddress)
+            
+    #         # Update current dimension number
+    #         self.QM.operands.append((varName, varDim + 1))
+    #         return p
+
+    #     if varDim == amountOfDims:
+    #         # + S
+    #         self.QM.addOperator('+')
+    #         self.QM.operands.append((indexToCheck, 'int'))
+    #         self.QM.generateQuadruple()
+
+    #         # - K
+    #         self.QM.addOperator('-')
+    #         self.QM.operands.append((str(currentDimDict['Offset']), 'int'))
+    #         self.QM.generateQuadruple()
+            
+    #         # + Base Address
+    #         result = self.QM.operands.pop()[0]
+    #         baseAddress = self.OFD.checkVar(varName)[0]
+    #         pointerAddress = self.MM.buildAddress('int', 'pointers')
+    #         self.QM.quadruples.append(('+', result, str(baseAddress), pointerAddress))
+
+    #         # Add the pointer address to operands so it can be used again
+    #         self.QM.operands.append((str(pointerAddress), 'int'))
+            
+    #         # Save to pointers list (to later recreate memory in execution)
+    #         self.OFD.dir[self.OFD.context]['size']['pointers'].append(pointerAddress)
+
+    #     # S * M
+    #     else:
+    #         self.QM.addOperator('*')
+    #         self.QM.operands.append((indexToCheck, 'int'))
+    #         self.QM.operands.append((str(currentDimDict['M']), 'int'))
+    #         self.QM.generateQuadruple()
+
+    #     # Update current dimension number
+    #     self.QM.operands.append((varName, varDim + 1))
+    #     return p
+
+    # @_('empty')
+    # def access_dim(self, p):
+    #     return p
         
         # Constant variable
     @_('varcte')
@@ -508,9 +661,10 @@ class OrangeParser(Parser):
     @_('DO saveposition block WHILE LPAREN expression RPAREN openjumpslot')
     def dowhileloop(self, p):
         return p
-        
+    
+    # FIXME: Assignment only considers IDs but not dimensioned IDs
     # Variable value assignment
-    @_('assignment_var assignment_sign expression SEMICOLON')
+    @_('var_access assignment_sign expression SEMICOLON')
     def assignment(self, p):
         # If latest floor has something <- [['*', '-'], []]
         if self.QM.operators[-1]:
@@ -523,11 +677,6 @@ class OrangeParser(Parser):
     def assignment_sign(self, p):
         self.QM.addOperator(p[0])
         return p
-    
-    @_('ID')
-    def assignment_var(self, p):
-        self.QM.addOperand(p[0])
-        return p
         
     # Input variable values
     @_('INPUT LPAREN readaux RPAREN SEMICOLON')
@@ -538,9 +687,10 @@ class OrangeParser(Parser):
     def readaux(self, p):
         return p
 
-    @_('var')
+    # FIXME: Maybe change to access_var
+    @_('ID')
     def readvalue(self, p):
-        self.QM.addOperand(p[0][1])          # To not break the internals of addOperand, add fluff
+        self.QM.addOperand(p[0])          # To not break the internals of addOperand, add fluff
         self.QM.addOperand((-1, -1))      # To not break the internals of addOperand, add fluff
         self.QM.addOperator('R')          # P stands for PRINT
         self.QM.generateQuadruple()       # This makes a print for each parameter (print('a', 'b', ...))        
@@ -770,7 +920,8 @@ class OrangeParser(Parser):
             size           = {
                 'params':{'int':0, 'float':0, 'bool':0},
                 'local' :{'int':0, 'float':0, 'bool':0},
-                'temp'  :{'int':0, 'float':0, 'bool':0}
+                'temp'  :{'int':0, 'float':0, 'bool':0},
+                'pointers' : []
                 }
         
             # Pack data ina tuple
@@ -820,7 +971,8 @@ class OrangeParser(Parser):
             size           = {
                 'params':{'int':0, 'float':0, 'bool':0},
                 'local' :{'int':0, 'float':0, 'bool':0},
-                'temp'  :{'int':0, 'float':0, 'bool':0}
+                'temp'  :{'int':0, 'float':0, 'bool':0},
+                'pointers': []
                 }
             # Pack data ina tuple
             functionData   = (
@@ -860,7 +1012,8 @@ class OrangeParser(Parser):
         size           = {
                 'params':{'int':0, 'float':0, 'bool':0},
                 'local' :{'int':0, 'float':0, 'bool':0},
-                'temp'  :{'int':0, 'float':0, 'bool':0}
+                'temp'  :{'int':0, 'float':0, 'bool':0},
+                'pointers': []
                 }
         
         # Pack data ina tuple

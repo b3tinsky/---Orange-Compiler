@@ -48,23 +48,27 @@ class TestInput08:
                         'bool': 0,
                         'float': 0, 
                         'int': 0, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'a': {
                         'address': 10000, 
+                        'dimensions':[], 
                         'name': 'a', 
                         'scope': 'test_08',
                         'type': 'int', 
                         }, 
                     'b': {
                         'address': 10001, 
+                        'dimensions':[], 
                         'name': 'b', 
                         'scope': 'test_08',
                         'type': 'int', 
                         }, 
                     'c': {
                         'address': 10002, 
+                        'dimensions':[], 
                         'name': 'c', 
                         'scope': 'test_08',
                         'type': 'int', 
@@ -98,23 +102,27 @@ class TestInput08:
                         'bool': 0,
                         'float': 0, 
                         'int': 1, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'a': {
                         'address': 20000, 
+                        'dimensions':[], 
                         'name': 'a', 
                         'scope': 'sum',
                         'type': 'int', 
                         }, 
                     'b': {
                         'address': 20001, 
+                        'dimensions':[], 
                         'name': 'b', 
                         'scope': 'sum',
                         'type': 'int', 
                         }, 
                     'c': {
                         'address': 20002, 
+                        'dimensions':[], 
                         'name': 'c', 
                         'scope': 'sum',
                         'type': 'int', 
@@ -143,23 +151,27 @@ class TestInput08:
                         'bool': 0,
                         'float': 1, 
                         'int': 0, 
-                        }
+                        },
+                    'pointers':[]
                     },
                 'table': {
                     'a': {
                         'address': 24000, 
-                        'name': 'a', 
+                        'dimensions':[], 
+                        'name': 'a',
                         'scope': 'main',
                         'type': 'float', 
                         }, 
                     'b': {
                         'address': 24001, 
+                        'dimensions':[], 
                         'name': 'b', 
                         'scope': 'main',
                         'type': 'float', 
                         }, 
                     'c': {
                         'address': 24002, 
+                        'dimensions':[], 
                         'name': 'c', 
                         'scope': 'main',
                         'type': 'float', 

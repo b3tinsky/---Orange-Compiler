@@ -27,6 +27,7 @@ class VirtualMachine():
             'P'       : self.printOperator,
             'R'       : self.readOperator,
             'ERA'     : self.eraOperator,
+            'VERIFY'  : self.verifyOperator,
             'ENDFUNC' : self.endfuncOperator,
             'RETURN'  : self.returnOperator,
             'GOSUB'   : self.gosubOperator,
@@ -185,7 +186,15 @@ class VirtualMachine():
 
         # Go to function's quadruple
         self.IP = self.functiondirectory[func]['quadruple'] - 1
+    
+    # Quadruple example -> ('VERIFY', 30002, '-2', '4')
+    def verifyOperator(self, QUAD):
+        value = self.fetchFromAddress(QUAD[1])
+        lowerLimit = int(QUAD[2])
+        upperLimit = int(QUAD[3])
 
+        if not (lowerLimit <= value <= upperLimit):
+            raise semanticError(f'🚫 Out Of Bounds | Index {value} must be between limits [{lowerLimit} : {upperLimit}]')
 
     # HACK: JUMPS
     # ('GOTO', -1, -1, 2)
@@ -229,7 +238,7 @@ class VirtualMachine():
             # Move Instruction Pointer
             self.IP += 1
 
-        print('🌍: ', self.memory)
+        print('🌍 AFTER: ', self.memory)
 
     def createMemory(self, function):
         # Memory block to add to the memory stack
@@ -244,6 +253,9 @@ class VirtualMachine():
         # Size requirements for function
         temps = self.functiondirectory[function]['size']['temp']
         
+        # Size requirements for pointers in a function
+        pointers = self.functiondirectory[function]['size']['pointers']
+
         # Open space for local variables
         if table:
             for variable in table:
@@ -254,6 +266,11 @@ class VirtualMachine():
             for variable in parameters:
                 memoryBlock[parameters[variable]['address']] = None
         
+        # Open space for pointers (as local variables)
+        if pointers:
+            for pointer in pointers:
+                memoryBlock[pointer] = None
+
         # Open space for temporary variables
         intTempAddress = 30000
         for intTemp in range(temps['int']):
@@ -295,6 +312,15 @@ class VirtualMachine():
             raise semanticError('❌ Object file not found')
 
     def fetchFromAddress(self, address):
+        # Address
+        if isinstance(address, str):
+            address = int(address)
+
+            # Just make it positive and return the address (no actual fetching)
+            if address < 50000:
+                return int(address)
+                
+        
         # Global variables
         if 10000 <= address < 20000:
             return self.memory[0][address]
@@ -317,13 +343,42 @@ class VirtualMachine():
         # Constants
         elif 40000 <= address < 50000:
             return self.constants[address]
+
+        # Pointers
+        elif 50000 <= address < 60000:
+            pointer = self.memory[-1][address]
+            pointerContent = self.fetchFromAddress(pointer)
+            return pointerContent
+
         
     def setInAddress(self, value, address):
-        if 10000 <= address < 20000:
+        # Address
+        if isinstance(address, str):
+            # Just make it positive and return the address (no actual fetching)
+            pointer = self.memory[-1][int(address)]
+            address = pointer
+            if 10000 <= address < 20000:
+                self.memory[0][address] = value
+            elif 20000 <= address < 60000:
+                self.memory[-1][address] = value
+
+
+        elif 10000 <= address < 20000:
             self.memory[0][address] = value
         
-        elif 20000 <= address < 40000:
+        # elif 20000 <= address < 40000:
+        #     self.memory[-1][address] = value
+        
+        elif 20000 <= address < 60000:
             self.memory[-1][address] = value
+        
+        # elif 50000 <= address < 60000:
+        #     self.memory[-1][address] = value
+            # pointer = self.memory[-1][address]
+            # if 10000 <= address < 20000:
+            #     self.memory[0][pointer] = value
+            # elif 20000 <= address < 40000:
+            #     self.memory[-1][pointer] = value
         
     def printQuads(self):
         counter = 1

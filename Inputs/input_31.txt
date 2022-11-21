@@ -1,0 +1,21 @@
+program test_31
+    vars 
+        int i; 
+        int A[-3:5];
+        int j;
+        int B[2:6][-2:4];
+        int k;
+        int C[1:2][3:6][0:1];
+
+main()
+{
+    i = 1;
+    j = 2;
+    k = 3;
+    B[i*k][j+i] = 999;
+    
+    print("i: ", i, "\n");
+    print("j: ", j, "\n");
+    print("k: ", k, "\n");
+    print("B[i*k][j+i]: ", B[i*k][j+i] * B[i*k][j+i], "\n");
+}

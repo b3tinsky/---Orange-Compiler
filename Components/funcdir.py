@@ -90,6 +90,23 @@ class OrangeFuncDir():
         else:
             raise semanticError(f'❌ Undeclared variable < {var_id} > in scope < {self.context} >')
 
+    def getVar(self, var_id):
+        # Look for var in the current scope variables
+        if var_id in self.dir[self.context]['table']:
+            return self.dir[self.context]['table'][var_id]
+        
+        # Look for var in the current scope parameters
+        elif var_id in self.dir[self.context]['params']:
+            return self.dir[self.context]['params'][var_id]
+        
+        # Look for var in the global scope
+        elif var_id in self.dir[self.programName]['table']:
+            return self.dir[self.programName]['table'][var_id]
+        
+        # Raise semantic error for trying to use undeclared variables
+        else:
+            raise semanticError(f'❌ Undeclared variable < {var_id} > in scope < {self.context} >')
+
     def addParam(self, pName, pType):
         address = self.MemoryManager.buildAddress(pType, 'local')
         # Add parameter to parameters dictionary
